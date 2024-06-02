@@ -13,6 +13,8 @@ class AdminController extends Controller
     {
         if (!Auth::check()) {
             return redirect()->route('homepage.login');
+        }elseif (Auth::user()->role != "Admin") {
+            return redirect()->back();
         }
         return view('admin.index');
     }
@@ -20,7 +22,9 @@ class AdminController extends Controller
 public function account()
 {
     // $users = User::with('role')->orderBy('id', 'DESC')->paginate(15);
-    
+    if (Auth::user()->role != "Admin") {
+        return redirect()->back();
+    }
     $users = User::join('roles', 'users.role', '=', 'roles.id')
             ->select('users.id','users.fullname','users.email','users.address','users.phoneNumber','roles.role_name as role_name')
             ->get();
@@ -30,6 +34,9 @@ public function account()
 
     public function create_account()
     {
+        if (Auth::user()->role != "Admin") {
+            return redirect()->back();
+        }
         return view('admin.accounts.create');
     }
 
@@ -51,6 +58,9 @@ public function account()
 
     public function edit_account(User $user)
     {
+        if (Auth::user()->role != "Admin") {
+            return redirect()->back();
+        }
         $roles = Role::all();
         // Load role_name manually
         $userRole = Role::find($user->role);
@@ -60,6 +70,9 @@ public function account()
 
     public function update_account(Request $request, User $user)
     {
+        if (Auth::user()->role != "Admin") {
+            return redirect()->back();
+        }
         $request->validate([
             'fullname' => 'required',
             'email' => 'required|email',

@@ -1,3 +1,6 @@
+@extends('layouts/userLO')
+
+@section('main')
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,16 +8,9 @@
     <meta charset="utf-8">
     <title>Password</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style type="text/css">
-        body {
-            margin-top: 20px;
-            background-color: #f2f6fc;
-            color: #69707a;
-        }
-
         .img-account-profile {
-            height: 10rem;
+            height: 7rem;
         }
 
         .rounded-circle {
@@ -44,7 +40,6 @@
         .dataTable-input {
             display: block;
             width: 100%;
-            padding: 0.875rem 1.125rem;
             font-size: 0.875rem;
             font-weight: 400;
             line-height: 1;
@@ -75,12 +70,6 @@
             padding-right: 0;
             margin-left: 1rem;
             margin-right: 1rem;
-        }
-
-        .btn-danger-soft {
-            color: #000;
-            background-color: #f1e0e3;
-            border-color: #f1e0e3;
         }
     </style>
 </head>
@@ -128,10 +117,11 @@
         </div>
     </div>
     <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
     <script type="text/javascript">
 
     </script>
 </body>
 
 </html>
+@endsection()

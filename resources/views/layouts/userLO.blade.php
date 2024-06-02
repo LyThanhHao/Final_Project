@@ -121,7 +121,7 @@
                                 <div class="dropdown-menu rounded-0 m-0">
                                     <!-- Dropdown menu items here -->
                                     <a href="{{ route('profile') }}" class="dropdown-item">Profile</a>
-                                    @if(Auth::check())
+                                    @if(Auth::user()->role == "Admin")
                                     <a href="{{ route('admin') }}" class="dropdown-item">Admin</a>
                                     @endif
                                     <a href="#" class="dropdown-item">Settings</a>

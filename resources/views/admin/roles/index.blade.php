@@ -1,4 +1,4 @@
-@extends('adminLO')
+@extends('layouts/adminLO')
 
 @section('main')
 <!-- End Navbar -->
@@ -15,7 +15,6 @@
             <table class="table" id="">
               <thead class="text-primary">
                 <tr>
-                  <th>Role ID</th>
                   <th>Role Name</th>
                   <th>Actions</th>
                 </tr>
@@ -23,7 +22,6 @@
               <tbody>
                 @foreach($roles as $role)
                 <tr>
-                  <td> {{ $role->id }} </td>
                   <td> {{ $role->role_name }} </td>
                   <td>
                     <a href="{{ route('admin.roles.edit', $role->id) }}"><i class="bi bi-pencil-square" style="color: white; margin-right: 15px;"></i></a>

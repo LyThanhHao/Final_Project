@@ -1,4 +1,4 @@
-@extends('userLO')
+@extends('layouts/userLO')
 
 @section('main')
     <!-- Carousel Start -->

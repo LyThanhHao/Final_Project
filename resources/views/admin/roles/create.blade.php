@@ -1,4 +1,4 @@
-@extends('adminLO')
+@extends('layouts/adminLO')
 
 @section('main')
 <div class="content">
