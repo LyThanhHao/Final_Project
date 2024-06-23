@@ -24,12 +24,9 @@
             <div class="form-group">
               <label for="role">Role</label>
               <select name="role" id="role" class="form-control">
-                <option style="color: black;" value="">Select a role for the user</option>
-                @foreach($roles as $role)
-                <option style="color: black;" value="{{ $role->id }}" {{ $userRole && $userRole->id == $role->id ? 'selected' : '' }}>
-                  {{ $role->role_name }}
-                </option>
-                @endforeach
+                <option style="color: black;" value="Admin" {{ $user->role == 'Admin' ? 'selected' : '' }}>Admin</option>
+                <option style="color: black;" value="Student" {{ $user->role == 'Student' ? 'selected' : '' }}>Student</option>
+                <option style="color: black;" value="Teacher" {{ $user->role == 'Teacher' ? 'selected' : '' }}>Teacher</option>
               </select>
             </div>
             <div class="form-group">

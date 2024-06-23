@@ -15,7 +15,7 @@ Route::get('/register', [HomeController::class, 'register'])->name('homepage.reg
 Route::post('/register', [HomeController::class, 'check_register']);
 
 //admin routes
-Route::group(['prefix' => 'admin','middleware' => 'auth'], function(){
+Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin']], function(){
     Route::get('/', [AdminController::class, 'index'])->name('admin');
     //accounts
     Route::get('/accounts', [AdminController::class, 'account'])->name('admin.accounts.index');
@@ -31,7 +31,6 @@ Route::group(['prefix' => 'admin','middleware' => 'auth'], function(){
     Route::get('/roles/{role}/edit', [RoleController::class, 'edit'])->name('admin.roles.edit');
     Route::put('/roles/{role}', [RoleController::class, 'update'])->name('admin.roles.update');
     Route::delete('/roles/{role}', [RoleController::class, 'destroy'])->name('admin.roles.destroy');
-
 });
 
 //user routes

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,30 +12,19 @@ class AdminController extends Controller
     {
         if (!Auth::check()) {
             return redirect()->route('homepage.login');
-        }elseif (Auth::user()->role != "Admin") {
-            return redirect()->back();
         }
         return view('admin.index');
     }
 
-public function account()
-{
-    // $users = User::with('role')->orderBy('id', 'DESC')->paginate(15);
-    if (Auth::user()->role != "Admin") {
-        return redirect()->back();
+    public function account()
+    {
+        $users = User::all();
+        return view('admin.accounts.index', compact('users'));
     }
-    $users = User::join('roles', 'users.role', '=', 'roles.id')
-            ->select('users.id','users.fullname','users.email','users.address','users.phoneNumber','roles.role_name as role_name')
-            ->get();
-    return view('admin.accounts.index')->with('users', $users);
-}
 
 
     public function create_account()
     {
-        if (Auth::user()->role != "Admin") {
-            return redirect()->back();
-        }
         return view('admin.accounts.create');
     }
 
@@ -58,21 +46,12 @@ public function account()
 
     public function edit_account(User $user)
     {
-        if (Auth::user()->role != "Admin") {
-            return redirect()->back();
-        }
-        $roles = Role::all();
-        // Load role_name manually
-        $userRole = Role::find($user->role);
-        return view('admin.accounts.edit', compact('user', 'roles', 'userRole'));
+        return view('admin.accounts.edit', compact('user'));
     }
 
 
     public function update_account(Request $request, User $user)
     {
-        if (Auth::user()->role != "Admin") {
-            return redirect()->back();
-        }
         $request->validate([
             'fullname' => 'required',
             'email' => 'required|email',
@@ -82,7 +61,6 @@ public function account()
         ]);
 
         $data = $request->all();
-        // Handle the role separately if it's nullable
         if ($request->filled('role')) {
             $data['role'] = $request->role;
         } else {

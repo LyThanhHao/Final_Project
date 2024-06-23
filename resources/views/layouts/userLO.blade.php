@@ -122,7 +122,7 @@
                                     <!-- Dropdown menu items here -->
                                     <a href="{{ route('profile') }}" class="dropdown-item">Profile</a>
                                     @if(Auth::user()->role == "Admin")
-                                    <a href="{{ route('admin') }}" class="dropdown-item">Admin</a>
+                                        <a href="{{ route('admin') }}" class="dropdown-item">Admin</a>
                                     @endif
                                     <a href="#" class="dropdown-item">Settings</a>
                                     <div class="dropdown-divider"></div>

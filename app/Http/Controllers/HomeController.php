@@ -24,6 +24,9 @@ class HomeController extends Controller
     );
     
         $data = request()->only('email', 'password');
+        if(!isset($data)){
+            return redirect()->route('homepage.login');
+        }
         if(auth()->attempt($data)){
             return redirect()->route('homepage');
         }

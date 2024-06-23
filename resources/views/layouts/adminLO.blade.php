@@ -49,12 +49,12 @@
                             <p>Management Users</p>
                         </a>
                     </li>
-                    <li>
+                    <!-- <li>
                         <a href="{{ route('admin.roles.index') }}">
                             <i class="bi bi-person"></i>
                             <p>Management Roles</p>
                         </a>
-                    </li>
+                    </li> -->
                     <li>
                         <a href="./tables.html">
                             <i class="bi bi-table"></i>

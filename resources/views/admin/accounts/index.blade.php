@@ -25,12 +25,12 @@
               </thead>
               <tbody>
                 @foreach($users as $user)
-                <tr id="user_{{ $user->id }}">
+                <tr>
                   <td>{{ $user->fullname }}</td>
                   <td>{{ $user->email }}</td>
                   <td>{{ $user->address }}</td>
                   <td>{{ $user->phoneNumber }}</td>
-                  <td>{{ $user->role_name }}</td>
+                  <td>{{ $user->role }}</td>
                   <td style="text-align: center;">
                     <a href="{{ route('admin.accounts.edit', $user->id) }}"><i class="bi bi-pencil-square" style="color: white;"></i></a>
                     <form action="{{ route('admin.accounts.destroy', $user->id) }}" method="POST" style="display:inline-block;">
