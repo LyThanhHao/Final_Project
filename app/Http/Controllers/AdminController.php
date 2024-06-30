@@ -49,7 +49,6 @@ class AdminController extends Controller
         return view('admin.accounts.edit', compact('user'));
     }
 
-
     public function update_account(Request $request, User $user)
     {
         $request->validate([

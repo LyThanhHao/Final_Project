@@ -25,16 +25,16 @@ Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin']], function()
     Route::put('/accounts/{user}', [AdminController::class, 'update_account'])->name('admin.accounts.update');
     Route::delete('/accounts/{user}', [AdminController::class, 'destroy_account'])->name('admin.accounts.destroy');
     //roles
-    Route::get('/roles', [RoleController::class, 'index'])->name('admin.roles.index');
-    Route::get('/roles/create', [RoleController::class, 'create'])->name('admin.roles.create');
-    Route::post('/roles', [RoleController::class, 'store'])->name('admin.roles.store');
-    Route::get('/roles/{role}/edit', [RoleController::class, 'edit'])->name('admin.roles.edit');
-    Route::put('/roles/{role}', [RoleController::class, 'update'])->name('admin.roles.update');
-    Route::delete('/roles/{role}', [RoleController::class, 'destroy'])->name('admin.roles.destroy');
+    // Route::get('/roles', [RoleController::class, 'index'])->name('admin.roles.index');
+    // Route::get('/roles/create', [RoleController::class, 'create'])->name('admin.roles.create');
+    // Route::post('/roles', [RoleController::class, 'store'])->name('admin.roles.store');
+    // Route::get('/roles/{role}/edit', [RoleController::class, 'edit'])->name('admin.roles.edit');
+    // Route::put('/roles/{role}', [RoleController::class, 'update'])->name('admin.roles.update');
+    // Route::delete('/roles/{role}', [RoleController::class, 'destroy'])->name('admin.roles.destroy');
 });
 
 //user routes
-Route::get('/user/profile', [UserController::class, 'profile'])->name('profile');
-Route::get('/user/profile/password', [UserController::class, 'password'])->name('profile.password');
-
+Route::get('/profile', [UserController::class, 'profile'])->name('profile');
+Route::get('/profile/password', [UserController::class, 'password'])->name('profile.password');
+//course routes
 
