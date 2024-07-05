@@ -83,6 +83,7 @@ h1, h2, h3, h4, h5, h6 {
   overflow: hidden;
   border-radius: 8px;
   transition: transform 0.3s ease;
+  cursor: pointer;
 }
 
 #course:hover {

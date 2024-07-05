@@ -23,6 +23,39 @@
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+
+    <style>
+        /* Style for the search input */
+        .search-input {
+            border-radius: 50px 0 0 50px;
+            border: 1px solid #ddd;
+            padding-left: 15px;
+            width: 280px;
+            height: 38px;
+        }
+
+        /* Style for the search button */
+        .search-btn {
+            background-color: #FF6600;
+            border: none;
+            border-radius: 0 50px 50px 0;
+            height: 38px;
+            width: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .search-btn i {
+            font-size: 16px;
+        }
+
+        /* Additional styling for the navbar */
+        .navbar-nav {
+            align-items: center;
+        }
+    </style>
 </head>
 
 <body>
@@ -76,18 +109,17 @@
                 </a>
                 <nav class="collapse position-absolute navbar navbar-vertical navbar-light align-items-start p-0 border border-top-0 border-bottom-0 bg-light" id="navbar-vertical" style="width: calc(100% - 30px); z-index: 9;">
                     <div class="navbar-nav w-100">
-                        <div class="nav-item dropdown">
+                        @foreach($categorys as $category)
+                            <a href="" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; display: block; text-align: center;" title="{{ $course->course_name }}" class="nav-item nav-link">{{ $category->category_name }}</a>
+                        @endforeach
+                        <!-- <div class="nav-item dropdown">
                             <a href="#" class="nav-link" data-toggle="dropdown">Web Design <i class="fa fa-angle-down float-right mt-1"></i></a>
                             <div class="dropdown-menu position-absolute bg-secondary border-0 rounded-0 w-100 m-0">
                                 <a href="" class="dropdown-item">HTML</a>
                                 <a href="" class="dropdown-item">CSS</a>
                                 <a href="" class="dropdown-item">jQuery</a>
                             </div>
-                        </div>
-                        <a href="" class="nav-item nav-link">Apps Design</a>
-                        <a href="" class="nav-item nav-link">Marketing</a>
-                        <a href="" class="nav-item nav-link">Research</a>
-                        <a href="" class="nav-item nav-link">SEO</a>
+                        </div> -->
                     </div>
                 </nav>
             </div>
@@ -96,23 +128,24 @@
                     <a href="" class="text-decoration-none d-block d-lg-none">
                         <h1 class="m-0"><span class="text-primary">E</span>COURSES</h1>
                     </a>
-                    <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
                     <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                         <div class="navbar-nav py-0">
                             <a href="{{ route('homepage') }}" class="nav-item nav-link active">Home</a>
                             <a href="about.html" class="nav-item nav-link">About</a>
-                            <a href="course.html" class="nav-item nav-link">Courses</a>
-                            <a href="teacher.html" class="nav-item nav-link">Teachers</a>
-                            <div class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Blog</a>
+                            <!-- <div class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Category</a>
                                 <div class="dropdown-menu rounded-0 m-0">
-                                    <a href="blog.html" class="dropdown-item">Blog List</a>
-                                    <a href="single.html" class="dropdown-item">Blog Detail</a>
+                                    <a href=""></a>
                                 </div>
-                            </div>
+                            </div> -->
                             <a href="contact.html" class="nav-item nav-link">Contact</a>
+                            <form class="d-flex" method="POST">
+                                @csrf
+                                <input class="form-control me-2 search-input" type="search" placeholder="What do you want to learn?" aria-label="Search">
+                                <button class="btn search-btn" type="submit">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </form>
                         </div>
                         <div class="navbar-nav py-0">
                             <div class="nav-item dropdown">
@@ -122,7 +155,7 @@
                                     <!-- Dropdown menu items here -->
                                     <a href="{{ route('profile') }}" class="dropdown-item">Profile</a>
                                     @if(Auth::user()->role == "Admin")
-                                        <a href="{{ route('admin') }}" class="dropdown-item">Admin</a>
+                                    <a href="{{ route('admin') }}" class="dropdown-item">Admin</a>
                                     @endif
                                     <a href="#" class="dropdown-item">Settings</a>
                                     <div class="dropdown-divider"></div>

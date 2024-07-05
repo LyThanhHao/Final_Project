@@ -16828,18 +16828,18 @@ hr {
 }
 
 table.tablesorter thead tr .header {
-  background-image: url("../img/bg.gif");
+  background-image: url("../uploads/bg.gif");
   background-repeat: no-repeat;
   background-position: center right;
   cursor: pointer;
 }
 
 table.tablesorter thead tr .headerSortUp {
-  background-image: url("../img/asc.gif");
+  background-image: url("../uploads/asc.gif");
 }
 
 table.tablesorter thead tr .headerSortDown {
-  background-image: url("../img/desc.gif");
+  background-image: url("../uploads/desc.gif");
 }
 
 .dataTables_wrapper .table-striped tbody tr:nth-of-type(odd) {

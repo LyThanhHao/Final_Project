@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="apple-touch-icon" sizes="76x76" href="img-dasboard/apple-icon.png">
-    <link rel="icon" type="image/png" href="img/img-dasboard/favicon.png">
+    <link rel="icon" type="image/png" href="uploads/img-dasboard/favicon.png">
     <title>
         Admin
     </title>
@@ -46,15 +46,15 @@
                     <li>
                         <a href="{{ route('admin.accounts.index') }}">
                             <i class="bi bi-person"></i>
-                            <p>Management Users</p>
+                            <p>Manage Users</p>
                         </a>
                     </li>
-                    <!-- <li>
-                        <a href="{{ route('admin.roles.index') }}">
-                            <i class="bi bi-person"></i>
-                            <p>Management Roles</p>
+                    <li>
+                        <a href="{{ route('admin.categories.index') }}">
+                            <i class="bi bi-blockquote-left"></i>
+                            <p>Manage Categories</p>
                         </a>
-                    </li> -->
+                    </li>
                     <li>
                         <a href="./tables.html">
                             <i class="bi bi-table"></i>
@@ -100,7 +100,7 @@
                             <li class="dropdown nav-item">
                                 <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
                                     <div class="photo">
-                                        <img src="/img/img-dasboard/anime3.png" alt="Profile Photo">
+                                        <img src="/uploads/img-dasboard/anime3.png" alt="Profile Photo">
                                     </div>
                                     <b class="caret d-none d-lg-block d-xl-block"></b>
                                     <p class="d-lg-none">
@@ -314,6 +314,16 @@
                 token: "ee6fab19c5a04ac1a32a645abde4613a",
                 application: "black-dashboard-free"
             });
+    </script>
+    <script>
+        function confirmDelete(event) {
+            event.preventDefault();
+
+            const confirmation = confirm("Are you sure you want to delete this item?");
+            if (confirmation) {
+                event.target.closest('form').submit();
+            }
+        }
     </script>
 </body>
 

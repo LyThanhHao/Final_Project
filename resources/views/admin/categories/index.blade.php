@@ -7,33 +7,27 @@
     <div class="col-md-12">
       <div class="card ">
         <div class="card-header">
-          <h4 class="card-title">Table of User accounts</h4>
+          <h3 style="text-align: center;" class="card-title">Table of Categories</h3>
         </div>
         <div class="card-body">
-          <a href="{{ route('admin.accounts.create') }}" class="btn btn-primary">Create New User</a>
+          <a href="{{ route('admin.categories.create') }}" class="btn btn-primary">Create a new Category</a>
           <div>
             <table class="table" id="">
               <thead class="text-primary">
                 <tr>
-                  <th>Full name</th>
-                  <th>Email</th>
-                  <th>Address</th>
-                  <th>Phone number</th>
-                  <th>Role</th>
+                  <th>Category Name</th>
+                  <th>Status</th>
                   <th style="text-align: center;">Actions</th>
                 </tr>
               </thead>
               <tbody>
-                @foreach($users as $user)
+                @foreach($categorys as $category)
                 <tr>
-                  <td>{{ $user->fullname }}</td>
-                  <td>{{ $user->email }}</td>
-                  <td>{{ $user->address }}</td>
-                  <td>{{ $user->phoneNumber }}</td>
-                  <td>{{ $user->role }}</td>
+                  <td>{{ $category->category_name }}</td>
+                  <td>{{ $category->status == 0 ? 'Hidden' : 'Publish' }}</td>
                   <td style="text-align: center;">
-                    <a href="{{ route('admin.accounts.edit', $user->id) }}"><i class="bi bi-pencil-square" style="color: white;"></i></a>
-                    <form action="{{ route('admin.accounts.destroy', $user->id) }}" method="POST" style="display:inline-block;">
+                    <a href="{{ route('admin.categories.edit', $category->id) }}"><i class="bi bi-pencil-square" style="color: white;"></i></a>
+                    <form action="{{ route('admin.categories.destroy', $category->id) }}" method="POST" style="display:inline-block;">
                       @csrf
                       @method('DELETE')
                       <button type="submit" onclick="confirmDelete(event)" style="border: none; background: border-box; color: white; margin-left: 15px;"><i class="bi bi-trash"></i></button>

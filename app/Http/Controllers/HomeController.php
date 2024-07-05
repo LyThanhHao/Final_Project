@@ -2,19 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Course;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
     public function index()
     {
-        $course = Course::join('users', 'courses.user_id', '=', 'users.id')
-            ->select('courses.*', 'users.fullname as user_name')
-            ->get();
-        return view('homepage.index', compact('course'));
+        $categorys = Category::where('status', 1)->get();
+        $courses = Course::orderBy('id', 'DESC')->paginate(15);
+        return view('homepage.index', compact('courses', 'categorys'));
     }
 
     public function login()
