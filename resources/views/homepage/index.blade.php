@@ -165,11 +165,11 @@
             <a href="" title="{{ $course->course_name }}">
                 <div id="course" class="col-lg-4 col-md-6 mb-4">
                     <div class="rounded overflow-hidden">
-                        <img class="img-fluid" src="uploads/course/{{ $course->image }}" width="" alt="Web design & development courses for beginner" alt="$course->course_name">
+                        <img class="img-fluid" src="{{ asset('uploads/course/' . $course->image) }}" width="" alt="Web design & development courses for beginner" alt="$course->course_name">
                         <div class="bg-secondary p-4">
                             <a class="h6" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; display: block; text-align: center;" title="{{ $course->course_name }}" href="">{{ $course->course_name }}</a>
                             <div class="border-top mt-3 pt-3 d-flex justify-content-center">
-                                <img src="uploads/avatar/{{ $course->user->avatar }}" alt="" style="border-radius: 50%; width: 30px; margin: 0 8px">
+                                <img src="{{ asset('uploads/avatar/' . $course->user->avatar) }}" alt="" style="border-radius: 50%; width: 30px; margin: 0 8px">
                                 <a href="" style="text-decoration: underline;">{{ $course->user->fullname }}</a>
                             </div>
                         </div>
@@ -389,7 +389,6 @@
 
 
 <!-- JavaScript Libraries -->
-<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
 <script src="lib/easing/easing.min.js"></script>
 <script src="lib/owlcarousel/owl.carousel.min.js"></script>

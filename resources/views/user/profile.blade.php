@@ -86,7 +86,7 @@
                 <div class="card mb-4 mb-xl-0">
                     <div class="card-header">Profile Picture</div>
                     <div class="card-body text-center">
-                        <img class="img-account-profile rounded-circle mb-2" src="http://bootdey.com/img/Content/avatar/avatar1.png" alt>
+                        <img class="img-account-profile rounded-circle mb-2" src="{{ asset('uploads/avatar/' . $user->avatar) }}" alt>
                         <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 5 MB</div>
                         <form action="" method="POST" enctype="multipart/form-data">
                             @csrf
@@ -132,10 +132,6 @@
             </div>
         </div>
     </div>
-    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
-    <script type="text/javascript">
-    </script>
 </body>
 
 </html>

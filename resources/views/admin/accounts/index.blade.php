@@ -7,7 +7,7 @@
     <div class="col-md-12">
       <div class="card ">
         <div class="card-header">
-          <h4 class="card-title">Table of User accounts</h4>
+          <h3 class="card-title font-weight-bold text-center">Table of User accounts</h3>
         </div>
         <div class="card-body">
           <a href="{{ route('admin.accounts.create') }}" class="btn btn-primary">Create New User</a>

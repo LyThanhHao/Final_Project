@@ -6,7 +6,7 @@
     <div class="col-md-12">
       <div class="card ">
         <div class="card-header">
-          <h4 class="card-title"> Create User</h4>
+          <h3 class="card-title font-weight-bold text-center"> Create User</h3>
         </div>
         <div class="card-body">
           <form action="{{ route('admin.accounts.store') }}" method="POST">

@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\Category;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -21,8 +23,12 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(): void
     {
-        //
+        Paginator::useBootstrap();
+        view()->composer('*', function ($view) {
+            $cat_home = Category::orderBy('cat_name', 'ASC')->where('status', 1)->get();
+            $view->with(compact('cat_home'));
+        });
     }
 }

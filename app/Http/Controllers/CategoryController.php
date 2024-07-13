@@ -14,7 +14,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categorys = Category::orderBy('id', 'ASC')->paginate(15);
+        $categorys = Category::orderBy('cat_id', 'ASC')->paginate(15);
         return view('admin.categories.index', compact('categorys'));
     }
 
@@ -37,7 +37,7 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'category_name' => 'required',
+            'cat_name' => 'required',
         ]);
 
         Category::create($request->all());
@@ -76,7 +76,7 @@ class CategoryController extends Controller
     public function update(Request $request, Category $category)
     {
         $request->validate([
-            'category_name' => 'required',
+            'cat_name' => 'required',
             'status' => 'required',
         ]);
 

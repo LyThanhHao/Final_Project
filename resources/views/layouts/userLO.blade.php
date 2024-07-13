@@ -56,6 +56,10 @@
             align-items: center;
         }
     </style>
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript">
+    </script>
 </head>
 
 <body>
@@ -109,8 +113,8 @@
                 </a>
                 <nav class="collapse position-absolute navbar navbar-vertical navbar-light align-items-start p-0 border border-top-0 border-bottom-0 bg-light" id="navbar-vertical" style="width: calc(100% - 30px); z-index: 9;">
                     <div class="navbar-nav w-100">
-                        @foreach($categorys as $category)
-                            <a href="" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; display: block; text-align: center;" title="{{ $course->course_name }}" class="nav-item nav-link">{{ $category->category_name }}</a>
+                        @foreach($cat_home as $category)
+                        <a href="{{ route('homepage.category.show', $category->cat_id) }}" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; display: block; text-align: center;" title="{{ $category->cat_name }}" class="nav-item nav-link">{{ $category->cat_name }}</a>
                         @endforeach
                         <!-- <div class="nav-item dropdown">
                             <a href="#" class="nav-link" data-toggle="dropdown">Web Design <i class="fa fa-angle-down float-right mt-1"></i></a>
@@ -132,12 +136,6 @@
                         <div class="navbar-nav py-0">
                             <a href="{{ route('homepage') }}" class="nav-item nav-link active">Home</a>
                             <a href="about.html" class="nav-item nav-link">About</a>
-                            <!-- <div class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Category</a>
-                                <div class="dropdown-menu rounded-0 m-0">
-                                    <a href=""></a>
-                                </div>
-                            </div> -->
                             <a href="contact.html" class="nav-item nav-link">Contact</a>
                             <form class="d-flex" method="POST">
                                 @csrf
@@ -194,13 +192,11 @@
                         </div>
                     </div>
                     <div class="col-md-6 mb-5">
-                        <h5 class="text-primary text-uppercase mb-4" style="letter-spacing: 5px;">Our Courses</h5>
+                        <h5 class="text-primary text-uppercase mb-4" style="letter-spacing: 5px;">Our Course Categories</h5>
                         <div class="d-flex flex-column justify-content-start">
-                            <a class="text-white mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Web Design</a>
-                            <a class="text-white mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Apps Design</a>
-                            <a class="text-white mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Marketing</a>
-                            <a class="text-white mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Research</a>
-                            <a class="text-white" href="#"><i class="fa fa-angle-right mr-2"></i>SEO</a>
+                        @foreach($cat_home as $temp)
+                            <a class="text-white mb-2" href="{{ route('homepage.category.show', $category->cat_id) }}"><i class="fa fa-angle-right mr-2"></i>{{ $temp->cat_name }}</a>
+                        @endforeach
                         </div>
                     </div>
                 </div>
@@ -251,8 +247,7 @@
 
 
     <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script> -->
+    <!-- <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="lib/easing/easing.min.js"></script>
     <script src="lib/owlcarousel/owl.carousel.min.js"></script>

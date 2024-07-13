@@ -14,6 +14,7 @@ Route::post('/login', [HomeController::class, 'check_login']);
 Route::get('/logout', [HomeController::class, 'logout'])->name('homepage.logout');
 Route::get('/register', [HomeController::class, 'register'])->name('homepage.register');
 Route::post('/register', [HomeController::class, 'check_register']);
+Route::get('/categories/{cat_id}/show', [HomeController::class, 'category_show'])->name('homepage.category.show');
 
 //admin routes
 Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin']], function(){

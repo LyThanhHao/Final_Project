@@ -11,13 +11,15 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $categorys = Category::where('status', 1)->get();
         $courses = Course::orderBy('id', 'DESC')->paginate(15);
-        return view('homepage.index', compact('courses', 'categorys'));
+        return view('homepage.index', compact('courses'));
     }
 
     public function login()
     {
+        if(Auth::check()){
+            return redirect()->back();
+        }
         return view('homepage.login');
     }
 
@@ -48,6 +50,9 @@ class HomeController extends Controller
 
     public function register()
     {
+        if(Auth::check()){
+            return redirect()->back();
+        }
         return view('homepage.register');
     }
 
@@ -66,5 +71,13 @@ class HomeController extends Controller
         $data['password'] = bcrypt(request('password'));
         User::create($data);
         return Redirect()->route('homepage.login');
+    }
+
+    public function category_show($cat_id)
+    {
+        $categories = Category::where('status', 1)->get();
+        $category = Category::where('cat_id', $cat_id)->firstOrFail();
+        $courses = $category->courses;
+        return view('homepage.show', compact('category', 'courses'));
     }
 }

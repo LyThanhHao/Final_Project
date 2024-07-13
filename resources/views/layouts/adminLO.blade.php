@@ -15,12 +15,11 @@
     <!-- Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css" rel="stylesheet">
     <link href="/path/to/bootstrap-icons.css" rel="stylesheet">
-    
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
     <link href="/path/to/fontawesome/css/all.min.css" rel="stylesheet">
     <!-- CSS Files -->
     <link href="{{ asset('css/admin.css') }}" rel="stylesheet">
+
 </head>
 
 <body class="">
@@ -46,7 +45,7 @@
                     <li>
                         <a href="{{ route('admin.accounts.index') }}">
                             <i class="bi bi-person"></i>
-                            <p>Manage Users</p>
+                            <p>Manage Accounts</p>
                         </a>
                     </li>
                     <li>
@@ -61,7 +60,7 @@
                             <p>Table List</p>
                         </a>
                     </li>
-                    <hr style="background: white; width: 90%;" >
+                    <hr style="background: white; width: 90%;">
                     <li>
                         <a href="{{ route('homepage') }}">
                             <i class="bi bi-box-arrow-in-left"></i>
@@ -168,14 +167,10 @@
                 <li class="button-container text-center">
                     <button id="twitter" class="btn btn-round btn-info"><i class="fab fa-twitter"></i> &middot; 45</button>
                     <button id="facebook" class="btn btn-round btn-info"><i class="fab fa-facebook-f"></i> &middot; 50</button>
-                    <br>
-                    <br>
-                    <a class="github-button" href="https://github.com/creativetimofficial/black-dashboard" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star ntkme/github-buttons on GitHub">Star</a>
                 </li>
             </ul>
         </div>
-    </div>
-    <!--   Core JS Files   -->
+    </div>    <!--   Core JS Files   -->
     <script src="js-dasboard/core/jquery.min.js"></script>
     <script src="js-dasboard/core/popper.min.js"></script>
     <script src="js-dasboard/core/bootstrap.min.js"></script>
@@ -189,6 +184,13 @@
     <script src="js-dasboard/plugins/bootstrap-notify.js"></script>
     <!-- Control Center for Black Dashboard: parallax effects, scripts for the example pages etc -->
     <script src="js-dasboard/black-dashboard.min.js?v=1.0.0"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script> -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript">
+    </script>
     <script>
         $(document).ready(function() {
             $().ready(function() {
@@ -205,8 +207,6 @@
                 window_width = $(window).width();
 
                 fixed_plugin_open = $('.sidebar .sidebar-wrapper .nav li.active a p').html();
-
-
 
                 $('.fixed-plugin a').click(function(event) {
                     if ($(this).hasClass('switch-trigger')) {
@@ -325,6 +325,7 @@
             }
         }
     </script>
+
 </body>
 
 </html>

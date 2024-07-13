@@ -91,7 +91,7 @@
     <div class="row">
         <div class="col-lg-6 col-md-12">
             <div class="card card-tasks">
-                <div class="card-header ">
+                <div class="card-header">
                     <h6 class="title d-inline">Tasks(5)</h6>
                     <p class="card-category d-inline">today</p>
                     <div class="dropdown">
@@ -106,7 +106,7 @@
                     </div>
                 </div>
                 <div class="card-body ">
-                    <div class="table-full-width table-responsive">
+                    <div class="table-full-width table-responsive" style="overflow-x: hidden;">
                         <table class="table">
                             <tbody>
                                 <tr>
@@ -247,8 +247,8 @@
                     <h4 class="card-title"> Simple Table</h4>
                 </div>
                 <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table tablesorter " id="">
+                    <div class="table-responsive" style="overflow-x: hidden;">
+                        <table class="table tablesorter" id="">
                             <thead class=" text-primary">
                                 <tr>
                                     <th>
@@ -372,4 +372,9 @@
         </div>
     </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript">
+</script>
 @endsection()
