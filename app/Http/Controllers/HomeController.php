@@ -11,7 +11,7 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $courses = Course::orderBy('id', 'DESC')->paginate(15);
+        $courses = Course::orderBy('id', 'DESC')->limit(3)->get();
         return view('homepage.index', compact('courses'));
     }
 
@@ -70,14 +70,7 @@ class HomeController extends Controller
         $data = request()->all('fullname', 'email', 'password', 'phoneNumber', 'address');
         $data['password'] = bcrypt(request('password'));
         User::create($data);
-        return Redirect()->route('homepage.login');
-    }
 
-    public function category_show($cat_id)
-    {
-        $categories = Category::where('status', 1)->get();
-        $category = Category::where('cat_id', $cat_id)->firstOrFail();
-        $courses = $category->courses;
-        return view('homepage.show', compact('category', 'courses'));
+        return redirect()->route('homepage.login')->with('success', 'Registration successful!');
     }
 }

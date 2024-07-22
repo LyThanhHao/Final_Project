@@ -1,0 +1,76 @@
+@startuml
+
+left to right direction
+
+class Category {
+  -id: int
+  -name: string
+  -created_at: timestamp
+  -updated_at: timestamp
+  -- 
+  +courses(): hasMany
+}
+
+class Course {
+  -id: int
+  -title: string
+  -description: string
+  -category_id: int
+  -created_at: timestamp
+  -updated_at: timestamp
+  -- 
+  +category(): belongsTo
+  +users(): belongsToMany
+  +comments(): hasMany
+  +favorites(): hasMany
+}
+
+class User {
+  -id: int
+  -name: string
+  -email: string
+  -password: string
+  -created_at: timestamp
+  -updated_at: timestamp
+  --
+  +courses(): belongsToMany
+  +comments(): hasMany
+  +favorites(): hasMany
+}
+
+class Comment {
+  -id: int
+  -user_id: int
+  -course_id: int
+  -content: string
+  -created_at: timestamp
+  -updated_at: timestamp
+  --
+  +user(): belongsTo
+  +course(): belongsTo
+}
+
+class Favorite {
+  -id: int
+  -user_id: int
+  -course_id: int
+  -created_at: timestamp
+  -updated_at: timestamp
+  --
+  +user(): belongsTo
+  +course(): belongsTo
+}
+
+Category "1" --> "*" Course
+Course "*" --> "1" Category
+Course "*" --> "*" User
+User "1" --> "*" Comment
+Course "1" --> "*" Comment
+User "1" --> "*" Favorite
+Course "1" --> "*" Favorite
+Comment "*" --> "1" User
+Comment "*" --> "1" Course
+Favorite "*" --> "1" User
+Favorite "*" --> "1" Course
+
+@enduml

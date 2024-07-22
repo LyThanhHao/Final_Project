@@ -79,6 +79,44 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: 0.5rem;
 }
 
+.container-fluid .search-input {
+  border-radius: 50px 0 0 50px;
+  border: 1px solid #ddd;
+  width: 260px;
+  height: 38px;
+}
+
+.container-fluid .search-btn {
+  background-color: #FF6600;
+  border: none;
+  border-radius: 0 50px 50px 0;
+  height: 38px;
+  width: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.container-fluid .search-btn i {
+  font-size: 16px;
+}
+
+.container-fluid .navbar-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.container-fluid .navbar-nav .nav-item .nav-link {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  text-align: center;
+}
+
 #course {
   overflow: hidden;
   border-radius: 8px;

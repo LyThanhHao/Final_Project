@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Course;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,6 @@ class CourseController extends Controller
      */
     public function index()
     {
-        
     }
 
     /**
@@ -44,9 +44,16 @@ class CourseController extends Controller
      * @param  \App\Models\Course  $course
      * @return \Illuminate\Http\Response
      */
-    public function show(Course $course)
+    public function show(Category $category)
     {
-        //
+        $courses = $category->courses;
+        return view('courses.show', compact('category', 'courses'));
+    }
+
+    public function detail(Course $course)
+    {
+        // $course = Course::findOrFail($course_id);
+        return view('courses.detail', compact('course'));
     }
 
     /**

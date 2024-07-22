@@ -82,7 +82,7 @@
         </nav>
         <hr class="mt-0 mb-4">
         <div class="row">
-            <div class="col-xl-4">
+            <div class="col-xl-4" style="width: 35%;">
                 <div class="card mb-4 mb-xl-0">
                     <div class="card-header">Profile Picture</div>
                     <div class="card-body text-center">
@@ -96,33 +96,29 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xl-8">
+            <div class="col-xl-8" style="width: 65%;">
                 <div class="card mb-4">
                     <div class="card-header">Account Details</div>
                     <div class="card-body">
                         <form>
-                            <div class="mb-3">
-                                <label class="small mb-1" for="inputUsername">Full name</label>
-                                <input class="form-control" id="inputUsername" type="text" placeholder="Enter your username" value="{{ $user->fullname }}">
-                            </div>
                             <div class="row gx-3 mb-3">
                                 <div class="col-md-6">
-                                    <label class="small mb-1">Email</label>
+                                    <label class="small mb-1" for="inputFullname">Full name</label>
+                                    <input class="form-control" id="inputFullname" type="text" placeholder="Enter your username" value="{{ $user->fullname }}">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="small mb-1" for="inputEmail">Email</label>
                                     <input class="form-control" id="inputEmail" type="text" placeholder="Enter your email" value="{{ $user->email }}">
                                 </div>
-                                <div class="col-md-6">
-                                    <label class="small mb-1">Address</label>
-                                    <input class="form-control" id="inputAddress" type="text" placeholder="Enter your address" value="{{ $user->address }}">
-                                </div>
                             </div>
                             <div class="row gx-3 mb-3">
+                                <div class="col-md-6">
+                                    <label class="small mb-1" for="inputAddress">Address</label>
+                                    <input class="form-control" id="inputAddress" type="text" placeholder="Enter your address" value="{{ $user->address }}">
+                                </div>
                                 <div class="col-md-6">
                                     <label class="small mb-1" for="inputPhone">Phone number</label>
                                     <input class="form-control" id="inputPhone" type="tel" placeholder="Enter your phone number" value="{{ $user->phoneNumber }}">
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="small mb-1" for="inputBirthday">Birthday</label>
-                                    <input class="form-control" id="inputBirthday" type="text" name="birthday" placeholder="Enter your birthday" value="">
                                 </div>
                             </div>
                             <button class="btn btn-primary" type="button">Save changes</button>

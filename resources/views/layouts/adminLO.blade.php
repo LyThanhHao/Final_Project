@@ -45,19 +45,19 @@
                     <li>
                         <a href="{{ route('admin.accounts.index') }}">
                             <i class="bi bi-person"></i>
-                            <p>Manage Accounts</p>
+                            <p>Accounts</p>
                         </a>
                     </li>
                     <li>
                         <a href="{{ route('admin.categories.index') }}">
                             <i class="bi bi-blockquote-left"></i>
-                            <p>Manage Categories</p>
+                            <p>Categories</p>
                         </a>
                     </li>
                     <li>
                         <a href="./tables.html">
                             <i class="bi bi-table"></i>
-                            <p>Table List</p>
+                            <p>View statistics</p>
                         </a>
                     </li>
                     <hr style="background: white; width: 90%;">

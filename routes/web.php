@@ -2,9 +2,11 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CourseController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Models\Category;
+use App\Models\Course;
 use Illuminate\Support\Facades\Route;
 
 //home routes
@@ -14,7 +16,11 @@ Route::post('/login', [HomeController::class, 'check_login']);
 Route::get('/logout', [HomeController::class, 'logout'])->name('homepage.logout');
 Route::get('/register', [HomeController::class, 'register'])->name('homepage.register');
 Route::post('/register', [HomeController::class, 'check_register']);
-Route::get('/categories/{cat_id}/show', [HomeController::class, 'category_show'])->name('homepage.category.show');
+
+//courses routes
+Route::get('/category/{category}/show', [CourseController::class, 'show'])->name('courses.filter');
+Route::get('/course/{course}/detail', [CourseController::class, 'detail'])->name('courses.detail');
+
 
 //admin routes
 Route::group(['prefix' => 'admin','middleware' => ['auth', 'admin']], function(){
