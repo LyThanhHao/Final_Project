@@ -45,6 +45,27 @@ return [
             'auth_mode' => null,
         ],
 
+        'gmail' => [
+            'transport' => 'smtp',
+            'host' => 'smtp.gmail.com',
+            'port' => 587,
+            'encryption' => 'tls',
+            'username' => env('GMAIL_USERNAME'),
+            'password' => env('GMAIL_PASSWORD'),
+            'timeout' => null,
+            'auth_mode' => null,
+        ],
+        'fpt' => [
+            'transport' => 'smtp',
+            'host' => 'smtp.fpt.edu.vn',
+            'port' => 587,
+            'encryption' => 'tls',
+            'username' => env('FPT_USERNAME'),
+            'password' => env('FPT_PASSWORD'),
+            'timeout' => null,
+            'auth_mode' => null,
+        ],
+
         'ses' => [
             'transport' => 'ses',
         ],
