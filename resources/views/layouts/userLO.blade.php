@@ -295,10 +295,10 @@
     <script src="js/main.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.js"></script>
-    @if (Session::has('login-success'))
+    @if (Session::has('success-login'))
         <script>
             $.toast({
-                heading: 'Notification',
+                heading: 'Logged in successfully!',
                 text: "{{ Session::get('success-login') }}",
                 showHideTransition: 'slide',
                 position: 'top-center',

@@ -92,7 +92,7 @@
         </script>
     @endif
 
-    @if (Session::has('invalid-login'))
+    @if (Session::has('fail-login'))
         <script>
             $.toast({
                 heading: 'Notification',

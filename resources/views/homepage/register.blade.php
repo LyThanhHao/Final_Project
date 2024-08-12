@@ -103,7 +103,7 @@
     @if (Session::has('success-register'))
         <script>
             $.toast({
-                heading: 'Notification',
+                heading: 'Registration successful!',
                 text: "{{ Session::get('success-register') }}",
                 showHideTransition: 'slide',
                 position: 'top-center',
@@ -120,7 +120,7 @@
                 text: "{{ Session::get('fail-register') }}",
                 showHideTransition: 'slide',
                 position: 'top-center',
-                icon: 'success',
+                icon: 'error',
                 hideAfter: 5000
             })
         </script>
