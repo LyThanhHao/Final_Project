@@ -68,6 +68,124 @@ body {
   outline: 0 !important;
 }
 
+#dropdownSub {
+  position: relative;
+  z-index: 1000;
+}
+
+#navbar-vertical {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out;
+  opacity: 0;
+  z-index: 1050;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #f8f9fa;
+}
+
+#dropdownSub:hover #navbar-vertical,
+#navbar-vertical:hover {
+  max-height: 300px;
+  opacity: 1;
+}
+
+#dropdownSub,
+#navbar-vertical {
+  transition: all 0.3s ease-in-out;
+}
+
+#dropdownSub:hover #navbar-vertical {
+  visibility: visible;
+  transform: translateY(0);
+}
+
+#navbar-vertical:hover {
+  visibility: visible;
+  transform: translateY(0);
+}
+
+#navbar-vertical .navbar-nav {
+  width: 100%;
+}
+
+#navbar-vertical .nav-item {
+  width: 100%;
+}
+
+.nav-item .dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #f8f9fa;
+  border-radius: 5px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  min-width: 200px;
+  opacity: 0;
+  visibility: hidden;
+  z-index: 1050;
+  transition: all 0.3s ease-in-out;
+}
+
+.nav-item:hover .dropdown-menu,
+.nav-item .dropdown-menu:hover {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.nav-link .dropdown-toggle {
+  color: #FF6600;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.nav-item .dropdown-item {
+  padding: 10px 20px;
+  font-size: 14px;
+  color: #333;
+}
+
+.nav-item .dropdown-item:hover {
+  background-color: #FF6600;
+  color: #fff;
+  text-decoration: none;
+}
+
+.nav-item .dropdown-item.text-danger {
+  font-weight: bold;
+  color: #dc3545 !important;
+}
+
+.nav-item .dropdown-divider {
+  margin: 0;
+}
+
+/* Điều chỉnh phần navbar-collapse để phù hợp với dropdown menu */
+.navbar-collapse {
+  position: relative;
+  z-index: 1040; /* Đảm bảo dropdown menu nằm trên các phần tử khác của navbar */
+}
+
+/* Đặt lại z-index cho các phần tử khác nếu cần */
+.navbar {
+  z-index: 1030; /* Đảm bảo navbar có thứ tự thấp hơn dropdown */
+}
+
+
+.nav-item .dropdown-item.text-danger {
+  font-weight: bold;
+  color: #dc3545 !important;
+}
+
+.nav-item .dropdown-divider {
+  margin: 0;
+}
+
+
 hr {
   box-sizing: content-box;
   height: 0;
@@ -107,7 +225,7 @@ h1, h2, h3, h4, h5, h6 {
   align-items: center;
   justify-content: space-around;
   width: 100%;
-}
+} 
 
 .container-fluid .navbar-nav .nav-item .nav-link {
   white-space: nowrap;
@@ -696,6 +814,11 @@ pre code {
 .no-gutters>[class*="col-"] {
   padding-right: 0;
   padding-left: 0;
+}
+
+
+.container-fluid #dropdownSub{
+  padding: 0;
 }
 
 .col-1, .col-2, .col-3, .col-4, .col-5, .col-6, .col-7, .col-8, .col-9, .col-10, .col-11, .col-12, .col,
@@ -4414,7 +4537,7 @@ input[type="button"].btn-block {
   font-size: 1.25rem;
   line-height: 1;
   background-color: transparent;
-  border: 1px solid transparent;
+  border: none;
   border-radius: 8px;
 }
 
@@ -4428,7 +4551,7 @@ input[type="button"].btn-block {
   height: 1.5em;
   vertical-align: middle;
   content: "";
-  background: no-repeat center center;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(0, 0, 0, 0.5)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
   background-size: 100% 100%;
 }
 

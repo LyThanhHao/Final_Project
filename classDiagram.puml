@@ -20,7 +20,7 @@ class Course {
   -updated_at: timestamp
   -- 
   +category(): belongsTo
-  +users(): belongsToMany
+  +users(): belongsTo
   +comments(): hasMany
   +favorites(): hasMany
 }
@@ -29,13 +29,15 @@ class User {
   -id: int
   -name: string
   -email: string
+  -email_verified_at: timestamp
   -password: string
   -created_at: timestamp
   -updated_at: timestamp
   --
-  +courses(): belongsToMany
+  +courses(): hasMany
   +comments(): hasMany
   +favorites(): hasMany
+  +questions(): hasMany
 }
 
 class Comment {
@@ -58,7 +60,21 @@ class Favorite {
   -updated_at: timestamp
   --
   +user(): belongsTo
-  +course(): belongsTo
+  +course(): belongsToMany
+}
+
+class Question {
+    +id: bigint
+    +question_content: text
+    +a: string
+    +b: string
+    +c: string
+    +d: string
+    +answer: string
+    +user_id: belongsTo
+    +course_id: bigint
+    +created_at: datetime
+    +updated_at: datetime
 }
 
 Category "1" --> "*" Course
@@ -68,9 +84,13 @@ User "1" --> "*" Comment
 Course "1" --> "*" Comment
 User "1" --> "*" Favorite
 Course "1" --> "*" Favorite
+User "1" --> "*" Question
+Course "1" --> "*" Question
 Comment "*" --> "1" User
 Comment "*" --> "1" Course
 Favorite "*" --> "1" User
 Favorite "*" --> "1" Course
+Question "*" --> "1" User
+Question "*" --> "1" Course
 
 @enduml

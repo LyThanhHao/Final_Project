@@ -6,6 +6,7 @@ use App\Mail\VerifyAccount;
 use App\Models\Category;
 use App\Models\Course;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 
@@ -25,23 +26,24 @@ class HomeController extends Controller
         return view('homepage.login');
     }
 
-    public function check_login()
+    public function check_login(Request $request)
     {
-        request()->validate(
-            [
-                'email' => 'required|email|exists:users',
-                'password' => 'required',
-            ],
-        );
+        $request->validate([
+            'email' => 'required|email|exists:users',
+            'password' => 'required',
+        ]);
 
-        $data = request()->only('email', 'password');
-        if (!isset($data)) {
-            return redirect()->route('homepage.login');
+        $data = $request->only('email', 'password');
+        $check = auth()->attempt($data);
+
+        if($check){
+            if(auth()->user()->email_verified_at == ''){
+                auth()->logout();
+                return redirect()->back()->with('not-verify', 'Your account is not verify, please check your email again');
+            }
+            return redirect()->route('homepage')->with('success-login', 'Welcome back' );
         }
-        if (auth()->attempt($data)) {
-            return redirect()->route('homepage');
-        }
-        return redirect()->back()->withErrors(['password' => 'Password is incorrect']);
+        return redirect()->back()->with('fail-login', 'Your email or password invalid');
     }
 
     public function logout()
@@ -58,30 +60,31 @@ class HomeController extends Controller
         return view('homepage.register');
     }
 
-    public function check_register()
+    public function check_register(Request $request)
     {
-        //xac thuc du lieu
-        request()->validate([
+        //validate data
+        $request->validate([
             'fullname' => 'required',
             'email' => 'required|email|unique:users',
-            'password' => 'required|min:6|regex:/[a-zA-Z]/|regex:/[@$!%*?&#]/',
+            'password' => 'required|min:5|regex:/[a-zA-Z]/|regex:/[@$!%*?&#]/',
             'confirm_password' => 'required|same:password',
             'phoneNumber' => 'required',
             'address' => 'required',
+            'termsCheckbox' => 'required',
         ], [
             'password.regex' => 'Password must contain at least one letter and one special character.',
-            'password.min' => 'Password must be at least 6 characters long.',
+            'password.min' => 'Password must be at least 5 characters long.',
         ]);
 
-        $data = request()->only('fullname', 'email', 'password', 'phoneNumber', 'address');
+        $data = $request->only('fullname', 'email', 'password', 'phoneNumber', 'address');
         //ma hoa password
-        $data['password'] = bcrypt(request('password'));
+        $data['password'] = bcrypt($request->password);
 
         if($acc = User::create($data)){
             Mail::to($acc->email)->send(new VerifyAccount($acc));
-            return redirect()->route('homepage.login')->with('success', 'Registration successful!, Please check your email to verify your account');
+            return redirect()->route('homepage.login')->with('success-register', 'Registration successful!, Please check your email to verify your account');
         }
-        return redirect()->back()->with('fail', 'Something wrong, please try again!');
+        return redirect()->back()->with('fail-register', 'Something wrong, please try again!');
     }
 
     public function verify($email){

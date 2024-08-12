@@ -1,0 +1,48 @@
+@startuml
+|Admin|
+start
+:Check Admin Rights;
+if (Has Rights?) then (Yes)
+    :Display Account Management Menu;
+    |System|
+    while (Choose Option?)
+        :Option: Add New Account;
+        :Enter Account Information;
+        :Validate Information;
+        if (Information Valid?) then (Yes)
+            :Add Account to Database;
+            :Display Success Message;
+        else (No)
+            :Display Error and Request Re-entry;
+        endif
+    endwhile
+    |Admin|
+else (No)
+    stop
+endif
+:Return to Account Management Menu;
+:Select Account to Edit;
+|System|
+:Display Current Account Information;
+:Enter New Information;
+:Validate New Information;
+if (Information Valid?) then (Yes)
+    :Update Account in Database;
+    :Display Success Message;
+else (No)
+    :Display Error and Request Re-entry;
+endif
+|Admin|
+:Select Account to Delete;
+|System|
+:Display Delete Confirmation;
+:Enter Confirmation;
+if (Confirm Deletion?) then (Yes)
+    :Delete Account from Database;
+    :Display Success Message;
+else (No)
+    :Return to Account Management Menu;
+endif
+|Admin|
+stop
+@enduml
