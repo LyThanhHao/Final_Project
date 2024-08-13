@@ -86,14 +86,26 @@
                     <div class="card mb-4 mb-xl-0">
                         <div class="card-header">Profile Picture</div>
                         <div class="card-body text-center">
-                            <img class="img-account-profile rounded-circle mb-2"
-                                src="{{ asset('uploads/avatar/' . $user->avatar) }}" alt>
-                            <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 5 MB</div>
-                            <form action="" method="POST" enctype="multipart/form-data">
+                            @if (empty($user->avatar))
+                                <img class="img-account-profile rounded-circle mb-2" src="{{ asset('uploads/avatar/avatar_default.jpg') }}" alt>
+                            @else
+                                <img class="img-account-profile rounded-circle mb-2" src="{{ asset('uploads/avatar/' . $user->avatar) }}" style="width: 120px;" alt>
+                            @endif
+                            <div class="small font-italic text-muted mb-2">JPG or PNG no larger than 5 MB</div>
+                            <form action="{{ route('profile.change_avatar') }}" method="POST"
+                                enctype="multipart/form-data">
                                 @csrf
-                                <input type="file" name="profile_picture" class="form-control mb-3" accept="image/*">
+                                <div class="form-group mb-3">
+                                    <input type="file" name="avatar" id="avatar" class="form-control">
+                                    @error('avatar')
+                                        <div class="mt-2">
+                                            <small class="text-danger">{{ $message }}</small>
+                                        </div>
+                                    @enderror
+                                </div>
                                 <button class="btn btn-primary" type="submit">Upload new image</button>
                             </form>
+
                         </div>
                     </div>
                 </div>
@@ -101,19 +113,22 @@
                     <div class="card mb-4">
                         <div class="card-header">Account Details</div>
                         <div class="card-body">
-                            <form method="POST">
+                            <form action="{{ route('profile.check_profile') }}" method="POST">
                                 @csrf
+                                @method('PUT')
                                 <div class="row gx-3 mb-3">
                                     <div class="col-md-6">
                                         <label class="small mb-1" for="fullname">Full name</label>
-                                        <input class="form-control" id="fullname" name="fullname" type="text" placeholder="Enter your username" value="{{ $user->fullname }}">
+                                        <input class="form-control" id="fullname" name="fullname" type="text"
+                                            placeholder="Enter your username" value="{{ $user->fullname }}">
                                         @error('fullname')
                                             <small style="color: red;">{{ $message }}</small>
                                         @enderror
                                     </div>
                                     <div class="col-md-6">
                                         <label class="small mb-1" for="email">Email</label>
-                                        <input class="form-control" id="email" name="email" type="text" placeholder="Enter your email" value="{{ $user->email }}">
+                                        <input class="form-control" id="email" name="email" type="text"
+                                            placeholder="Enter your email" value="{{ $user->email }}">
                                         @error('email')
                                             <small style="color: red;">{{ $message }}</small>
                                         @enderror
@@ -122,14 +137,16 @@
                                 <div class="row gx-3 mb-3">
                                     <div class="col-md-6">
                                         <label class="small mb-1" for="address">Address</label>
-                                        <input class="form-control" id="address" name="address" type="text" placeholder="Enter your address" value="{{ $user->address }}">
+                                        <input class="form-control" id="address" name="address" type="text"
+                                            placeholder="Enter your address" value="{{ $user->address }}">
                                         @error('address')
                                             <small style="color: red;">{{ $message }}</small>
                                         @enderror
                                     </div>
                                     <div class="col-md-6">
                                         <label class="small mb-1" for="phoneNumber">Phone number</label>
-                                        <input class="form-control" id="phoneNumber" name="phoneNumber" type="tex" placeholder="Enter your phone number" value="{{ $user->phoneNumber }}">
+                                        <input class="form-control" id="phoneNumber" name="phoneNumber" type="tex"
+                                            placeholder="Enter your phone number" value="{{ $user->phoneNumber }}">
                                         @error('phoneNumber')
                                             <small style="color: red;">{{ $message }}</small>
                                         @enderror
@@ -144,11 +161,11 @@
         </div>
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.js"></script>
-        @if (Session::has('success'))
+        @if (Session::has('profile_success'))
             <script>
                 $.toast({
                     heading: 'Notification',
-                    text: "{{ Session::get('success') }}",
+                    text: "{{ Session::get('profile_success') }}",
                     showHideTransition: 'slide',
                     position: 'top-center',
                     icon: 'success',
@@ -157,11 +174,11 @@
             </script>
         @endif
 
-        @if (Session::has('fail'))
+        @if (Session::has('profile_fail'))
             <script>
                 $.toast({
                     heading: 'Notification',
-                    text: "{{ Session::get('fail') }}",
+                    text: "{{ Session::get('profile_fail') }}",
                     showHideTransition: 'slide',
                     position: 'top-center',
                     icon: 'error',
@@ -169,6 +186,45 @@
                 })
             </script>
         @endif
+
+        @if (Session::has('avatar_success'))
+            <script>
+                $.toast({
+                    heading: 'Notification',
+                    text: "{{ Session::get('avatar_success') }}",
+                    showHideTransition: 'slide',
+                    position: 'top-center',
+                    icon: 'success',
+                    hideAfter: 5000
+                })
+            </script>
+        @endif
+
+        @if (Session::has('avatar_fail'))
+            <script>
+                $.toast({
+                    heading: 'Notification',
+                    text: "{{ Session::get('avatar_fail') }}",
+                    showHideTransition: 'slide',
+                    position: 'top-center',
+                    icon: 'error',
+                    hideAfter: 5000
+                })
+            </script>
+        @endif
+
+        @error('avatar')
+            <script>
+                $.toast({
+                    heading: 'Error',
+                    text: "{{ $message }}",
+                    showHideTransition: 'slide',
+                    position: 'top-center',
+                    icon: 'error',
+                    hideAfter: 5000
+                });
+            </script>
+        @enderror
 
     </body>
 

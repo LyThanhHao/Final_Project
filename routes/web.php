@@ -57,7 +57,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
 
 //user routes
 Route::get('/profile', [UserController::class, 'profile'])->name('profile');
-Route::post('/profile', [UserController::class, 'check_profile']);
+Route::put('/profile', [UserController::class, 'check_profile'])->name('profile.check_profile');
+Route::post('/profile', [UserController::class, 'change_avatar'])->name('profile.change_avatar');
 Route::get('/profile/password', [UserController::class, 'password'])->name('profile.password');
 Route::post('/profile/password', [UserController::class, 'check_password']);
 
