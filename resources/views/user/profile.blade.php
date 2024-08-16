@@ -10,7 +10,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <style type="text/css">
             .img-account-profile {
-                height: 7rem;
+                width: 100px;
+                max-width: 100px;
+                height: 100px;
+                border-radius: 50%;
             }
 
             .rounded-circle {
@@ -19,6 +22,7 @@
 
             .card {
                 box-shadow: 0 0.15rem 1.75rem 0 rgb(33 40 50 / 15%);
+                margin-bottom: 1rem;
             }
 
             .card .card-header {
@@ -71,6 +75,12 @@
                 margin-left: 1rem;
                 margin-right: 1rem;
             }
+
+            @media (max-width: 576px) {
+                .container-xl {
+                    padding: 0 1rem;
+                }
+            }
         </style>
     </head>
 
@@ -82,16 +92,19 @@
             </nav>
             <hr class="mt-0 mb-4">
             <div class="row">
-                <div class="col-xl-4" style="width: 35%;">
-                    <div class="card mb-4 mb-xl-0">
+                <div class="col-md-4"> <!-- Thay thế col-xl-4 bằng col-md-4 -->
+                    <div class="card mb-4 mb-md-0">
                         <div class="card-header">Profile Picture</div>
                         <div class="card-body text-center">
                             @if (empty($user->avatar))
-                                <img class="img-account-profile rounded-circle mb-2" src="{{ asset('uploads/avatar/avatar_default.jpg') }}" alt>
+                                <img class="img-account-profile rounded-circle mb-2"
+                                    src="{{ asset('uploads/avatar/avatar_default.jpg') }}" alt="">
                             @else
-                                <img class="img-account-profile rounded-circle mb-2" src="{{ asset('uploads/avatar/' . $user->avatar) }}" style="width: 120px;" alt>
+                                <img class="img-account-profile rounded-circle mb-2"
+                                    src="{{ asset('uploads/avatar/' . $user->avatar) }}" alt="">
                             @endif
-                            <div class="small font-italic text-muted mb-2">JPG or PNG no larger than 5 MB</div>
+                            <div class="small font-italic text-muted mb-2">JPG, PNG, JPEG, GIF, WEBP or SVG no larger than 5
+                                MB</div>
                             <form action="{{ route('profile.change_avatar') }}" method="POST"
                                 enctype="multipart/form-data">
                                 @csrf
@@ -105,11 +118,10 @@
                                 </div>
                                 <button class="btn btn-primary" type="submit">Upload new image</button>
                             </form>
-
                         </div>
                     </div>
                 </div>
-                <div class="col-xl-8" style="width: 65%;">
+                <div class="col-md-8"> <!-- Thay thế col-xl-8 bằng col-md-8 -->
                     <div class="card mb-4">
                         <div class="card-header">Account Details</div>
                         <div class="card-body">
@@ -159,7 +171,6 @@
                 </div>
             </div>
         </div>
-
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.js"></script>
         @if (Session::has('profile_success'))
             <script>

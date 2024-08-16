@@ -10,25 +10,24 @@
 
     <!-- Favicon -->
     <link href="img/favicon.ico" rel="icon">
-
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
-
     <!-- Libraries Stylesheet -->
     <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-
     <!-- Customized Bootstrap Stylesheet -->
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 
     <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
     <script type="text/javascript"></script>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.css" />
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.css" />
 </head>
 
 <body>
@@ -42,10 +41,8 @@
             </div>
             <div class="col-lg-3 text-right">
                 <div class="d-inline-flex align-items-center">
-                    <form class="d-flex" method="POST">
-                        @csrf
-                        <input class="form-control me-2 search-input" type="search"
-                            placeholder="What do you want to learn?" aria-label="Search">
+                    <form class="d-flex" method="GET" action="{{ route('homepage.search') }}">
+                        <input class="form-control me-2 search-input" type="search" name="keyword" placeholder="What do you want to learn?" aria-label="Search">
                         <button class="btn search-btn" type="submit">
                             <i class="fas fa-search"></i>
                         </button>
@@ -57,17 +54,32 @@
                     <div class="nav-item dropdown">
                         @if (Auth::check())
                             <a href="#" class="nav-link dropdown-toggle" style="font-weight: bold;"
-                                data-bs-toggle="dropdown">Hello {{ Auth::user()->fullname }}</a>
+                                data-bs-toggle="dropdown">
+                                Hello {{ Auth::user()->fullname }}
+                            </a>
                             <div class="dropdown-menu rounded-0 m-0">
                                 <!-- Dropdown menu items here -->
-                                <a href="{{ route('profile') }}" class="dropdown-item">Profile</a>
+                                <a href="{{ route('profile') }}" class="dropdown-item d-flex align-items-center">
+                                    <i class="bi bi-person-circle me-2"></i>
+                                    <span>Profile</span>
+                                </a>
                                 @if (Auth::user()->role == 'Admin')
                                     <a href="{{ route('admin') }}"
-                                        class="dropdown-item text-danger font-weight-bold">Admin</a>
+                                        class="dropdown-item d-flex align-items-center text-danger font-weight-bold">
+                                        <i class="bi bi-person-fill-gear me-2"></i>
+                                        <span>Admin</span>
+                                    </a>
                                 @endif
-                                <a href="#" class="dropdown-item">Settings</a>
+                                <a href="#" class="dropdown-item d-flex align-items-center">
+                                    <i class="bi bi-gear-fill me-2"></i>
+                                    <span>Settings</span>
+                                </a>
                                 <div class="dropdown-divider"></div>
-                                <a href="{{ route('homepage.logout') }}" class="dropdown-item">Logout</a>
+                                <a href="{{ route('homepage.logout') }}"
+                                    class="dropdown-item d-flex align-items-center">
+                                    <i class="bi bi-box-arrow-left me-2"></i>
+                                    <span>Logout</span>
+                                </a>
                             </div>
                         @else
                             <a class="btn btn-primary py-2 px-4 ml-auto d-none d-lg-block"
@@ -76,6 +88,7 @@
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
     <!-- Topbar End -->
@@ -129,12 +142,13 @@
                             </li>
                             <li class="nav-item d-lg-none">
                                 <div class="nav-item dropdown">
-                                    <a href="#" class="nav-link dropdown-toggle" style="font-weight: bold;" data-bs-toggle="dropdown">Categories</a>
+                                    <a href="#" class="nav-link dropdown-toggle" style="font-weight: bold;"
+                                        data-bs-toggle="dropdown">Categories</a>
                                     <div class="dropdown-menu rounded-0 m-0">
                                         <div class="navbar-nav w-100">
                                             @foreach ($cat_home as $category)
-                                                <a href="{{ route('courses.filter', $category->cat_id) }}" id="dropdown-item"
-                                                    class="nav-item nav-link"
+                                                <a href="{{ route('courses.filter', $category->cat_id) }}"
+                                                    id="dropdown-item" class="nav-item nav-link"
                                                     style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: center;"
                                                     title="{{ $category->cat_name }}">{{ $category->cat_name }}
                                                 </a>
@@ -169,19 +183,36 @@
                                 <div class="nav-item dropdown">
                                     @if (Auth::check())
                                         <a href="#" class="nav-link dropdown-toggle" style="font-weight: bold;"
-                                            data-bs-toggle="dropdown">Hello {{ Auth::user()->fullname }}</a>
-                                        <div class="dropdown-menu rounded-0 m-0 h-50">
-                                            <a href="{{ route('profile') }}" class="dropdown-item">Profile</a>
+                                            data-bs-toggle="dropdown">
+                                            Hello {{ Auth::user()->fullname }}
+                                        </a>
+                                        <div class="dropdown-menu rounded-0 m-0">
+                                            <!-- Dropdown menu items here -->
+                                            <a href="{{ route('profile') }}"
+                                                class="dropdown-item d-flex align-items-center">
+                                                <i class="bi bi-person-circle me-2"></i>
+                                                <span>Profile</span>
+                                            </a>
                                             @if (Auth::user()->role == 'Admin')
                                                 <a href="{{ route('admin') }}"
-                                                    class="dropdown-item text-danger font-weight-bold">Admin</a>
+                                                    class="dropdown-item d-flex align-items-center text-danger font-weight-bold">
+                                                    <i class="bi bi-person-fill-gear me-2"></i>
+                                                    <span>Admin</span>
+                                                </a>
                                             @endif
-                                            <a href="#" class="dropdown-item">Settings</a>
+                                            <a href="#" class="dropdown-item d-flex align-items-center">
+                                                <i class="bi bi-gear-fill me-2"></i>
+                                                <span>Settings</span>
+                                            </a>
                                             <div class="dropdown-divider"></div>
-                                            <a href="{{ route('homepage.logout') }}" class="dropdown-item">Logout</a>
+                                            <a href="{{ route('homepage.logout') }}"
+                                                class="dropdown-item d-flex align-items-center">
+                                                <i class="bi bi-box-arrow-left me-2"></i>
+                                                <span>Logout</span>
+                                            </a>
                                         </div>
                                     @else
-                                        <a class="btn btn-primary py-2 px-4 ml-auto d-lg-none d-lg-block"
+                                        <a class="btn btn-primary py-2 px-4 ml-auto d-none d-lg-block"
                                             href="{{ route('homepage.login') }}">Log in</a>
                                     @endif
                                 </div>

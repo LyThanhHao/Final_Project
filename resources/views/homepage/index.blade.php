@@ -172,7 +172,7 @@
                                 @if (empty($course->user->avatar))
                                     <img src="{{ asset('uploads/avatar/avatar_default.jpg') }}" alt="" style="border-radius: 50%; width: 30px; margin: 0 8px">                                        
                                 @else
-                                    <img src="{{ asset('uploads/avatar/' . $course->user->avatar) }}" alt="" style="border-radius: 50%; width: 30px; margin: 0 8px">
+                                    <img src="{{ asset('uploads/avatar/' . $course->user->avatar) }}" alt="" style="border-radius: 50%; width: 30px; height: 30px; margin: 0 8px">
                                 @endif
                                 <a href="" style="text-decoration: underline;">{{ $course->user->fullname }}</a>
                             </div>

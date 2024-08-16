@@ -18,9 +18,21 @@ class HomeController extends Controller
         return view('homepage.index', compact('courses'));
     }
 
+    public function search(Request $request)
+    {
+        $keyword = $request->input('keyword');
+
+        $courses = Course::where('course_name', 'LIKE', "%{$keyword}%")
+            ->orWhereHas('user', function($q) use ($keyword) { $q->where('role', 'Teacher')
+                ->where('fullname', 'LIKE', "%{$keyword}%"); })->get();
+                
+        return view('homepage.search', compact('courses', 'keyword'));
+    }
+
+
     public function login()
     {
-        if(Auth::check()){
+        if (Auth::check()) {
             return redirect()->back();
         }
         return view('homepage.login');
@@ -36,12 +48,12 @@ class HomeController extends Controller
         $data = $request->only('email', 'password');
         $check = auth()->attempt($data);
 
-        if($check){
-            if(auth()->user()->email_verified_at == ''){
+        if ($check) {
+            if (auth()->user()->email_verified_at == '') {
                 auth()->logout();
                 return redirect()->back()->with('not-verify', 'Your account is not verify, please check your email again');
             }
-            return redirect()->route('homepage')->with('success-login', 'Welcome back' );
+            return redirect()->route('homepage')->with('success-login', 'Welcome back');
         }
         return redirect()->back()->with('fail-login', 'Your email or password invalid');
     }
@@ -54,7 +66,7 @@ class HomeController extends Controller
 
     public function register()
     {
-        if(Auth::check()){
+        if (Auth::check()) {
             return redirect()->back();
         }
         return view('homepage.register');
@@ -80,14 +92,15 @@ class HomeController extends Controller
         //ma hoa password
         $data['password'] = bcrypt($request->password);
 
-        if($acc = User::create($data)){
+        if ($acc = User::create($data)) {
             Mail::to($acc->email)->send(new VerifyAccount($acc));
             return redirect()->route('homepage.login')->with('success-register', 'Registration successful!, Please check your email to verify your account');
         }
         return redirect()->back()->with('fail-register', 'Something wrong, please try again!');
     }
 
-    public function verify($email){
+    public function verify($email)
+    {
         $acc = User::where('email', $email)->whereNull('email_verified_at')->firstOrFail();
         User::where('email', $email)->update(['email_verified_at' => now()]);
         return redirect()->route('homepage.login')->with('confirmed', 'Verify account successfully! Now you can login.');

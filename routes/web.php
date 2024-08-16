@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Route;
 
 //home routes
 Route::get('/', [HomeController::class, 'index'])->name('homepage');
+Route::get('/search', [HomeController::class, 'search'])->name('homepage.search');
 
 //account routes
 Route::get('/login', [HomeController::class, 'login'])->name('homepage.login');

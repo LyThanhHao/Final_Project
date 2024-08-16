@@ -13,8 +13,9 @@ class Course extends Model
         'course_name', 'category_id', 'user_id', 'image', 'file'
     ];
 
-    public function user() {
-        return $this->hasOne(User::class, 'id', 'user_id');
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
     public function category()

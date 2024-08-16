@@ -22,7 +22,8 @@ class Course {
   +category(): belongsTo
   +users(): belongsTo
   +comments(): hasMany
-  +favorites(): hasMany
+  +favorites(): belongsToMany
+  +questions(): hasMany
 }
 
 class User {
@@ -36,7 +37,7 @@ class User {
   --
   +courses(): hasMany
   +comments(): hasMany
-  +favorites(): hasMany
+  +favorites(): hasOne
   +questions(): hasMany
 }
 
@@ -60,37 +61,34 @@ class Favorite {
   -updated_at: timestamp
   --
   +user(): belongsTo
-  +course(): belongsToMany
+  +course(): hasMany
 }
 
 class Question {
-    +id: bigint
-    +question_content: text
-    +a: string
-    +b: string
-    +c: string
-    +d: string
-    +answer: string
-    +user_id: belongsTo
-    +course_id: bigint
-    +created_at: datetime
-    +updated_at: datetime
+    -id: bigint
+    -question_content: text
+    -a: string
+    -b: string
+    -c: string
+    -d: string
+    -answer: string
+    -user_id: int
+    -course_id: int
+    -created_at: datetime
+    -updated_at: datetime
+    --
+    +user(): belongsTo
+    +course(): belongsTo
 }
 
-Category "1" --> "*" Course
-Course "*" --> "1" Category
-Course "*" --> "*" User
+Category "1" --> "*" Course 
+User "1" --> "*" Course
+Course "1" --> "*" Favorite : "belongsToMany"
+Favorite "1" --> "*" Course
+Course "1" --> "*" Question
 User "1" --> "*" Comment
 Course "1" --> "*" Comment
-User "1" --> "*" Favorite
-Course "1" --> "*" Favorite
+User "1" --> "1" Favorite
 User "1" --> "*" Question
-Course "1" --> "*" Question
-Comment "*" --> "1" User
-Comment "*" --> "1" Course
-Favorite "*" --> "1" User
-Favorite "*" --> "1" Course
-Question "*" --> "1" User
-Question "*" --> "1" Course
 
 @enduml

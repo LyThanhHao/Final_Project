@@ -123,7 +123,7 @@ body {
   background-color: #f8f9fa;
   border-radius: 5px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  min-width: 200px;
+  min-width: 150px;
   opacity: 0;
   visibility: hidden;
   z-index: 1050;
@@ -145,8 +145,12 @@ body {
 
 .nav-item .dropdown-item {
   padding: 10px 20px;
-  font-size: 14px;
+  font-size: 15px;
   color: #333;
+}
+
+.nav-item .dropdown-item span {
+  margin-left: 10px;
 }
 
 .nav-item .dropdown-item:hover {

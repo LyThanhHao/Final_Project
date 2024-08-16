@@ -72,7 +72,7 @@
                 @enderror
             </div>
             <div class="input-container">
-                <input type="text" class="form-control" name="phoneNumber" placeholder="Enter phone number">
+                <input type="text" class="form-control" name="phoneNumber" placeholder="Enter your phone number">
                 @error('phoneNumber')
                     <small style="color: red;">{{ $message }}</small>
                 @enderror
