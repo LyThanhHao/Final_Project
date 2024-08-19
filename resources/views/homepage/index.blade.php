@@ -170,11 +170,11 @@
                             <a class="h6" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; display: block; text-align: center;" title="{{ $course->course_name }}" href="">{{ $course->course_name }}</a>
                             <div class="border-top mt-3 pt-3 d-flex justify-content-center">
                                 @if (empty($course->user->avatar))
-                                    <img src="{{ asset('uploads/avatar/avatar_default.jpg') }}" alt="" style="border-radius: 50%; width: 30px; margin: 0 8px">                                        
+                                    <img src="{{ asset('uploads/avatar/avatar_default.jpg') }}" alt="" style="border-radius: 50%; width: 30px; height: 30px; margin: 0 8px">                                        
                                 @else
                                     <img src="{{ asset('uploads/avatar/' . $course->user->avatar) }}" alt="" style="border-radius: 50%; width: 30px; height: 30px; margin: 0 8px">
                                 @endif
-                                <a href="" style="text-decoration: underline;">{{ $course->user->fullname }}</a>
+                                <a href="" style="text-decoration: underline; padding: 4px 0;">{{ $course->user->fullname }}</a>
                             </div>
                         </div>
                     </div>

@@ -7,8 +7,8 @@
     overflow-x: hidden;
 }
 
-body{
-    background-image: linear-gradient( 109.6deg, rgba(156,252,248,1) 11.2%, rgba(110,123,251,1) 91.1% );
+body {
+    background-image: linear-gradient(109.6deg, rgba(156, 252, 248, 1) 11.2%, rgba(110, 123, 251, 1) 91.1%);
     height: 100vh;
     display: flex;
     justify-content: center;
@@ -17,24 +17,61 @@ body{
     padding: 20px;
 }
 
-.alert{
-    padding: 1rem 0;
+.container-fluid {
+    display: flex;
+    width: 100%;
+    max-width: 900px;
+    height: 90%;
+    background-color: #fff;
+    border-radius: 10px;
+    overflow-y: hidden;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    align-items: stretch;
 }
 
-.container-fluid {
-    width: 100%;
-    max-width: 400px; /* Adjust the maximum width */
-    padding: 10px;
+.form-image {
+    width: 50%;
+    height: auto;
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.form-image img {
+    max-width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.divider {
+    width: 1px;
+    background: rgba(0, 0, 0, 0.1); /* Màu sắc mờ cho đường phân chia */
+    margin: 0 20px; /* Khoảng cách hai bên đường phân chia */
+    height: auto;
+}
+
+.form-content {
+    width: 50%;
+    padding: 5px;
+    overflow-y: auto;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
 }
 
 #login-form {
     background-color: #fff;
     display: block;
-    padding: 1rem;
-    max-width: 350px;
+    max-width: 400px;
+    width: 100%;
     border-radius: 0.5rem;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  }
+    padding: 20px;
+    max-height: 70vh;
+}
 
 .form-title {
     font-size: 1.25rem;
@@ -59,7 +96,7 @@ body{
     padding: 1rem;
     padding-right: 3rem;
     font-size: 0.875rem;
-    line-height: 1.25rem;    
+    line-height: 1.25rem;
     width: -webkit-fill-available;
     border-radius: 0.5rem;
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
@@ -95,11 +132,29 @@ body{
     text-decoration: underline;
 }
 
-.submit:hover {
-    background-color: #fff;
-    color: #000;
-    transform: scale(1);
-    transition: background-color 0.3s ease, transform 0.3s ease;
+.form-check {
+    margin-bottom: 1rem;
+    padding-left: 1.75rem;
+    margin: 8px;
+}
+
+.form-check-label {
+    margin-left: 0.5rem;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    color: #6B7280;
+}
+
+.form-check-input {
+    width: 20px;
+    height: 20px;
+    margin-top: 0.3rem;
+    vertical-align: middle;
+}
+
+.form-check-label a {
+    color: #4F46E5;
+    text-decoration: underline;
 }
 
 #back {
@@ -128,13 +183,29 @@ body{
     color: black;
 }
 
-.swal-wide{
-    overflow: hidden;
-    width: 600px;
+.submit:hover {
+    background-color: #fff;
+    color: #000;
+    transform: scale(1);
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 @media only screen and (max-width: 600px) {
     form {
         width: 100% !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .register-container {
+        flex-direction: column;
+    }
+
+    .register-image {
+        display: none;
+    }
+
+    .register-form-container {
+        padding: 20px;
     }
 }

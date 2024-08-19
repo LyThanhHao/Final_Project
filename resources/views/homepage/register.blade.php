@@ -26,79 +26,84 @@
 
 <body>
     <div class="container-fluid">
-        <form id="register-form" class="mx-auto" method="POST" role="form">
-            @csrf
-            @if ($errors->any())
-                <div class="alert alert-danger">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
+        <div class="form-image">
+            <img src="{{ asset('uploads/image-register.jpeg') }}" alt="Image Description">
+        </div>
+        <div class="divider"></div>
+        <div class="form-content">
+            <form id="register-form" class="mx-auto" method="POST" role="form">
+                @csrf
+                <p class="form-title">Let's create your account</p>
+                <div class="input-container">
+                    <input type="text" class="form-control" name="fullname" placeholder="Enter your full name"
+                        required>
+                    @error('fullname')
+                        <small style="color: red;">{{ $message }}</small>
+                    @enderror
                 </div>
-            @endif
-            <p class="form-title">Let's create your account</p>
-            <div class="input-container">
-                <input type="text" class="form-control" name="fullname" placeholder="Enter your full name">
-                @error('fullname')
-                    <small style="color: red;">{{ $message }}</small>
-                @enderror
-            </div>
-            <div class="input-container">
-                <input type="email" class="form-control" name="email" placeholder="Enter your email">
-                @error('email')
-                    <small style="color: red;">{{ $message }}</small>
-                @enderror
-            </div>
-            <div class="input-container position-relative">
-                <input type="password" id="password" class="form-control" name="password" placeholder="Enter your password">
-                <span id="toggle-password" class="position-absolute top-50 end-0 translate-middle-y me-3" style="cursor: pointer;">
-                    <i id="icon-toggle-password" class="bi bi-eye-slash-fill"></i>
-                </span>
-                @error('password')
-                    <small style="color: red;">{{ $message }}</small>
-                @enderror
-            </div>
-            <div class="input-container">
-                <label style="font-size: 11px; margin: 0 8px;" for="password">5 characters or longer. At least one number and symbol (like !@$!%*?&#).</label>
-            </div>
-            <div class="input-container position-relative">
-                <input type="password" id="confirm-password" class="form-control" name="confirm_password" placeholder="Confirm your password">
-                <span id="toggle-confirm-password" class="position-absolute top-50 end-0 translate-middle-y me-3" style="cursor: pointer;">
-                    <i id="icon-toggle-confirm-password" class="bi bi-eye-slash-fill"></i>
-                </span>
-                @error('confirm_password')
-                    <small style="color: red;">{{ $message }}</small>
-                @enderror
-            </div>
-            <div class="input-container">
-                <input type="text" class="form-control" name="phoneNumber" placeholder="Enter your phone number">
-                @error('phoneNumber')
-                    <small style="color: red;">{{ $message }}</small>
-                @enderror
-            </div>
-            <div class="input-container">
-                <input type="text" class="form-control" name="address" placeholder="Enter your address">
-                @error('address')
-                    <small style="color: red;">{{ $message }}</small>
-                @enderror
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="termsCheckbox" id="termsCheckbox" required>
-                <label class="form-check-label" for="termsCheckbox">
-                    I accept the <a href="#">Terms and Conditions</a> and <a href="">Privacy Policy</a>.
-                </label>
-                @error('termsCheckbox')
-                    <small style="color: red;">{{ $message }}</small>
-                @enderror
-            </div>
-            <button type="submit" class="submit">Create an account</button>
-            <p class="signup-link">
-                Already have an account?
-                <a href="{{ route('homepage.login') }}">Login here!</a>
-            </p>
-            <div id="back"><a href="{{ route('homepage') }}">Back to homepage</a></div>
-        </form>
+                <div class="input-container">
+                    <input type="email" class="form-control" name="email" placeholder="Enter your email" required>
+                    @error('email')
+                        <small style="color: red;">{{ $message }}</small>
+                    @enderror
+                </div>
+                <div class="input-container position-relative">
+                    <input type="password" id="password" class="form-control" name="password"
+                        placeholder="Enter your password" required>
+                    <span id="toggle-password" class="position-absolute top-50 end-0 translate-middle-y me-3"
+                        style="cursor: pointer;">
+                        <i id="icon-toggle-password" class="bi bi-eye-slash-fill"></i>
+                    </span>
+                    @error('password')
+                        <small style="color: red;">{{ $message }}</small>
+                    @enderror
+                </div>
+                <div class="input-container">
+                    <label style="font-size: 11px; margin: 0 8px;" for="password">5 characters or longer. At least one
+                        number and symbol (like !@$!%*?&#).</label>
+                </div>
+                <div class="input-container position-relative">
+                    <input type="password" id="confirm-password" class="form-control" name="confirm_password"
+                        placeholder="Confirm your password" required>
+                    <span id="toggle-confirm-password" class="position-absolute top-50 end-0 translate-middle-y me-3"
+                        style="cursor: pointer;">
+                        <i id="icon-toggle-confirm-password" class="bi bi-eye-slash-fill"></i>
+                    </span>
+                    @error('confirm_password')
+                        <small style="color: red;">{{ $message }}</small>
+                    @enderror
+                </div>
+                <div class="input-container">
+                    <input type="text" class="form-control" name="phoneNumber" placeholder="Enter your phone number"
+                        required>
+                    @error('phoneNumber')
+                        <small style="color: red;">{{ $message }}</small>
+                    @enderror
+                </div>
+                <div class="input-container">
+                    <input type="text" class="form-control" name="address" placeholder="Enter your address" required>
+                    @error('address')
+                        <small style="color: red;">{{ $message }}</small>
+                    @enderror
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="termsCheckbox" id="termsCheckbox" required>
+                    <label class="form-check-label" for="termsCheckbox">
+                        I accept the <a href="#">Terms and Conditions</a> and <a href="">Privacy
+                            Policy</a>.
+                    </label>
+                    @error('termsCheckbox')
+                        <small style="color: red;">{{ $message }}</small>
+                    @enderror
+                </div>
+                <button type="submit" class="submit">Create an account</button>
+                <p class="signup-link">
+                    Already have an account?
+                    <a href="{{ route('homepage.login') }}">Login here!</a>
+                </p>
+                <div id="back"><a href="{{ route('homepage') }}">Back to homepage</a></div>
+            </form>
+        </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">

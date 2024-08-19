@@ -271,7 +271,6 @@ address {
 }
 
 ol,
-ul,
 dl {
   margin-top: 0;
   margin-bottom: 1rem;
@@ -10221,8 +10220,8 @@ button.bg-dark:focus {
     padding-bottom: 3rem !important;
   }
 
-  .pl-xl-5,
-  .px-xl-5 {
+  .pl-xl-5 
+  {
     padding-left: 3rem !important;
   }
 

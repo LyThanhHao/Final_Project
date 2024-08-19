@@ -125,7 +125,7 @@
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
-                        <ul class="navbar-nav">
+                        <ul class="navbar-nav mt-0">
                             <li class="nav-item d-lg-none">
                                 <div class="col-lg-3 text-right">
                                     <div class="d-inline-flex align-items-center">
@@ -212,7 +212,7 @@
                                             </a>
                                         </div>
                                     @else
-                                        <a class="btn btn-primary py-2 px-4 ml-auto d-none d-lg-block"
+                                        <a class="btn btn-primary py-2 px-4 ml-auto d-lg-none d-lg-block"
                                             href="{{ route('homepage.login') }}">Log in</a>
                                     @endif
                                 </div>
