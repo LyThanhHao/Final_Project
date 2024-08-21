@@ -32,7 +32,6 @@ Route::get('/course/{course}/detail', [CourseController::class, 'detail'])->name
 
 //admin routes
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function () {
-    Route::get('/', [AdminController::class, 'index'])->name('admin');
     //accounts
     Route::get('/accounts', [AdminController::class, 'account'])->name('admin.accounts.index');
     Route::get('/accounts/create', [AdminController::class, 'create_account'])->name('admin.accounts.create');

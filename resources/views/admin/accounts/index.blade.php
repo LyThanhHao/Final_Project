@@ -28,15 +28,15 @@
                 <tr>
                   <td>{{ $user->fullname }}</td>
                   <td>{{ $user->email }}</td>
-                  <td>{{ $user->address }}</td>
+                  <td style="max-width: 300px;">{{ $user->address }}</td>
                   <td>{{ $user->phoneNumber }}</td>
                   <td>{{ $user->role }}</td>
                   <td style="text-align: center;">
-                    <a href="{{ route('admin.accounts.edit', $user->id) }}"><i class="bi bi-pencil-square" style="color: white;"></i></a>
+                    <a href="{{ route('admin.accounts.edit', $user->id) }}"><i class="bi bi-pencil-square" style="color: white; margin: 0 10px;"></i></a>
                     <form action="{{ route('admin.accounts.destroy', $user->id) }}" method="POST" style="display:inline-block;">
                       @csrf
                       @method('DELETE')
-                      <button type="submit" onclick="confirmDelete(event)" style="border: none; background: border-box; color: white; margin-left: 15px;"><i class="bi bi-trash"></i></button>
+                      <button type="submit" onclick="confirmDelete(event)" style="border: none; background: border-box; color: white;"><i class="bi bi-trash"></i></button>
                     </form>
                   </td>
                 </tr>
@@ -49,4 +49,4 @@
     </div>
   </div>
 </div>
-@endsection
+@endsection()

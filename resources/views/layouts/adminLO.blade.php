@@ -27,21 +27,9 @@
         <div class="sidebar">
             <div class="sidebar-wrapper">
                 <div class="logo" style="text-align: center;">
-                    <a href="{{ route('admin') }}" class="simple-text logo-normal">Admin</a>
+                    <a href="{{ route('admin.accounts.index') }}" class="simple-text logo-normal">Admin</a>
                 </div>
                 <ul class="nav">
-                    <li class="active ">
-                        <a href="{{ route('admin') }}">
-                            <i class="bi bi-pie-chart"></i>
-                            <p>Dashboard</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="./notifications.html">
-                            <i class="bi bi-bell"></i>
-                            <p>Notifications</p>
-                        </a>
-                    </li>
                     <li>
                         <a href="{{ route('admin.accounts.index') }}">
                             <i class="bi bi-person"></i>
@@ -82,7 +70,6 @@
                                 <span class="navbar-toggler-bar bar3"></span>
                             </button>
                         </div>
-                        <a class="navbar-brand" href="javascript:void(0)">Dashboard</a>
                     </div>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-bar navbar-kebab"></span>
@@ -170,7 +157,8 @@
                 </li>
             </ul>
         </div>
-    </div>    <!--   Core JS Files   -->
+    </div>    
+    <!--   Core JS Files   -->
     <script src="js-dasboard/core/jquery.min.js"></script>
     <script src="js-dasboard/core/popper.min.js"></script>
     <script src="js-dasboard/core/bootstrap.min.js"></script>
@@ -182,15 +170,14 @@
     <script src="js-dasboard/plugins/chartjs.min.js"></script>
     <!--  Notifications Plugin    -->
     <script src="js-dasboard/plugins/bootstrap-notify.js"></script>
-    <!-- Control Center for Black Dashboard: parallax effects, scripts for the example pages etc -->
-    <script src="js-dasboard/black-dashboard.min.js?v=1.0.0"></script>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
-    <!-- <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script> -->
+    
+    {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script> --}}
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
     <script type="text/javascript">
     </script>
+    <!-- Control Center for Black Dashboard: parallax effects, scripts for the example pages etc -->
+    <script src="js-dasboard/black-dashboard.min.js?v=1.0.0"></script>
     <script>
         $(document).ready(function() {
             $().ready(function() {

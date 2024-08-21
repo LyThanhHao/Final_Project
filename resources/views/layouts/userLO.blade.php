@@ -64,7 +64,7 @@
                                     <span>Profile</span>
                                 </a>
                                 @if (Auth::user()->role == 'Admin')
-                                    <a href="{{ route('admin') }}"
+                                    <a href="{{ route('admin.accounts.index') }}"
                                         class="dropdown-item d-flex align-items-center text-danger font-weight-bold">
                                         <i class="bi bi-person-fill-gear me-2"></i>
                                         <span>Admin</span>
@@ -194,7 +194,7 @@
                                                 <span>Profile</span>
                                             </a>
                                             @if (Auth::user()->role == 'Admin')
-                                                <a href="{{ route('admin') }}"
+                                                <a href="{{ route('admin.accounts.index') }}"
                                                     class="dropdown-item d-flex align-items-center text-danger font-weight-bold">
                                                     <i class="bi bi-person-fill-gear me-2"></i>
                                                     <span>Admin</span>

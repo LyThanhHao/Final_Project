@@ -33,7 +33,7 @@
         <div class="form-content">
             <form id="register-form" class="mx-auto" method="POST" role="form">
                 @csrf
-                <p class="form-title">Let's create your account</p>
+                <p class="form-title">LET'S CREATE YOUR ACCOUNT</p>
                 <div class="input-container">
                     <input type="text" class="form-control" name="fullname" placeholder="Enter your full name"
                         required>

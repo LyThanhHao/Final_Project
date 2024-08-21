@@ -157,31 +157,35 @@
 <div class="container-fluid py-5">
     <div class="container py-5">
         <div class="text-center mb-5">
-            <h5 class="text-primary text-uppercase mb-3" style="letter-spacing: 5px;">Courses</h5>
+            <h5 class="text-primary text-uppercase mb-3 text-bold" style="letter-spacing: 5px;">Courses</h5>
             <h1>New Courses</h1>
         </div>
         <div class="row">
             @foreach($courses as $course)
-            <a href="{{ route('courses.detail', $course->id) }}" title="{{ $course->course_name }}">
-                <div id="course" class="col-lg-4 col-md-6 mb-4">
-                    <div class="rounded overflow-hidden">
-                        <img class="img-fluid" src="{{ asset('uploads/course/' . $course->image) }}" width="" alt="Web design & development courses for beginner" alt="$course->course_name">
-                        <div class="bg-secondary p-4">
-                            <a class="h6" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; display: block; text-align: center;" title="{{ $course->course_name }}" href="">{{ $course->course_name }}</a>
-                            <div class="border-top mt-3 pt-3 d-flex justify-content-center">
-                                @if (empty($course->user->avatar))
-                                    <img src="{{ asset('uploads/avatar/avatar_default.jpg') }}" alt="" style="border-radius: 50%; width: 30px; height: 30px; margin: 0 8px">                                        
-                                @else
-                                    <img src="{{ asset('uploads/avatar/' . $course->user->avatar) }}" alt="" style="border-radius: 50%; width: 30px; height: 30px; margin: 0 8px">
-                                @endif
-                                <a href="" style="text-decoration: underline; padding: 4px 0;">{{ $course->user->fullname }}</a>
-                            </div>
+            <div id="course" class="col-lg-4 col-md-6 mb-4">
+                <div class="card h-100">
+                    <img class="img-fluid card-img-top" src="{{ asset('uploads/course/' . $course->image) }}" alt="{{ $course->course_name }}">
+                    <div class="card-body text-center">
+                        <h5 class="card-title text-truncate" style="max-width: 100%;" title="{{ $course->course_name }}">
+                            {{ $course->course_name }}
+                        </h5>
+                        <div class="d-flex justify-content-center align-items-center mt-3">
+                            @if (empty($course->user->avatar))
+                                <img src="{{ asset('uploads/avatar/avatar_default.jpg') }}" alt="" style="border-radius: 50%; width: 30px; height: 30px; margin-right: 8px;">
+                            @else
+                                <img src="{{ asset('uploads/avatar/' . $course->user->avatar) }}" alt="" style="border-radius: 50%; width: 30px; height: 30px; margin-right: 8px;">
+                            @endif
+                            <a href="" class="text-info" style="text-decoration: underline;">{{ $course->user->fullname }}</a>
                         </div>
                     </div>
+                    <div class="card-footer text-center">
+                        <a href="{{ route('courses.detail', $course->id) }}" class="btn btn-primary btn-block">View Course</a>
+                    </div>
                 </div>
-            </a>
+            </div>
             @endforeach
         </div>
+        
     </div>
 </div>
 <!-- Courses End -->

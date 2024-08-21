@@ -13,9 +13,7 @@ class CourseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-    }
+    public function index() {}
 
     /**
      * Show the form for creating a new resource.
@@ -52,8 +50,15 @@ class CourseController extends Controller
 
     public function detail(Course $course)
     {
-        // $course = Course::findOrFail($course_id);
-        return view('courses.detail', compact('course'));
+        // Lấy giáo viên dạy khóa học này
+        $instructor = $course->user;
+
+        // Đếm số lượng khóa học mà giáo viên này đang giảng dạy
+        $courseCount = Course::where('user_id', $instructor->id)->count();
+
+        $relatedCourses = Course::where('category_id', $course->category_id)->where('id', '!=', $course->id)->limit(3)->get();
+
+        return view('courses.detail', compact('courseCount', 'relatedCourses', 'courseCount', 'course'));
     }
 
     /**
