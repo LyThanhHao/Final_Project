@@ -101,6 +101,19 @@ hr {
   overflow: visible;
 }
 
+ul.navbar-nav.ml-auto {
+  position: relative; /* Đảm bảo phần tử cha có position relative */
+}
+
+/* CSS cho phần tử popup */
+ul.navbar-nav.ml-auto .popup {
+  position: relative; /* Hoặc fixed nếu bạn muốn nó cố định khi cuộn trang */
+  top: 50%; /* Căn giữa theo chiều dọc */
+  left: 50%; /* Căn giữa theo chiều ngang */
+  transform: translate(-50%, -50%); /* Dịch chuyển để căn giữa */
+  z-index: 1000; /* Đảm bảo popup nằm trên các phần tử khác */
+}
+
 h1,
 h2,
 h3,
@@ -255,7 +268,6 @@ th {
 
 label {
   display: inline-block;
-  margin-bottom: 0.5rem;
 }
 
 button {
@@ -15773,7 +15785,7 @@ img {
 }
 
 .navbar {
-  padding: 10px 30px 10px 15px;
+  padding: 10px 15px 10px 15px;
   width: 100%;
   z-index: 1050;
   background: #1a1e34;

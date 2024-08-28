@@ -36,7 +36,8 @@
             .card-header {
                 padding: 1rem 1.35rem;
                 margin-bottom: 0;
-                background-color: rgba(33, 40, 50, 0.03);
+                background-color: rgba(54, 81, 246, 1); 
+                color: #fff;
                 border-bottom: 1px solid rgba(33, 40, 50, 0.125);
             }
 
@@ -81,6 +82,72 @@
                     padding: 0 1rem;
                 }
             }
+
+            .btn-update {
+                width: 12em;
+                height: 3em;
+                border-radius: 30em;
+                font-size: 15px;
+                font-family: inherit;
+                border: none;
+                position: relative;
+                overflow: hidden;
+                z-index: 1;
+                box-shadow: 6px 6px 12px #c5c5c5,
+                    -6px -6px 12px #ffffff;
+                border: solid 1px black;
+            }
+
+            .btn-update::before {
+                content: '';
+                width: 0;
+                height: 3em;
+                border-radius: 30em;
+                position: absolute;
+                top: 0;
+                left: 0;
+                background-image: linear-gradient(to right, #0f98d8 0%, #f9f047 100%);
+                transition: .5s ease;
+                display: block;
+                z-index: -1;
+            }
+
+            .btn-update:hover::before {
+                width: 12em;
+            }
+
+            .btn-save {
+                width: 9em;
+                height: 2.5em;
+                border-radius: 30em;
+                font-size: 15px;
+                font-family: inherit;
+                border: none;
+                position: relative;
+                overflow: hidden;
+                z-index: 1;
+                box-shadow: 6px 6px 12px #c5c5c5,
+                    -6px -6px 12px #ffffff;
+                border: solid 1px black;
+            }
+
+            .btn-save::before {
+                content: '';
+                width: 0;
+                height: 2.5em;
+                border-radius: 30em;
+                position: absolute;
+                top: 0;
+                left: 0;
+                background-image: linear-gradient(to right, #0f98d8 0%, #f9f047 100%);
+                transition: .5s ease;
+                display: block;
+                z-index: -1;
+            }
+
+            .btn-save:hover::before {
+                width: 9em;
+            }
         </style>
     </head>
 
@@ -105,7 +172,7 @@
                             @endif
                             <div class="small font-italic text-muted mb-2">JPG, PNG, JPEG, GIF, WEBP or SVG no larger than 5
                                 MB</div>
-                            <form action="{{ route('profile.change_avatar') }}" method="POST"
+                            <form action="{{ route('change_avatar') }}" method="POST"
                                 enctype="multipart/form-data">
                                 @csrf
                                 <div class="form-group mb-3">
@@ -116,7 +183,7 @@
                                         </div>
                                     @enderror
                                 </div>
-                                <button class="btn btn-primary" type="submit">Upload new image</button>
+                                <button class="btn-update" type="submit">Upload new image</button>
                             </form>
                         </div>
                     </div>
@@ -125,14 +192,14 @@
                     <div class="card mb-4">
                         <div class="card-header">Account Details</div>
                         <div class="card-body">
-                            <form action="{{ route('profile.check_profile') }}" method="POST">
+                            <form action="{{ route('check_change_profile') }}" method="POST">
                                 @csrf
                                 @method('PUT')
                                 <div class="row gx-3 mb-3">
                                     <div class="col-md-6">
                                         <label class="small mb-1" for="fullname">Full name</label>
                                         <input class="form-control" id="fullname" name="fullname" type="text"
-                                            placeholder="Enter your username" value="{{ $user->fullname }}">
+                                            placeholder="Enter your username" value="{{ $user->fullname }}" required>
                                         @error('fullname')
                                             <small style="color: red;">{{ $message }}</small>
                                         @enderror
@@ -140,7 +207,7 @@
                                     <div class="col-md-6">
                                         <label class="small mb-1" for="email">Email</label>
                                         <input class="form-control" id="email" name="email" type="text"
-                                            placeholder="Enter your email" value="{{ $user->email }}">
+                                            placeholder="Enter your email" value="{{ $user->email }}" required>
                                         @error('email')
                                             <small style="color: red;">{{ $message }}</small>
                                         @enderror
@@ -150,7 +217,7 @@
                                     <div class="col-md-6">
                                         <label class="small mb-1" for="address">Address</label>
                                         <input class="form-control" id="address" name="address" type="text"
-                                            placeholder="Enter your address" value="{{ $user->address }}">
+                                            placeholder="Enter your address" value="{{ $user->address }}" required>
                                         @error('address')
                                             <small style="color: red;">{{ $message }}</small>
                                         @enderror
@@ -158,13 +225,13 @@
                                     <div class="col-md-6">
                                         <label class="small mb-1" for="phoneNumber">Phone number</label>
                                         <input class="form-control" id="phoneNumber" name="phoneNumber" type="tex"
-                                            placeholder="Enter your phone number" value="{{ $user->phoneNumber }}">
+                                            placeholder="Enter your phone number" value="{{ $user->phoneNumber }}" required>
                                         @error('phoneNumber')
                                             <small style="color: red;">{{ $message }}</small>
                                         @enderror
                                     </div>
                                 </div>
-                                <button class="btn btn-primary" type="submit">Save changes</button>
+                                <button class="btn-save" type="submit">Save changes</button>
                             </form>
                         </div>
                     </div>
@@ -223,20 +290,6 @@
                 })
             </script>
         @endif
-
-        @error('avatar')
-            <script>
-                $.toast({
-                    heading: 'Error',
-                    text: "{{ $message }}",
-                    showHideTransition: 'slide',
-                    position: 'top-center',
-                    icon: 'error',
-                    hideAfter: 5000
-                });
-            </script>
-        @enderror
-
     </body>
 
     </html>

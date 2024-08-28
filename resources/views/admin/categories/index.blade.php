@@ -21,7 +21,7 @@
                 </tr>
               </thead>
               <tbody>
-                @foreach($categorys as $category)
+                @foreach($categories as $category)
                 <tr>
                   <td>{{ $category->cat_name }}</td>
                   <td>{{ $category->status == 0 ? 'Hidden' : 'Publish' }}</td>
@@ -43,4 +43,4 @@
     </div>
   </div>
 </div>
-@endsection
+@endsection()

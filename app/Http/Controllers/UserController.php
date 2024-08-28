@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 
 class UserController extends Controller
@@ -56,9 +57,9 @@ class UserController extends Controller
         }
 
         if($user->update($data)){   
-            return redirect()->back()->with('avatar_success', 'Thanh cong');
+            return redirect()->back()->with('avatar_success', 'Avatar updated successfully!');
         }
-        return redirect()->back()->with('avatar_fail', 'Con di me may');
+        return redirect()->back()->with('avatar_fail', 'Something went wrong, please check the information again!');
     }
 
     public function password()
@@ -67,5 +68,25 @@ class UserController extends Controller
             return view('user.password');
         }
         return Redirect::route('homepage.login');
+    }
+
+    public function check_password(Request $request){
+        $user = auth()->user();
+        $request->validate([
+            'currentPassword' => ['required', function($attribute, $value, $fail) use ($user) { 
+                if (!Hash::check($value, $user->password)) {
+                    $fail('The current password is incorrect!');
+                }
+            }],
+            'newPassword' => 'required|min:5|regex:/[a-zA-Z]/|regex:/[@$!%*?&#]/',
+            'confirmPassword' => 'required|same:newPassword',
+        ]);
+
+        $data = $request->only('newPassword');
+        $data['password'] = bcrypt($request->newPassword);
+        if ($user->update($data)){
+            return redirect()->back()->with('password_success', 'Password updated successfully!');
+        }
+        return redirect()->back()->with('password_fail', 'Something went wrong, please check the information again!');
     }
 }

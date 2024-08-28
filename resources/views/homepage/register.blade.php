@@ -47,11 +47,10 @@
                         <small style="color: red;">{{ $message }}</small>
                     @enderror
                 </div>
-                <div class="input-container position-relative">
+                <div class="input-container">
                     <input type="password" id="password" class="form-control" name="password"
                         placeholder="Enter your password" required>
-                    <span id="toggle-password" class="position-absolute top-50 end-0 translate-middle-y me-3"
-                        style="cursor: pointer;">
+                    <span id="toggle-password" class="position-absolute">
                         <i id="icon-toggle-password" class="bi bi-eye-slash-fill"></i>
                     </span>
                     @error('password')
@@ -59,14 +58,13 @@
                     @enderror
                 </div>
                 <div class="input-container">
-                    <label style="font-size: 11px; margin: 0 8px;" for="password">5 characters or longer. At least one
-                        number and symbol (like !@$!%*?&#).</label>
+                    <label style="font-size: 11px;" for="password">Password must be at least 5 characters long. <br>
+                        Contains at least one number and symbol (like !@$!%*?&#).</label>
                 </div>
-                <div class="input-container position-relative">
+                <div class="input-container">
                     <input type="password" id="confirm-password" class="form-control" name="confirm_password"
                         placeholder="Confirm your password" required>
-                    <span id="toggle-confirm-password" class="position-absolute top-50 end-0 translate-middle-y me-3"
-                        style="cursor: pointer;">
+                    <span id="toggle-confirm-password" class="position-absolute">
                         <i id="icon-toggle-confirm-password" class="bi bi-eye-slash-fill"></i>
                     </span>
                     @error('confirm_password')

@@ -42,7 +42,8 @@
             <div class="col-lg-3 text-right">
                 <div class="d-inline-flex align-items-center">
                     <form class="d-flex" method="GET" action="{{ route('homepage.search') }}">
-                        <input class="form-control me-2 search-input" type="search" name="keyword" placeholder="What do you want to learn?" aria-label="Search">
+                        <input class="form-control me-2 search-input" type="search" name="keyword"
+                            placeholder="What do you want to learn?" aria-label="Search">
                         <button class="btn search-btn" type="submit">
                             <i class="fas fa-search"></i>
                         </button>
@@ -51,41 +52,40 @@
             </div>
             <div class="col-lg-3 text-right">
                 <div class="d-inline-flex align-items-center">
-                    <div class="nav-item dropdown">
-                        @if (Auth::check())
-                            <a href="#" class="nav-link dropdown-toggle" style="font-weight: bold;"
-                                data-bs-toggle="dropdown">
-                                Hello {{ Auth::user()->fullname }}
-                            </a>
-                            <div class="dropdown-menu rounded-0 m-0">
-                                <!-- Dropdown menu items here -->
-                                <a href="{{ route('profile') }}" class="dropdown-item d-flex align-items-center">
-                                    <i class="bi bi-person-circle me-2"></i>
-                                    <span>Profile</span>
-                                </a>
-                                @if (Auth::user()->role == 'Admin')
-                                    <a href="{{ route('admin.accounts.index') }}"
-                                        class="dropdown-item d-flex align-items-center text-danger font-weight-bold">
-                                        <i class="bi bi-person-fill-gear me-2"></i>
-                                        <span>Admin</span>
-                                    </a>
-                                @endif
-                                <a href="#" class="dropdown-item d-flex align-items-center">
-                                    <i class="bi bi-gear-fill me-2"></i>
-                                    <span>Settings</span>
-                                </a>
-                                <div class="dropdown-divider"></div>
-                                <a href="{{ route('homepage.logout') }}"
-                                    class="dropdown-item d-flex align-items-center">
-                                    <i class="bi bi-box-arrow-left me-2"></i>
-                                    <span>Logout</span>
-                                </a>
+                    @if (Auth::check())
+                        <div class="menu">
+                            <div class="item">
+                                <div class="link">
+                                    <span style="font-weight: 500;">Hello</span>
+                                    <span>{{ Auth::user()->fullname }}</span>
+                                    <i class="bi bi-chevron-down text-bold"></i>
+                                </div>
+                                <div class="submenu">
+                                    <div class="submenu-item">
+                                        <a href="{{ route('profile') }}" class="submenu-link"> Profile </a>
+                                    </div>
+                                    @if (Auth::user()->role == 'Admin')
+                                        <div class="submenu-item">
+                                            <a href="{{ route('admin.accounts.index') }}"
+                                                class="submenu-link font-weight-bold" style="color: orangered"> Admin
+                                            </a>
+                                        </div>
+                                    @elseif (Auth::user()->role == 'Teacher')
+                                        <div class="submenu-item">
+                                            <a href="" class="submenu-link text-danger font-weight-bold"> Manage
+                                                courses </a>
+                                        </div>
+                                    @endif
+                                    <div class="submenu-item">
+                                        <a href="{{ route('homepage.logout') }}" class="submenu-link"> Log out </a>
+                                    </div>
+                                </div>
                             </div>
-                        @else
-                            <a class="btn btn-primary py-2 px-4 ml-auto d-none d-lg-block"
-                                href="{{ route('homepage.login') }}">Log in</a>
-                        @endif
-                    </div>
+                        </div>
+                    @else
+                        <a class="btn btn-primary py-2 px-4 ml-auto d-none d-lg-block"
+                            href="{{ route('homepage.login') }}">Log in</a>
+                    @endif
                 </div>
             </div>
 
@@ -107,7 +107,7 @@
                     id="navbar-vertical" style="z-index: 9;">
                     <div class="navbar-nav w-100">
                         @foreach ($cat_home as $category)
-                            <a href="{{ route('courses.filter', $category->cat_id) }}" id="dropdown-item"
+                            <a href="{{ route('category.filter', $category->cat_id) }}" id="dropdown-item"
                                 class="nav-item nav-link"
                                 style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: center;"
                                 title="{{ $category->cat_name }}">{{ $category->cat_name }}</a>
@@ -147,7 +147,7 @@
                                     <div class="dropdown-menu rounded-0 m-0">
                                         <div class="navbar-nav w-100">
                                             @foreach ($cat_home as $category)
-                                                <a href="{{ route('courses.filter', $category->cat_id) }}"
+                                                <a href="{{ route('category.filter', $category->cat_id) }}"
                                                     id="dropdown-item" class="nav-item nav-link"
                                                     style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: center;"
                                                     title="{{ $category->cat_name }}">{{ $category->cat_name }}
@@ -182,34 +182,37 @@
                             <li class="nav-item d-lg-none">
                                 <div class="nav-item dropdown">
                                     @if (Auth::check())
-                                        <a href="#" class="nav-link dropdown-toggle" style="font-weight: bold;"
-                                            data-bs-toggle="dropdown">
-                                            Hello {{ Auth::user()->fullname }}
-                                        </a>
-                                        <div class="dropdown-menu rounded-0 m-0">
-                                            <!-- Dropdown menu items here -->
-                                            <a href="{{ route('profile') }}"
-                                                class="dropdown-item d-flex align-items-center">
-                                                <i class="bi bi-person-circle me-2"></i>
-                                                <span>Profile</span>
-                                            </a>
-                                            @if (Auth::user()->role == 'Admin')
-                                                <a href="{{ route('admin.accounts.index') }}"
-                                                    class="dropdown-item d-flex align-items-center text-danger font-weight-bold">
-                                                    <i class="bi bi-person-fill-gear me-2"></i>
-                                                    <span>Admin</span>
-                                                </a>
-                                            @endif
-                                            <a href="#" class="dropdown-item d-flex align-items-center">
-                                                <i class="bi bi-gear-fill me-2"></i>
-                                                <span>Settings</span>
-                                            </a>
-                                            <div class="dropdown-divider"></div>
-                                            <a href="{{ route('homepage.logout') }}"
-                                                class="dropdown-item d-flex align-items-center">
-                                                <i class="bi bi-box-arrow-left me-2"></i>
-                                                <span>Logout</span>
-                                            </a>
+                                        <div class="menu">
+                                            <div class="item">
+                                                <div class="link">
+                                                    <span style="font-weight: 500;">Hello</span>
+                                                    <span>{{ Auth::user()->fullname }}</span>
+                                                    <i class="bi bi-chevron-down text-bold"></i>
+                                                </div>
+                                                <div class="submenu">
+                                                    <div class="submenu-item">
+                                                        <a href="{{ route('profile') }}" class="submenu-link">
+                                                            Profile </a>
+                                                    </div>
+                                                    @if (Auth::user()->role == 'Admin')
+                                                        <div class="submenu-item">
+                                                            <a href="{{ route('admin.accounts.index') }}"
+                                                                class="submenu-link font-weight-bold"
+                                                                style="color: orangered"> Admin </a>
+                                                        </div>
+                                                    @elseif (Auth::user()->role == 'Teacher')
+                                                        <div class="submenu-item">
+                                                            <a href=""
+                                                                class="submenu-link text-danger font-weight-bold">
+                                                                Manage courses </a>
+                                                        </div>
+                                                    @endif
+                                                    <div class="submenu-item">
+                                                        <a href="{{ route('homepage.logout') }}"
+                                                            class="submenu-link"> Log out </a>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     @else
                                         <a class="btn btn-primary py-2 px-4 ml-auto d-lg-none d-lg-block"
@@ -253,7 +256,7 @@
                         <h5 class="text-primary text-uppercase mb-4" style="letter-spacing: 5px;">Our Subjects</h5>
                         <div class="d-flex flex-column justify-content-start">
                             @foreach ($cat_home as $temp)
-                                <a class="text-white mb-2" href="{{ route('courses.filter', $temp->cat_id) }}"><i
+                                <a class="text-white mb-2" href="{{ route('category.filter', $temp->cat_id) }}"><i
                                         class="fa fa-angle-right mr-2"></i>{{ $temp->cat_name }}</a>
                             @endforeach
                         </div>

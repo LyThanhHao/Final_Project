@@ -8,13 +8,6 @@ use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
-    public function index()
-    {
-        if (!Auth::check()) {
-            return redirect()->route('homepage.login');
-        }
-        return view('admin.index');
-    }
 
     public function account()
     {

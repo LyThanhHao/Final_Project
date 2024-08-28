@@ -20,6 +20,228 @@
     <!-- CSS Files -->
     <link href="{{ asset('css/admin.css') }}" rel="stylesheet">
 
+    <style>
+        body {
+            overflow: hidden;
+        }
+
+        /* From Uiverse.io by Galahhad */
+        /* The design is inspired from the mockapi.io */
+
+        .popup {
+            --burger-line-width: 1.125em;
+            --burger-line-height: 0.125em;
+            --burger-offset: 0.625em;
+            --burger-bg: rgba(255, 255, 255, 0.8);
+            --burger-color: #333;
+            --burger-line-border-radius: 0.1875em;
+            --burger-diameter: 2.125em;
+            --burger-btn-border-radius: calc(var(--burger-diameter) / 2);
+            --burger-line-transition: .3s;
+            --burger-transition: all .1s ease-in-out;
+            --burger-hover-scale: 1.1;
+            --burger-active-scale: .95;
+            --burger-enable-outline-color: var(--burger-bg);
+            --burger-enable-outline-width: 0.125em;
+            --burger-enable-outline-offset: var(--burger-enable-outline-width);
+            /* nav */
+            --nav-padding-x: 0.25em;
+            --nav-padding-y: 0.625em;
+            --nav-border-radius: 0.375em;
+            --nav-border-color: #ccc;
+            --nav-border-width: 0.0625em;
+            --nav-shadow-color: rgba(0, 0, 0, .2);
+            --nav-shadow-width: 0 1px 5px;
+            --nav-bg: #eee;
+            --nav-font-family: Poppins, sans-serif
+            --nav-default-scale: .8;
+            --nav-active-scale: 1;
+            --nav-position-left: unset;
+            --nav-position-right: 0;
+            /* if you want to change sides just switch one property */
+            /* from properties to "unset" and the other to 0 */
+            /* title */
+            --nav-title-size: 0.625em;
+            --nav-title-color: #777;
+            --nav-title-padding-x: 1rem;
+            --nav-title-padding-y: 0.25em;
+            /* nav button */
+            --nav-button-padding-x: 1rem;
+            --nav-button-padding-y: 0.375em;
+            --nav-button-border-radius: 0.375em;
+            --nav-button-font-size: 12px;
+            --nav-button-hover-bg: #6495ed;
+            --nav-button-hover-text-color: #fff;
+            --nav-button-distance: 0.875em;
+            /* underline */
+            --underline-border-width: 0.0625em;
+            --underline-border-color: #ccc;
+            --underline-margin-y: 0.3125em;
+        }
+
+        /* popup settings 👆 */
+
+        .popup {
+            display: inline-block;
+            text-rendering: optimizeLegibility;
+            position: relative;
+        }
+
+        .popup input {
+            display: none;
+        }
+
+        .burger {
+            display: flex;
+            position: relative;
+            align-items: center;
+            justify-content: center;
+            background: var(--burger-bg);
+            width: var(--burger-diameter);
+            height: var(--burger-diameter);
+            border-radius: var(--burger-btn-border-radius);
+            border: none;
+            cursor: pointer;
+            overflow: hidden;
+            transition: var(--burger-transition);
+            outline: var(--burger-enable-outline-width) solid transparent;
+            outline-offset: 0;
+        }
+
+        .burger span {
+            height: var(--burger-line-height);
+            width: var(--burger-line-width);
+            background: var(--burger-color);
+            border-radius: var(--burger-line-border-radius);
+            position: absolute;
+            transition: var(--burger-line-transition);
+        }
+
+        .burger span:nth-child(1) {
+            top: var(--burger-offset);
+        }
+
+        .burger span:nth-child(2) {
+            bottom: var(--burger-offset);
+        }
+
+        .burger span:nth-child(3) {
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .popup-window {
+            transform: scale(var(--nav-default-scale));
+            visibility: hidden;
+            opacity: 0;
+            position: absolute;
+            padding: var(--nav-padding-y) var(--nav-padding-x);
+            background: var(--nav-bg);
+            font-family: var(--nav-font-family);
+            color: var(--nav-text-color);
+            border-radius: var(--nav-border-radius);
+            box-shadow: var(--nav-shadow-width) var(--nav-shadow-color);
+            border: var(--nav-border-width) solid var(--nav-border-color);
+            top: calc(var(--burger-diameter) + var(--burger-enable-outline-width) + var(--burger-enable-outline-offset));
+            left: var(--nav-position-left);
+            right: var(--nav-position-right);
+            transition: var(--burger-transition);
+        }
+
+        .popup-window legend {
+            padding: var(--nav-title-padding-y) var(--nav-title-padding-x);
+            margin: 0;
+            color: var(--nav-title-color);
+            font-size: var(--nav-title-size);
+            text-transform: uppercase;
+        }
+
+        .popup-window ul {
+            margin: 0;
+            padding: 0;
+            list-style-type: none;
+        }
+
+        .popup-window ul button {
+            outline: none;
+            width: 100%;
+            border: none;
+            background: none;
+            display: flex;
+            align-items: center;
+            color: var(--burger-color);
+            font-size: var(--nav-button-font-size);
+            padding: var(--nav-button-padding-y) var(--nav-button-padding-x);
+            white-space: nowrap;
+            border-radius: var(--nav-button-border-radius);
+            cursor: pointer;
+            column-gap: var(--nav-button-distance);
+        }
+
+        .popup-window ul li:nth-child(1) svg,
+        .popup-window ul li:nth-child(2) svg {
+            color: cornflowerblue;
+        }
+
+        .popup-window ul li:nth-child(4) svg,
+        .popup-window ul li:nth-child(5) svg {
+            color: rgb(153, 153, 153);
+        }
+
+        .popup-window ul li:nth-child(7) svg {
+            color: red;
+        }
+
+        .popup-window hr {
+            margin: var(--underline-margin-y) 0;
+            border: none;
+            border-bottom: var(--underline-border-width) solid var(--underline-border-color);
+        }
+
+        /* actions */
+
+        .popup-window ul button:hover,
+        .popup-window ul button:focus-visible,
+        .popup-window ul button:hover svg,
+        .popup-window ul button:focus-visible svg {
+            color: var(--nav-button-hover-text-color);
+            background: var(--nav-button-hover-bg);
+        }
+
+        .burger:hover {
+            transform: scale(var(--burger-hover-scale));
+        }
+
+        .burger:active {
+            transform: scale(var(--burger-active-scale));
+        }
+
+        .burger:focus:not(:hover) {
+            outline-color: var(--burger-enable-outline-color);
+            outline-offset: var(--burger-enable-outline-offset);
+        }
+
+        .popup input:checked+.burger span:nth-child(1) {
+            top: 50%;
+            transform: translateY(-50%) rotate(45deg);
+        }
+
+        .popup input:checked+.burger span:nth-child(2) {
+            bottom: 50%;
+            transform: translateY(50%) rotate(-45deg);
+        }
+
+        .popup input:checked+.burger span:nth-child(3) {
+            transform: translateX(calc(var(--burger-diameter) * -1 - var(--burger-line-width)));
+        }
+
+        .popup input:checked~nav {
+            transform: scale(var(--nav-active-scale));
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+
 </head>
 
 <body class="">
@@ -27,7 +249,7 @@
         <div class="sidebar">
             <div class="sidebar-wrapper">
                 <div class="logo" style="text-align: center;">
-                    <a href="{{ route('admin.accounts.index') }}" class="simple-text logo-normal">Admin</a>
+                    <a href="{{ route('admin.accounts.index') }}" class="simple-text logo-normal">Dashboard</a>
                 </div>
                 <ul class="nav">
                     <li>
@@ -43,6 +265,12 @@
                         </a>
                     </li>
                     <li>
+                        <a href="{{ route('admin.courses.index') }}">
+                            <i class="bi bi-journals"></i>
+                            <p>Courses</p>
+                        </a>
+                    </li>
+                    <li>
                         <a href="./tables.html">
                             <i class="bi bi-table"></i>
                             <p>View statistics</p>
@@ -51,7 +279,7 @@
                     <hr style="background: white; width: 90%;">
                     <li>
                         <a href="{{ route('homepage') }}">
-                            <i class="bi bi-box-arrow-in-left"></i>
+                            <i class="bi bi-house"></i>
                             <p>Back to hompage</p>
                         </a>
                     </li>
@@ -71,45 +299,66 @@
                             </button>
                         </div>
                     </div>
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-expanded="false" aria-label="Toggle navigation">
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation"
+                        aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-bar navbar-kebab"></span>
                         <span class="navbar-toggler-bar navbar-kebab"></span>
                         <span class="navbar-toggler-bar navbar-kebab"></span>
                     </button>
                     <div class="collapse navbar-collapse" id="navigation">
+                        <span style="color: white; font-size: 20px; font-weight: bold;" class="navbar-text">ADMIN</span>
                         <ul class="navbar-nav ml-auto">
-                            <li class="search-bar input-group">
-                                <button class="btn btn-link" id="search-button" data-toggle="modal" data-target="#searchModal"><i class="bi bi-search"></i>
-                                    <span class="d-lg-none d-md-block">Search</span>
-                                </button>
-                            </li>
                             <li class="dropdown nav-item">
-                                <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
-                                    <div class="photo">
-                                        <img src="/uploads/img-dasboard/anime3.png" alt="Profile Photo">
+                                <label class="popup">
+                                    <input type="checkbox">
+                                    <div class="burger" tabindex="0">
+                                        <span></span>
+                                        <span></span>
+                                        <span></span>
                                     </div>
-                                    <b class="caret d-none d-lg-block d-xl-block"></b>
-                                    <p class="d-lg-none">
-                                        Log out
-                                    </p>
-                                </a>
-                                <ul class="dropdown-menu dropdown-navbar">
-                                    <li class="nav-link"><a href="{{ route('profile') }}" class="nav-item dropdown-item">Profile</a></li>
-                                    <li class="nav-link"><a href="" class="nav-item dropdown-item">Settings</a></li>
-                                    <li class="dropdown-divider"></li>
-                                    <li class="nav-link"><a href="{{ route('homepage.logout') }}" class="nav-item dropdown-item">Log out</a></li>
-                                </ul>
+                                    <nav class="popup-window">
+                                        <legend>Actions</legend>
+                                        <ul>
+                                            <li>
+                                                <a href="{{ route('profile') }}">
+                                                    <button>
+                                                        <i class="bi bi-person-circle"></i>
+                                                        <span>Profile</span>
+                                                    </button>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="{{ route('homepage.logout') }}">
+                                                    <button>
+                                                        <i class="bi bi-box-arrow-right"></i>
+                                                        <span>Log out</span>
+                                                    </button>
+                                                </a>
+                                            </li>
+                                            <hr>
+                                            <li>
+                                                <a href="{{ route('homepage') }}">
+                                                    <button>
+                                                        <i class="bi bi-house"></i>
+                                                        <span>Back to homepage</span>
+                                                    </button>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </label>
                             </li>
-                            <li class="separator d-lg-none"></li>
                         </ul>
                     </div>
                 </div>
             </nav>
-            <div class="modal modal-search fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="searchModal" aria-hidden="true">
+            <div class="modal modal-search fade" id="searchModal" tabindex="-1" role="dialog"
+                aria-labelledby="searchModal" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="SEARCH">
+                            <input type="text" class="form-control" id="inlineFormInputGroup"
+                                placeholder="SEARCH">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <i class="tim-icons icon-simple-remove"></i>
                             </button>
@@ -145,19 +394,23 @@
                     <span class="color-label">DARK MODE</span>
                 </li>
                 <li class="button-container">
-                    <a href="https://www.creative-tim.com/product/black-dashboard" target="_blank" class="btn btn-primary btn-block btn-round">Download Now</a>
-                    <a href="https://demos.creative-tim.com/black-dashboard/docs/1.0/getting-started/introduction.html" target="_blank" class="btn btn-default btn-block btn-round">
+                    <a href="https://www.creative-tim.com/product/black-dashboard" target="_blank"
+                        class="btn btn-primary btn-block btn-round">Download Now</a>
+                    <a href="https://demos.creative-tim.com/black-dashboard/docs/1.0/getting-started/introduction.html"
+                        target="_blank" class="btn btn-default btn-block btn-round">
                         Documentation
                     </a>
                 </li>
                 <li class="header-title">Thank you for 95 shares!</li>
                 <li class="button-container text-center">
-                    <button id="twitter" class="btn btn-round btn-info"><i class="fab fa-twitter"></i> &middot; 45</button>
-                    <button id="facebook" class="btn btn-round btn-info"><i class="fab fa-facebook-f"></i> &middot; 50</button>
+                    <button id="twitter" class="btn btn-round btn-info"><i class="fab fa-twitter"></i> &middot;
+                        45</button>
+                    <button id="facebook" class="btn btn-round btn-info"><i class="fab fa-facebook-f"></i> &middot;
+                        50</button>
                 </li>
             </ul>
         </div>
-    </div>    
+    </div>
     <!--   Core JS Files   -->
     <script src="js-dasboard/core/jquery.min.js"></script>
     <script src="js-dasboard/core/popper.min.js"></script>
@@ -170,12 +423,11 @@
     <script src="js-dasboard/plugins/chartjs.min.js"></script>
     <!--  Notifications Plugin    -->
     <script src="js-dasboard/plugins/bootstrap-notify.js"></script>
-    
+
     {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script> --}}
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
-    <script type="text/javascript">
-    </script>
+    <script type="text/javascript"></script>
     <!-- Control Center for Black Dashboard: parallax effects, scripts for the example pages etc -->
     <script src="js-dasboard/black-dashboard.min.js?v=1.0.0"></script>
     <script>
@@ -312,6 +564,10 @@
             }
         }
     </script>
+
+</body>
+
+</html>
 
 </body>
 

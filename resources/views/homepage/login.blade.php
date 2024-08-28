@@ -30,14 +30,14 @@
                 @csrf
                 <p class="form-title">LOGIN TO YOUR ACCOUNT</p>
                 <div class="input-container">
-                    <input type="email" class="form-control" name="email" placeholder="Enter your email">
+                    <input type="email" id="email" class="form-control" name="email" placeholder="Enter your email" required>
                     @error('email')
                         <small style="color: red;">{{ $message }}</small>
                     @enderror
                 </div>
                 <div class="input-container position-relative">
                     <input id="password" type="password" class="form-control" name="password"
-                        placeholder="Enter your password">
+                        placeholder="Enter your password" required>
                     <span id="toggle-password" class="position-absolute top-50 end-0 translate-middle-y me-3"
                         style="cursor: pointer;">
                         <i id="icon-toggle-password" class="bi bi-eye-slash-fill"></i>
@@ -47,7 +47,7 @@
                     @enderror
                 </div>
                 <div style="margin: 10px 0">
-                    <a href="" style="margin: 8px" id="emailHelp" class="form-text mt-3">Forget password ?</a>
+                    <a href="" id="emailHelp" class="form-text mt-3">Forget password ?</a>
                 </div>
                 <button type="submit" class="submit">Login</button>
                 <p class="signup-link">

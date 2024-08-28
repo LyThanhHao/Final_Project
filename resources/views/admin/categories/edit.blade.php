@@ -1,6 +1,41 @@
 @extends('layouts/adminLO')
 
 @section('main')
+<style>
+  .btn-save {
+      width: 9em;
+      height: 3em;
+      border-radius: 30em;
+      font-size: 15px;
+      font-family: inherit;
+      border: none;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+      box-shadow: 3px 3px 6px #c5c5c5,
+          -3px -3px 6px #ffffff;
+      border: solid 1px black;
+  }
+
+  .btn-save::before {
+      content: '';
+      width: 0;
+      height: 3em;
+      border-radius: 30em;
+      position: absolute;
+      top: 0;
+      left: 0;
+      background-image: linear-gradient(to right, #c10fd8 0%, #f9f047 100%);
+      transition: .5s ease;
+      display: block;
+      z-index: -1;
+  }
+
+  .btn-save:hover::before {
+      width: 9em;
+  }
+</style>
+
 <div class="content">
   <div class="row">
     <div class="col-md-12">
@@ -23,11 +58,11 @@
                 <option style="color: black;" value="1" {{ $category->status == '1' ? 'selected' : '' }}>Public</option>
               </select>
             </div>
-            <button type="submit" class="btn btn-primary">Update</button>
+            <button type="submit" class="btn-save">Update</button>
           </form>
         </div>
       </div>
     </div>
   </div>
 </div>
-@endsection
+@endsection()

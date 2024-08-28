@@ -23,9 +23,11 @@ class HomeController extends Controller
         $keyword = $request->input('keyword');
 
         $courses = Course::where('course_name', 'LIKE', "%{$keyword}%")
-            ->orWhereHas('user', function($q) use ($keyword) { $q->where('role', 'Teacher')
-                ->where('fullname', 'LIKE', "%{$keyword}%"); })->get();
-                
+            ->orWhereHas('user', function ($q) use ($keyword) {
+                $q->where('role', 'Teacher')
+                    ->where('fullname', 'LIKE', "%{$keyword}%");
+            })->get();
+
         return view('homepage.search', compact('courses', 'keyword'));
     }
 
@@ -105,4 +107,6 @@ class HomeController extends Controller
         User::where('email', $email)->update(['email_verified_at' => now()]);
         return redirect()->route('homepage.login')->with('confirmed', 'Verify account successfully! Now you can login.');
     }
+
+    
 }

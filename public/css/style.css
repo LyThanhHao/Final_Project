@@ -42,6 +42,159 @@
   box-sizing: border-box;
 }
 
+/* From Uiverse.io by gharsh11032000 */ 
+.menu {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #000000;
+  width: fit-content;
+  display: flex;
+  list-style: none;
+}
+
+.menu a {
+  text-decoration: none;
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+.menu .link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 12px 25px;
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 0.48s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.menu .link span:nth-child(2) {
+  font-weight: bold;
+  color: dodgerblue;
+  font-style: italic;
+}
+
+.menu .link::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #0a3cff;
+  z-index: -1;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.48s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.menu .link i {
+  width: 14px;
+  fill: #000000;
+  transition: all 0.48s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.menu .item {
+  position: relative;
+}
+
+.menu .item .submenu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: absolute; /* Giữ nguyên */
+  top: 100%;
+  border-radius: 0 0 16px 16px;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  border: 1px solid #cccccc;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-12px);
+  transition: all 0.48s cubic-bezier(0.23, 1, 0.32, 1);
+  z-index: 9999; /* Tăng giá trị z-index để hiển thị đè lên các thành phần khác */
+  pointer-events: none;
+  list-style: none;
+  background-color: #fff;
+}
+
+
+.menu .item:hover .submenu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  pointer-events: auto;
+  border-top: transparent;
+  border-color: #0a3cff;
+}
+
+.menu .item:hover .link {
+  color: #ffffff;
+  border-radius: 16px 16px 0 0;
+  cursor: pointer;
+}
+
+.menu .item:hover .link span {
+  color: #ffffff;
+}
+
+.menu .item:hover .link::after {
+  transform: scaleX(1);
+  transform-origin: right;
+}
+
+.menu .item:hover .link i {
+  fill: #ffffff;
+  transform: rotate(-180deg);
+}
+
+.submenu .submenu-item {
+  width: 100%;
+  transition: all 0.48s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.submenu .submenu-link {
+  display: block;
+  padding: 12px 24px;
+  width: 100%;
+  position: relative;
+  text-align: center;
+  transition: all 0.48s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.submenu .submenu-item:last-child .submenu-link {
+  border-bottom: none;
+}
+
+.submenu .submenu-link::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: scaleX(0);
+  width: 100%;
+  height: 100%;
+  background-color: #0a3cff;
+  z-index: -1;
+  transform-origin: left;
+  transition: transform 0.48s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.submenu .submenu-link:hover:before {
+  transform: scaleX(1);
+  transform-origin: right;
+}
+
+.submenu .submenu-link:hover {
+  color: #ffffff;
+}
+
+
 html {
   font-family: sans-serif;
   line-height: 1.15;
@@ -171,12 +324,14 @@ body {
 /* Điều chỉnh phần navbar-collapse để phù hợp với dropdown menu */
 .navbar-collapse {
   position: relative;
-  z-index: 1040; /* Đảm bảo dropdown menu nằm trên các phần tử khác của navbar */
+  z-index: 1040;
+  /* Đảm bảo dropdown menu nằm trên các phần tử khác của navbar */
 }
 
 /* Đặt lại z-index cho các phần tử khác nếu cần */
 .navbar {
-  z-index: 1030; /* Đảm bảo navbar có thứ tự thấp hơn dropdown */
+  z-index: 1030;
+  /* Đảm bảo navbar có thứ tự thấp hơn dropdown */
 }
 
 
@@ -229,7 +384,7 @@ h1, h2, h3, h4, h5, h6 {
   align-items: center;
   justify-content: space-around;
   width: 100%;
-} 
+}
 
 .container-fluid .navbar-nav .nav-item .nav-link {
   white-space: nowrap;
@@ -237,18 +392,6 @@ h1, h2, h3, h4, h5, h6 {
   text-overflow: ellipsis;
   display: block;
   text-align: center;
-}
-
-#course {
-  overflow: hidden;
-  border-radius: 8px;
-  transition: transform 0.3s ease;
-  cursor: pointer;
-}
-
-#course:hover {
-  transform: translateY(-10px);
-
 }
 
 p {
@@ -326,11 +469,6 @@ a {
   color: #0066ff;
   text-decoration: none;
   background-color: transparent;
-}
-
-a:hover {
-  color: #b34700;
-  text-decoration: underline;
 }
 
 a:not([href]):not([class]) {
@@ -821,7 +959,7 @@ pre code {
 }
 
 
-.container-fluid #dropdownSub{
+.container-fluid #dropdownSub {
   padding: 0;
 }
 
@@ -10220,8 +10358,7 @@ button.bg-dark:focus {
     padding-bottom: 3rem !important;
   }
 
-  .pl-xl-5 
-  {
+  .pl-xl-5 {
     padding-left: 3rem !important;
   }
 
@@ -10783,7 +10920,8 @@ h6,
 .navbar-light .navbar-nav .nav-link:hover,
 .navbar-light .navbar-nav .nav-link.active {
   color: #0066ff;
-  transform: translateY(-3px); /* Đẩy chữ lên trên 3px khi hover */
+  transform: translateY(-3px);
+  /* Đẩy chữ lên trên 3px khi hover */
 }
 
 @media (max-width: 991.98px) {

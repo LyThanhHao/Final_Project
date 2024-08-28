@@ -26,8 +26,10 @@ Route::post('/reset-password', [HomeController::class, 'check_reset_password']);
 Route::get('/logout', [HomeController::class, 'logout'])->name('homepage.logout');
 
 //courses routes
-Route::get('/category/{category}/show', [CourseController::class, 'show'])->name('courses.filter');
-Route::get('/course/{course}/detail', [CourseController::class, 'detail'])->name('courses.detail');
+Route::get('/course/{course}/detail', [CourseController::class, 'coourse_detail'])->name('courses.detail');
+
+//categories routes
+Route::get('/category/{category}/filter', [CategoryController::class, 'filter'])->name('category.filter');
 
 
 //admin routes
@@ -46,20 +48,13 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
     Route::get('/categories/{category}/edit', [CategoryController::class, 'edit'])->name('admin.categories.edit');
     Route::put('/categories/{category}', [CategoryController::class, 'update'])->name('admin.categories.update');
     Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->name('admin.categories.destroy');
-    //roles
-    // Route::get('/roles', [RoleController::class, 'index'])->name('admin.roles.index');
-    // Route::get('/roles/create', [RoleController::class, 'create'])->name('admin.roles.create');
-    // Route::post('/roles', [RoleController::class, 'store'])->name('admin.roles.store');
-    // Route::get('/roles/{role}/edit', [RoleController::class, 'edit'])->name('admin.roles.edit');
-    // Route::put('/roles/{role}', [RoleController::class, 'update'])->name('admin.roles.update');
-    // Route::delete('/roles/{role}', [RoleController::class, 'destroy'])->name('admin.roles.destroy');
+    //courses
+    Route::get('/courses', [CourseController::class, 'index'])->name('admin.courses.index');
 });
 
 //user routes
 Route::get('/profile', [UserController::class, 'profile'])->name('profile');
-Route::put('/profile', [UserController::class, 'check_profile'])->name('profile.check_profile');
-Route::post('/profile', [UserController::class, 'change_avatar'])->name('profile.change_avatar');
+Route::put('/profile', [UserController::class, 'check_profile'])->name('check_change_profile');
+Route::post('/profile', [UserController::class, 'change_avatar'])->name('change_avatar');
 Route::get('/profile/password', [UserController::class, 'password'])->name('profile.password');
-Route::post('/profile/password', [UserController::class, 'check_password']);
-
-//course routes
+Route::post('/profile/password', [UserController::class, 'check_password'])->name('check_change_password');
