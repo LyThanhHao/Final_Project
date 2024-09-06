@@ -10,7 +10,7 @@ class Course extends Model
     use HasFactory;
 
     protected $fillable = [
-        'course_name', 'category_id', 'user_id', 'image', 'description', 'file'
+        'course_name', 'category_id', 'user_id', 'image', 'file',  'description'
     ];
 
     public function user()
@@ -20,6 +20,6 @@ class Course extends Model
 
     public function category()
     {
-        return $this->belongsTo(Category::class, 'category_id', 'cat_id');
+        return $this->belongsTo(Category::class, 'category_id', 'id');
     }
 }

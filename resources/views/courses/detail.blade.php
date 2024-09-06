@@ -218,7 +218,7 @@
 
                 <div class="row m-5">
                     <div class="col-md-12">
-                        <img class="img-fluid mb-4 rounded" src="{{ asset('uploads/course/' . $course->image) }}"
+                        <img class="img-fluid mb-4 rounded" src="{{ asset('uploads/course_image/' . $course->image) }}"
                             alt="{{ $course->course_name }}" style="width: 100%; height: auto;">
                     </div>
                 </div>
@@ -265,7 +265,7 @@
                                 <div id="course" class="col-lg-3 col-md-6 mb-4">
                                     <div class="card h-100 mt-4"
                                         style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); transition: transform 0.3s, box-shadow 0.3s;">
-                                        <img class="img-fluid card-img-top" src="{{ asset('uploads/course/' . $relatedCourse->image) }}" alt="{{ $relatedCourse->course_name }}" title="{{ $relatedCourse->course_name }}">
+                                        <img class="img-fluid card-img-top" src="{{ asset('uploads/course_image/' . $relatedCourse->image) }}" alt="{{ $relatedCourse->course_name }}" title="{{ $relatedCourse->course_name }}">
                                         <div class="card-body text-center">
                                             <p class="card-title text-truncate"
                                                 style="max-width: 100%; font-weight: bold; color:#5e5e5e"

@@ -246,9 +246,9 @@
                 @foreach ($courses as $course)
                     <div id="course" class="col-lg-3 col-md-6 mb-4">
                         <div class="card h-100"
-                            style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); transition: transform 0.3s, box-shadow 0.3s;">
+                            style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); transition: transform 0.3s, box-shadow 0.3s;" title="{{ $course->course_name }}">
                             <img class="img-fluid card-img-top"
-                                src="{{ asset('uploads/course/' . $course->image) }}"
+                                src="{{ asset('uploads/course_image/' . $course->image) }}"
                                 alt="{{ $course->course_name }}">
                             <div class="card-body text-center">
                                 <p class="card-title text-truncate"
@@ -266,7 +266,7 @@
                                             style="border-radius: 50%; width: 30px; height: 30px; margin-right: 8px;">
                                     @endif
                                     <a href="" class="text-info"
-                                        style="text-decoration: underline;">{{ $course->user->fullname }}</a>
+                                        style="text-decoration: underline;" title="{{ $course->user->fullname }}">{{ $course->user->fullname }}</a>
                                 </div>
                             </div>
                             <div class="card-footer text-center">

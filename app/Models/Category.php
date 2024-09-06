@@ -9,7 +9,7 @@ class Category extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'cat_id';
+    protected $primaryKey = 'id';
 
     protected $fillable = [
         'cat_name', 'status'
@@ -17,6 +17,6 @@ class Category extends Model
 
     public function courses()
     {
-        return $this->hasMany(Course::class, 'category_id', 'cat_id');
+        return $this->hasMany(Course::class, 'category_id', 'id');
     }
 }

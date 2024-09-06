@@ -172,8 +172,7 @@
                             @endif
                             <div class="small font-italic text-muted mb-2">JPG, PNG, JPEG, GIF, WEBP or SVG no larger than 5
                                 MB</div>
-                            <form action="{{ route('change_avatar') }}" method="POST"
-                                enctype="multipart/form-data">
+                            <form action="{{ route('change_avatar') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div class="form-group mb-3">
                                     <input type="file" name="avatar" id="avatar" class="form-control">

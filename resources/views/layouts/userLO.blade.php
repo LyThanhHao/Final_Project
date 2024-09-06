@@ -107,7 +107,7 @@
                     id="navbar-vertical" style="z-index: 9;">
                     <div class="navbar-nav w-100">
                         @foreach ($cat_home as $category)
-                            <a href="{{ route('category.filter', $category->cat_id) }}" id="dropdown-item"
+                            <a href="{{ route('category.filter', $category->id) }}" id="dropdown-item"
                                 class="nav-item nav-link"
                                 style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: center;"
                                 title="{{ $category->cat_name }}">{{ $category->cat_name }}</a>
@@ -147,7 +147,7 @@
                                     <div class="dropdown-menu rounded-0 m-0">
                                         <div class="navbar-nav w-100">
                                             @foreach ($cat_home as $category)
-                                                <a href="{{ route('category.filter', $category->cat_id) }}"
+                                                <a href="{{ route('category.filter', $category->id) }}"
                                                     id="dropdown-item" class="nav-item nav-link"
                                                     style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: center;"
                                                     title="{{ $category->cat_name }}">{{ $category->cat_name }}
@@ -256,7 +256,7 @@
                         <h5 class="text-primary text-uppercase mb-4" style="letter-spacing: 5px;">Our Subjects</h5>
                         <div class="d-flex flex-column justify-content-start">
                             @foreach ($cat_home as $temp)
-                                <a class="text-white mb-2" href="{{ route('category.filter', $temp->cat_id) }}"><i
+                                <a class="text-white mb-2" href="{{ route('category.filter', $temp->id) }}"><i
                                         class="fa fa-angle-right mr-2"></i>{{ $temp->cat_name }}</a>
                             @endforeach
                         </div>

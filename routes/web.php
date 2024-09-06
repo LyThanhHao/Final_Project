@@ -35,6 +35,7 @@ Route::get('/category/{category}/filter', [CategoryController::class, 'filter'])
 //admin routes
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function () {
     //accounts
+    Route::get('/', [AdminController::class, 'account'])->name('admin.accounts.index');
     Route::get('/accounts', [AdminController::class, 'account'])->name('admin.accounts.index');
     Route::get('/accounts/create', [AdminController::class, 'create_account'])->name('admin.accounts.create');
     Route::post('/accounts', [AdminController::class, 'store_account'])->name('admin.accounts.store');
@@ -50,6 +51,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
     Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->name('admin.categories.destroy');
     //courses
     Route::get('/courses', [CourseController::class, 'index'])->name('admin.courses.index');
+    Route::get('/courses/create', [CourseController::class, 'create'])->name('admin.courses.create');
+    Route::post('/courses', [CourseController::class, 'store'])->name('admin.courses.store');
+    Route::get('/courses/{user}/edit', [CourseController::class, 'edit'])->name('admin.courses.edit');
+    Route::put('/courses/{user}', [CourseController::class, 'update'])->name('admin.courses.update');
+    Route::delete('/courses/{user}', [CourseController::class, 'destroy'])->name('admin.courses.destroy');
 });
 
 //user routes

@@ -39,7 +39,7 @@ class UserController extends Controller
     public function change_avatar(Request $request){
         $user = auth()->user();
         $request->validate([
-            'avatar' => 'required|file|mimes:jpg, jpeg, gif, png, webp, svg, '
+            'avatar' => 'required|file|mimes:jpg, jpeg, gif, png, webp, svg,'
         ]);
         
         // Xóa file ảnh cũ

@@ -11,7 +11,7 @@ class AdminController extends Controller
 
     public function account()
     {
-        $users = User::all();
+        $users = User::orderBy('id', 'ASC')->paginate(15);
         return view('admin.accounts.index', compact('users'));
     }
 

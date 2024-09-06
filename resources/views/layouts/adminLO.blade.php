@@ -20,9 +20,12 @@
     <!-- CSS Files -->
     <link href="{{ asset('css/admin.css') }}" rel="stylesheet">
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
+
+
     <style>
         body {
-            overflow: hidden;
+            overflow-y: auto;
         }
 
         /* From Uiverse.io by Galahhad */

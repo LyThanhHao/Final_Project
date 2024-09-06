@@ -12,7 +12,7 @@
                 <div id="course" class="col-lg-3 col-md-6 mb-4">
                     <div class="card h-100"
                         style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); transition: transform 0.3s, box-shadow 0.3s;">
-                        <img class="img-fluid card-img-top" src="{{ asset('uploads/course/' . $course->image) }}"
+                        <img class="img-fluid card-img-top" src="{{ asset('uploads/course_image/' . $course->image) }}"
                             alt="{{ $course->course_name }}">
                         <div class="card-body text-center">
                             <p class="card-title text-truncate"

@@ -44,7 +44,7 @@
           <h3 class="card-title font-weight-bold text-center">Edit Category</h3>
         </div>
         <div class="card-body">
-          <form method="POST" action="{{ route('admin.categories.update', ['category' => $category->cat_id]) }}">
+          <form method="POST" action="{{ route('admin.categories.update', ['category' => $category->id]) }}">
             @csrf
             @method('PUT')
             <div class="form-group">

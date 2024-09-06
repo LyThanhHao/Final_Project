@@ -26,8 +26,8 @@
                   <td>{{ $category->cat_name }}</td>
                   <td>{{ $category->status == 0 ? 'Hidden' : 'Publish' }}</td>
                   <td style="text-align: center;">
-                    <a href="{{ route('admin.categories.edit', $category->cat_id) }}"><i class="bi bi-pencil-square" style="color: white;"></i></a>
-                    <form action="{{ route('admin.categories.destroy', $category->cat_id) }}" method="POST" style="display:inline-block;">
+                    <a href="{{ route('admin.categories.edit', $category->id) }}"><i class="bi bi-pencil-square" style="color: white;"></i></a>
+                    <form action="{{ route('admin.categories.destroy', $category->id) }}" method="POST" style="display:inline-block;">
                       @csrf
                       @method('DELETE')
                       <button type="submit" onclick="confirmDelete(event)" style="border: none; background: border-box; color: white; margin-left: 15px;"><i class="bi bi-trash"></i></button>
