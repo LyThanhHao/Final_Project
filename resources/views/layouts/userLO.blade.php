@@ -66,18 +66,15 @@
                                     </div>
                                     @if (Auth::user()->role == 'Admin')
                                         <div class="submenu-item">
-                                            <a href="{{ route('admin.accounts.index') }}"
-                                                class="submenu-link font-weight-bold" style="color: orangered"> Admin
-                                            </a>
+                                            <a href="{{ route('admin') }}" class="submenu-link font-weight-bold" id="role">Admin</a>
                                         </div>
                                     @elseif (Auth::user()->role == 'Teacher')
                                         <div class="submenu-item">
-                                            <a href="" class="submenu-link text-danger font-weight-bold"> Manage
-                                                courses </a>
+                                            <a href="{{ route('teacher') }}" class="submenu-link font-weight-bold" id="role">Manage courses</a>
                                         </div>
                                     @endif
                                     <div class="submenu-item">
-                                        <a href="{{ route('homepage.logout') }}" class="submenu-link"> Log out </a>
+                                        <a href="{{ route('homepage.logout') }}" class="submenu-link">Log out </a>
                                     </div>
                                 </div>
                             </div>
@@ -176,7 +173,7 @@
                             @endif
                             @if (Auth::check() && Auth::user()->role == 'Teacher')
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">Courses Management</a>
+                                    <a href="{{ route('teacher') }}" class="nav-link">Manage courses</a>
                                 </li>
                             @endif
                             <li class="nav-item d-lg-none">
@@ -202,9 +199,8 @@
                                                         </div>
                                                     @elseif (Auth::user()->role == 'Teacher')
                                                         <div class="submenu-item">
-                                                            <a href=""
-                                                                class="submenu-link text-danger font-weight-bold">
-                                                                Manage courses </a>
+                                                            <a href="{{ route('teacher') }}" class="submenu-link font-weight-bold"
+                                                                style="color: black"> Manage courses </a>
                                                         </div>
                                                     @endif
                                                     <div class="submenu-item">
@@ -328,12 +324,26 @@
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
 
+    <!-- toast notification -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.js"></script>
-    @if (Session::has('success-login'))
+    @if (Session::has('fail'))
         <script>
             $.toast({
-                heading: 'Logged in successfully!',
-                text: "{{ Session::get('success-login') }}",
+                heading: 'Notification',
+                text: "{{ Session::get('fail') }}",
+                showHideTransition: 'slide',
+                position: 'top-center',
+                icon: 'error',
+                hideAfter: 5000
+            })
+        </script>
+    @endif
+
+    @if (Session::has('success'))
+        <script>
+            $.toast({
+                heading: 'Notification',
+                text: "{{ Session::get('success') }}",
                 showHideTransition: 'slide',
                 position: 'top-center',
                 icon: 'success',

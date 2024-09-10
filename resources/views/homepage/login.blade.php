@@ -30,7 +30,8 @@
                 @csrf
                 <p class="form-title">LOGIN TO YOUR ACCOUNT</p>
                 <div class="input-container">
-                    <input type="email" id="email" class="form-control" name="email" placeholder="Enter your email" required>
+                    <input type="email" id="email" class="form-control" name="email"
+                        placeholder="Enter your email" required>
                     @error('email')
                         <small style="color: red;">{{ $message }}</small>
                     @enderror
@@ -46,8 +47,8 @@
                         <small style="color: red;">{{ $message }}</small>
                     @enderror
                 </div>
-                <div style="margin: 10px 0">
-                    <a href="" id="emailHelp" class="form-text mt-3">Forget password ?</a>
+                <div style="margin: 10px 0; font-size: 14px;">
+                    <a href="{{ route('forgot_password') }}" class="mt-3">Forgot password?</a>
                 </div>
                 <button type="submit" class="submit">Login</button>
                 <p class="signup-link">
@@ -69,38 +70,11 @@
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
     </script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.js"></script>
-    @if (Session::has('confirmed'))
+    @if (Session::has('fail'))
         <script>
             $.toast({
                 heading: 'Notification',
-                text: '{{ Session::get('confirmed') }}',
-                showHideTransition: 'slide',
-                position: 'top-center',
-                icon: 'success',
-                hideAfter: 5000
-            })
-        </script>
-    @endif
-
-    @if (Session::has('success-register'))
-        <script>
-            $.toast({
-                heading: 'Notification',
-                text: '{{ Session::get('success-register') }}',
-                showHideTransition: 'slide',
-                position: 'top-center',
-                icon: 'success',
-                hideAfter: 5000
-            })
-        </script>
-    @endif
-
-    @if (Session::has('fail-login'))
-        <script>
-            $.toast({
-                heading: 'Notification',
-                text: "{{ Session::get('fail-login') }}",
+                text: "{{ Session::get('fail') }}",
                 showHideTransition: 'slide',
                 position: 'top-center',
                 icon: 'error',
@@ -109,14 +83,14 @@
         </script>
     @endif
 
-    @if (Session::has('not-verify'))
+    @if (Session::has('success'))
         <script>
             $.toast({
                 heading: 'Notification',
-                text: "{{ Session::get('not-verify') }}",
+                text: "{{ Session::get('success') }}",
                 showHideTransition: 'slide',
                 position: 'top-center',
-                icon: 'error',
+                icon: 'success',
                 hideAfter: 5000
             })
         </script>

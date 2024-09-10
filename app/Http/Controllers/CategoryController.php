@@ -25,8 +25,12 @@ class CategoryController extends Controller
             'cat_name' => 'required',
         ]);
 
-        Category::create($request->all());
-        return redirect()->route('admin.categories.index')->with('success', 'Category created successfully.');
+        $check = Category::create($request->all());
+        
+        if ($check) {
+            return redirect()->route('admin.categories.index')->with('success', 'Category created successfully');
+        }
+        return redirect()->back()->with('fail', 'Category creation failed! Something went wrong, please try again!');
     }
 
     public function filter(Category $category)
@@ -49,14 +53,19 @@ class CategoryController extends Controller
 
         $data = $request->all();
 
-        $category->update($data);
+        $check = $category->update($data);
 
-        return redirect()->route('admin.categories.index')->with('Success', 'User updated successfully.');
+        if ($check) {
+            return redirect()->route('admin.categories.index')->with('success', 'Category updated successfully');
+        }
+        return redirect()->back()->with('fail', 'Category update failed! Something went wrong, please try again!');
     }
 
     public function destroy(Category $category)
     {
-        $category->delete();
-        return redirect()->route('admin.categories.index')->with('Success', 'User deleted successfully.');
+        if ($category->delete()) {
+            return redirect()->route('admin.categories.index')->with('success', 'Category deleted successfully');
+        }
+        return redirect()->back()->with('fail', 'Category deletion failed! Something went wrong, please try again!');
     }
 }

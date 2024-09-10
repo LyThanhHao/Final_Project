@@ -22,15 +22,21 @@ class HomeController extends Controller
     {
         $keyword = $request->input('keyword');
 
-        $courses = Course::where('course_name', 'LIKE', "%{$keyword}%")
-            ->orWhereHas('user', function ($q) use ($keyword) {
-                $q->where('role', 'Teacher')
-                    ->where('fullname', 'LIKE', "%{$keyword}%");
-            })->get();
+        $courses = Course::where(function ($query) use ($keyword) {
+                $query->where('course_name', 'LIKE', "%{$keyword}%")
+                      ->orWhereHas('user', function ($q) use ($keyword) {
+                          $q->where('role', 'Teacher')
+                            ->where('fullname', 'LIKE', "%{$keyword}%");
+                      });
+            })
+            ->where('status', 1)
+            ->whereHas('category', function ($q) {
+                $q->where('status', 1);
+            })
+            ->get();
 
         return view('homepage.search', compact('courses', 'keyword'));
     }
-
 
     public function login()
     {
@@ -48,16 +54,16 @@ class HomeController extends Controller
         ]);
 
         $data = $request->only('email', 'password');
-        $check = auth()->attempt($data);
+        $check = Auth::attempt($data);
 
         if ($check) {
-            if (auth()->user()->email_verified_at == '') {
-                auth()->logout();
-                return redirect()->back()->with('not-verify', 'Your account is not verify, please check your email again');
+            if (Auth::user()->email_verified_at == '') {
+                Auth::logout();
+                return redirect()->back()->with('fail', 'Your account is not verify, please check your email again');
             }
-            return redirect()->route('homepage')->with('success-login', 'Welcome back');
+            return redirect()->route('homepage')->with('success', 'Welcome back');
         }
-        return redirect()->back()->with('fail-login', 'Your email or password invalid');
+        return redirect()->back()->with('fail', 'Your email or password invalid');
     }
 
     public function logout()
@@ -96,16 +102,16 @@ class HomeController extends Controller
 
         if ($acc = User::create($data)) {
             Mail::to($acc->email)->send(new VerifyAccount($acc));
-            return redirect()->route('homepage.login')->with('success-register', 'Registration successful!, Please check your email to verify your account');
+            return redirect()->route('homepage.login')->with('success', 'Registration successful!, Please check your email to verify your account');
         }
-        return redirect()->back()->with('fail-register', 'Something wrong, please try again!');
+        return redirect()->back()->with('fail', 'Something wrong, please try again!');
     }
 
     public function verify($email)
     {
         $acc = User::where('email', $email)->whereNull('email_verified_at')->firstOrFail();
         User::where('email', $email)->update(['email_verified_at' => now()]);
-        return redirect()->route('homepage.login')->with('confirmed', 'Verify account successfully! Now you can login.');
+        return redirect()->route('homepage.login')->with('success', 'Verify account successfully! Now you can login.');
     }
 
     

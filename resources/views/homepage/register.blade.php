@@ -16,8 +16,7 @@
     <!-- SweetAlert2 JS -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- Toast notification -->
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.css" />
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 
@@ -103,16 +102,17 @@
             </form>
         </div>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.js"></script>
+    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
     </script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.js"></script>
-    @if (Session::has('success-register'))
+    @if (Session::has('success'))
         <script>
             $.toast({
                 heading: 'Registration successful!',
-                text: "{{ Session::get('success-register') }}",
+                text: "{{ Session::get('success') }}",
                 showHideTransition: 'slide',
                 position: 'top-center',
                 icon: 'success',
@@ -121,11 +121,11 @@
         </script>
     @endif
 
-    @if (Session::has('fail-register'))
+    @if (Session::has('fail'))
         <script>
             $.toast({
                 heading: 'Notification',
-                text: "{{ Session::get('fail-register') }}",
+                text: "{{ Session::get('fail') }}",
                 showHideTransition: 'slide',
                 position: 'top-center',
                 icon: 'error',

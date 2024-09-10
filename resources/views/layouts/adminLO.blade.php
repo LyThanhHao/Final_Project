@@ -20,8 +20,12 @@
     <!-- CSS Files -->
     <link href="{{ asset('css/admin.css') }}" rel="stylesheet">
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
 
+    <!-- Toast Notification -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.css" />
 
     <style>
         body {
@@ -56,8 +60,7 @@
             --nav-shadow-color: rgba(0, 0, 0, .2);
             --nav-shadow-width: 0 1px 5px;
             --nav-bg: #eee;
-            --nav-font-family: Poppins, sans-serif
-            --nav-default-scale: .8;
+            --nav-font-family: Poppins, sans-serif --nav-default-scale: .8;
             --nav-active-scale: 1;
             --nav-position-left: unset;
             --nav-position-right: 0;
@@ -252,7 +255,7 @@
         <div class="sidebar">
             <div class="sidebar-wrapper">
                 <div class="logo" style="text-align: center;">
-                    <a href="{{ route('admin.accounts.index') }}" class="simple-text logo-normal">Dashboard</a>
+                    <a href="{{ route('admin') }}" class="simple-text logo-normal">Dashboard</a>
                 </div>
                 <ul class="nav">
                     <li>
@@ -309,7 +312,8 @@
                         <span class="navbar-toggler-bar navbar-kebab"></span>
                     </button>
                     <div class="collapse navbar-collapse" id="navigation">
-                        <span style="color: white; font-size: 20px; font-weight: bold;" class="navbar-text">ADMIN</span>
+                        <span style="color: white; font-size: 20px; font-weight: bold; position: fixed;"
+                            class="navbar-text">ADMIN</span>
                         <ul class="navbar-nav ml-auto">
                             <li class="dropdown nav-item">
                                 <label class="popup">
@@ -360,8 +364,7 @@
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <input type="text" class="form-control" id="inlineFormInputGroup"
-                                placeholder="SEARCH">
+                            <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="SEARCH">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <i class="tim-icons icon-simple-remove"></i>
                             </button>
@@ -414,6 +417,7 @@
             </ul>
         </div>
     </div>
+
     <!--   Core JS Files   -->
     <script src="js-dasboard/core/jquery.min.js"></script>
     <script src="js-dasboard/core/popper.min.js"></script>
@@ -433,6 +437,35 @@
     <script type="text/javascript"></script>
     <!-- Control Center for Black Dashboard: parallax effects, scripts for the example pages etc -->
     <script src="js-dasboard/black-dashboard.min.js?v=1.0.0"></script>
+    
+    <!-- toast notification -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.js"></script>
+    @if (Session::has('fail'))
+        <script>
+            $.toast({
+                heading: 'Notification',
+                text: "{{ Session::get('fail') }}",
+                showHideTransition: 'slide',
+                position: 'top-center',
+                icon: 'error',
+                hideAfter: 5000
+            })
+        </script>
+    @endif
+
+    @if (Session::has('success'))
+        <script>
+            $.toast({
+                heading: 'Notification',
+                text: "{{ Session::get('success') }}",
+                showHideTransition: 'slide',
+                position: 'top-center',
+                icon: 'success',
+                hideAfter: 5000
+            })
+        </script>
+    @endif
+
     <script>
         $(document).ready(function() {
             $().ready(function() {
@@ -567,10 +600,6 @@
             }
         }
     </script>
-
-</body>
-
-</html>
 
 </body>
 

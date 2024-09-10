@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\UserController;
 use App\Models\Category;
 use App\Models\Course;
@@ -35,7 +36,7 @@ Route::get('/category/{category}/filter', [CategoryController::class, 'filter'])
 //admin routes
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function () {
     //accounts
-    Route::get('/', [AdminController::class, 'account'])->name('admin.accounts.index');
+    Route::get('/', [AdminController::class, 'account'])->name('admin');
     Route::get('/accounts', [AdminController::class, 'account'])->name('admin.accounts.index');
     Route::get('/accounts/create', [AdminController::class, 'create_account'])->name('admin.accounts.create');
     Route::post('/accounts', [AdminController::class, 'store_account'])->name('admin.accounts.store');
@@ -53,14 +54,31 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
     Route::get('/courses', [CourseController::class, 'index'])->name('admin.courses.index');
     Route::get('/courses/create', [CourseController::class, 'create'])->name('admin.courses.create');
     Route::post('/courses', [CourseController::class, 'store'])->name('admin.courses.store');
-    Route::get('/courses/{user}/edit', [CourseController::class, 'edit'])->name('admin.courses.edit');
-    Route::put('/courses/{user}', [CourseController::class, 'update'])->name('admin.courses.update');
-    Route::delete('/courses/{user}', [CourseController::class, 'destroy'])->name('admin.courses.destroy');
+    Route::get('/courses/{course}/edit', [CourseController::class, 'edit'])->name('admin.courses.edit');
+    Route::put('/courses/{course}', [CourseController::class, 'update'])->name('admin.courses.update');
+    Route::delete('/courses/{course}', [CourseController::class, 'destroy'])->name('admin.courses.destroy');
+});
+
+//teacher routes
+Route::group(['prefix' => 'teacher', 'middleware' => ['auth', 'teacher']], function () {
+    //courses
+    Route::get('/', [TeacherController::class, 'courses'])->name('teacher');
+    Route::get('/courses', [TeacherController::class, 'courses'])->name('teacher.courses');
+    Route::get('/courses/create', [TeacherController::class, 'create_course'])->name('teacher.courses.create');
+    Route::post('/courses', [TeacherController::class, 'store_course'])->name('teacher.courses.store');
+    Route::get('/courses/{course}/edit', [TeacherController::class, 'edit_course'])->name('teacher.courses.edit');
+    Route::put('/courses/{course}', [TeacherController::class, 'update_course'])->name('teacher.courses.update');
+    Route::delete('/courses/{course}', [TeacherController::class, 'destroy_course'])->name('teacher.courses.destroy');
 });
 
 //user routes
 Route::get('/profile', [UserController::class, 'profile'])->name('profile');
 Route::put('/profile', [UserController::class, 'check_profile'])->name('check_change_profile');
 Route::post('/profile', [UserController::class, 'change_avatar'])->name('change_avatar');
-Route::get('/profile/password', [UserController::class, 'password'])->name('profile.password');
+Route::get('/profile/password', [UserController::class, 'password'])->name('password');
 Route::post('/profile/password', [UserController::class, 'check_password'])->name('check_change_password');
+Route::get('/forgot-password', [UserController::class, 'forgot_password'])->name('forgot_password');
+Route::post('/forgot-password', [UserController::class, 'check_forgot_password'])->name('check_forgot_password');
+Route::get('/reset-password/{token}', [UserController::class, 'reset_password'])->name('reset_password');
+Route::post('/reset-password/{token}', [UserController::class, 'check_reset_password'])->name('check_reset_password');
+

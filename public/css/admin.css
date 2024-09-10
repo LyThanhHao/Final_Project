@@ -129,6 +129,28 @@ p {
   margin-bottom: 1rem;
 }
 
+.btn-add {
+  background-color: #28a745;
+  transition: background-color 0.3s, transform 0.3s;
+  color: white;
+  border: 1px solid white;
+  padding: 10px 30px;
+  margin: 4px 1px;
+  display: inline-block;
+  border-radius: 10px;
+  text-align: center;
+  vertical-align: middle;
+  font-weight: bold;
+}
+
+.btn-add:hover {
+  background-color: #28a745;
+  transform: scale(1.05);
+  color: black;
+  background-color: white;
+  border: 1px solid black;
+}
+
 abbr[title],
 abbr[data-original-title] {
   text-decoration: underline;

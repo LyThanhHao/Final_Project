@@ -32,9 +32,12 @@ class AdminController extends Controller
         ]);
 
         $request['password'] = bcrypt(request('password'));
-        User::create($request->all());
+        $user = User::create($request->all());
 
-        return redirect()->route('admin.accounts.index')->with('success', 'User created successfully.');
+        if ($user) {
+            return redirect()->route('admin.accounts.index')->with('success', 'User created successfully');
+        }
+        return redirect()->back()->with('fail', 'User creation failed! Something went wrong, please try again!');
     }
 
     public function edit_account(User $user)
@@ -61,13 +64,19 @@ class AdminController extends Controller
 
         $user->update($data);
 
-        return redirect()->route('admin.accounts.index')->with('Success', 'User updated successfully.');
+        if ($user->update($data)) {
+            return redirect()->route('admin.accounts.index')->with('success', 'User updated successfully');
+        }
+        return redirect()->back()->with('fail', 'User update failed! Something went wrong, please try again!');
     }
 
     public function destroy_account(User $user)
     {
         $user->delete();
 
-        return redirect()->route('admin.accounts.index')->with('Success', 'User deleted successfully.');
+        if ($user->delete()) {
+            return redirect()->route('admin.accounts.index')->with('success', 'User deleted successfully');
+        }
+        return redirect()->back()->with('fail', 'User deletion failed! Something went wrong, please try again!');
     }
 }

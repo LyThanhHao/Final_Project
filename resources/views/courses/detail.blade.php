@@ -204,6 +204,34 @@
         .button-message a:last-child {
             margin-right: 0;
         }
+
+        .btn-comment {
+            background-color: #ffffff;
+            color: #6c757d;
+            border: 1px solid #000000;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: bold;
+            transition: background-color 0.3s, transform 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .btn-comment:hover {
+            background-color: #0088cc;
+            transform: scale(1.1);
+            color: white;
+        }
+
+        .btn-comment i {
+            color: #000;
+        }
+
+        .btn-comment:hover i {
+            color: white;
+        }
     </style>
     <div class="container py-5">
         <div class="row">
@@ -229,6 +257,7 @@
                     <div class="col-md-9">
                         <h3>Course Description</h3>
                         <p>{{ $course->description }}</p>
+                        <hr style="width: 300px; margin-left: 0">
                         <a href="" class="btn mt-3 enroll-btn">Enroll Now</a>
                     </div>
 
@@ -252,7 +281,45 @@
                             </div>
                         </div>
                     </div>
+                </div>
 
+                <div class="row mt-5">
+                    <div class="col-md-12">
+                        <h3>Send Comment</h3>
+                        <form action="#" method="POST" style="border: 1px solid #ccc; padding: 15px; border-radius: 5px;">
+                            @csrf
+                            <div class="form-group">
+                                <textarea class="form-control" name="comment" rows="3" placeholder="Your comment..."></textarea>
+                            </div>
+                            <div class="form-group d-flex justify-content-between align-items-center mb-0">
+                                <div>
+                                    <button type="button" class="btn btn-light"><i class="far fa-smile"></i></button>
+                                    <button type="button" class="btn btn-light"><i class="far fa-frown"></i></button>
+                                </div>
+                                <button type="submit" class="btn-comment"><i class="fas fa-paper-plane"></i></button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="row mt-5">
+                    <div class="col-md-12">
+                        <h3 class="mb-4">Comments</h3>
+                        <div class="media mb-4">
+                            <img class="d-flex mr-3 rounded-circle" src="{{ asset('uploads/avatar/avatar_default.jpg') }}" alt="User Avatar" style="width: 50px; height: 50px;">
+                            <div class="media-body">
+                                <h5 class="mt-0">User Name</h5>
+                                This is a sample comment. It provides feedback on the course.
+                            </div>
+                        </div>
+                        <div class="media mb-4">
+                            <img class="d-flex mr-3 rounded-circle" src="{{ asset('uploads/avatar/avatar_default.jpg') }}" alt="User Avatar" style="width: 50px; height: 50px;">
+                            <div class="media-body">
+                                <h5 class="mt-0">User Name</h5>
+                                This is another sample comment. It provides additional feedback on the course.
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <hr>
@@ -262,70 +329,72 @@
                         <h3>Related Courses</h3>
                         <div class="row">
                             @foreach ($relatedCourses as $relatedCourse)
-                                <div id="course" class="col-lg-3 col-md-6 mb-4">
-                                    <div class="card h-100 mt-4"
-                                        style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); transition: transform 0.3s, box-shadow 0.3s;">
-                                        <img class="img-fluid card-img-top" src="{{ asset('uploads/course_image/' . $relatedCourse->image) }}" alt="{{ $relatedCourse->course_name }}" title="{{ $relatedCourse->course_name }}">
-                                        <div class="card-body text-center">
-                                            <p class="card-title text-truncate"
-                                                style="max-width: 100%; font-weight: bold; color:#5e5e5e"
-                                                title="{{ $relatedCourse->course_name }}">
-                                                {{ $relatedCourse->course_name }}
-                                            </p>
-                                            <div class="d-flex justify-content-center align-items-center mt-3">
-                                                @if (empty($relatedCourse->user->avatar))
-                                                    <img src="{{ asset('uploads/avatar/avatar_default.jpg') }}"
-                                                        alt=""
-                                                        style="border-radius: 50%; width: 30px; height: 30px; margin-right: 8px;">
-                                                @else
-                                                    <img src="{{ asset('uploads/avatar/' . $relatedCourse->user->avatar) }}"
-                                                        alt=""
-                                                        style="border-radius: 50%; width: 30px; height: 30px; margin-right: 8px;">
-                                                @endif
-                                                <a href="" class="text-info"
-                                                    style="text-decoration: underline;">{{ $relatedCourse->user->fullname }}</a>
+                                @if ($relatedCourse->status && $relatedCourse->category->status)
+                                    <div id="course" class="col-lg-3 col-md-6 mb-4">
+                                        <div class="card h-100 mt-4"
+                                            style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); transition: transform 0.3s, box-shadow 0.3s;">
+                                            <img style="height: 45%;" class="img-fluid card-img-top" src="{{ asset('uploads/course_image/' . $relatedCourse->image) }}" alt="{{ $relatedCourse->course_name }}" title="{{ $relatedCourse->course_name }}">
+                                            <div class="card-body text-center">
+                                                <p class="card-title text-truncate"
+                                                    style="max-width: 100%; font-weight: bold; color:#5e5e5e"
+                                                    title="{{ $relatedCourse->course_name }}">
+                                                    {{ $relatedCourse->course_name }}
+                                                </p>
+                                                <div class="d-flex justify-content-center align-items-center mt-3">
+                                                    @if (empty($relatedCourse->user->avatar))
+                                                        <img src="{{ asset('uploads/avatar/avatar_default.jpg') }}"
+                                                            alt=""
+                                                            style="border-radius: 50%; width: 30px; height: 30px; margin-right: 8px;">
+                                                    @else
+                                                        <img src="{{ asset('uploads/avatar/' . $relatedCourse->user->avatar) }}"
+                                                            alt=""
+                                                            style="border-radius: 50%; width: 30px; height: 30px; margin-right: 8px;">
+                                                    @endif
+                                                    <a href="" class="text-info"
+                                                        style="text-decoration: underline;">{{ $relatedCourse->user->fullname }}</a>
+                                                </div>
+                                            </div>
+                                            <div class="card-footer text-center">
+                                                <a href="{{ route('courses.detail', $relatedCourse->id) }}">
+                                                    <button class="readmore-btn">
+                                                        <span class="book-wrapper">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" fill="rgb(86, 69, 117)"
+                                                                viewBox="0 0 126 75" class="book">
+                                                                <rect stroke-width="3" stroke="#fff" rx="7.5"
+                                                                    height="70" width="121" y="2.5" x="2.5"></rect>
+                                                                <line stroke-width="3" stroke="#fff" y2="75"
+                                                                    x2="63.5" x1="63.5"></line>
+                                                                <path stroke-linecap="round" stroke-width="4" stroke="#fff"
+                                                                    d="M25 20H50">
+                                                                </path>
+                                                                <path stroke-linecap="round" stroke-width="4" stroke="#fff"
+                                                                    d="M101 20H76">
+                                                                </path>
+                                                                <path stroke-linecap="round" stroke-width="4" stroke="#fff"
+                                                                    d="M16 30L50 30"></path>
+                                                                <path stroke-linecap="round" stroke-width="4" stroke="#fff"
+                                                                    d="M110 30L76 30"></path>
+                                                            </svg>
+
+                                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                                viewBox="0 0 65 75" class="book-page">
+                                                                <path stroke-linecap="round" stroke-width="4" stroke="#fff"
+                                                                    d="M40 20H15">
+                                                                </path>
+                                                                <path stroke-linecap="round" stroke-width="4" stroke="#fff"
+                                                                    d="M49 30L15 30"></path>
+                                                                <path stroke-width="3" stroke="#fff"
+                                                                    d="M2.5 2.5H55C59.1421 2.5 62.5 5.85786 62.5 10V65C62.5 69.1421 59.1421 72.5 55 72.5H2.5V2.5Z">
+                                                                </path>
+                                                            </svg>
+                                                        </span>
+                                                        <span class="text"> Read more </span>
+                                                    </button>
+                                                </a>
                                             </div>
                                         </div>
-                                        <div class="card-footer text-center">
-                                            <a href="{{ route('courses.detail', $relatedCourse->id) }}">
-                                                <button class="readmore-btn">
-                                                    <span class="book-wrapper">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="rgb(86, 69, 117)"
-                                                            viewBox="0 0 126 75" class="book">
-                                                            <rect stroke-width="3" stroke="#fff" rx="7.5"
-                                                                height="70" width="121" y="2.5" x="2.5"></rect>
-                                                            <line stroke-width="3" stroke="#fff" y2="75"
-                                                                x2="63.5" x1="63.5"></line>
-                                                            <path stroke-linecap="round" stroke-width="4" stroke="#fff"
-                                                                d="M25 20H50">
-                                                            </path>
-                                                            <path stroke-linecap="round" stroke-width="4" stroke="#fff"
-                                                                d="M101 20H76">
-                                                            </path>
-                                                            <path stroke-linecap="round" stroke-width="4" stroke="#fff"
-                                                                d="M16 30L50 30"></path>
-                                                            <path stroke-linecap="round" stroke-width="4" stroke="#fff"
-                                                                d="M110 30L76 30"></path>
-                                                        </svg>
-
-                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                            viewBox="0 0 65 75" class="book-page">
-                                                            <path stroke-linecap="round" stroke-width="4" stroke="#fff"
-                                                                d="M40 20H15">
-                                                            </path>
-                                                            <path stroke-linecap="round" stroke-width="4" stroke="#fff"
-                                                                d="M49 30L15 30"></path>
-                                                            <path stroke-width="3" stroke="#fff"
-                                                                d="M2.5 2.5H55C59.1421 2.5 62.5 5.85786 62.5 10V65C62.5 69.1421 59.1421 72.5 55 72.5H2.5V2.5Z">
-                                                            </path>
-                                                        </svg>
-                                                    </span>
-                                                    <span class="text"> Read more </span>
-                                                </button>
-                                            </a>
-                                        </div>
                                     </div>
-                                </div>
+                                @endif
                             @endforeach
                         </div>
                     </div>

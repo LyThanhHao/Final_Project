@@ -1,40 +1,29 @@
 @extends('layouts/adminLO')
 
 @section('main')
-    <style>
-        .btn-save {
-            width: 9em;
-            height: 3em;
-            border-radius: 30em;
-            font-size: 15px;
-            font-family: inherit;
-            border: none;
-            position: relative;
-            overflow: hidden;
-            z-index: 1;
-            box-shadow: 3px 3px 6px #c5c5c5,
-                -3px -3px 6px #ffffff;
-            border: solid 1px black;
-        }
+<style>
+    .btn-update {
+        background-color: #28a745;
+        transition: background-color 0.3s, transform 0.3s;
+        color: white;
+        border: 1px solid white;
+        padding: 10px 30px;
+        margin: 4px 1px;
+        display: inline-block;
+        border-radius: 10px;
+        text-align: center;
+        vertical-align: middle;
+        font-weight: bold;
+    }
 
-        .btn-save::before {
-            content: '';
-            width: 0;
-            height: 3em;
-            border-radius: 30em;
-            position: absolute;
-            top: 0;
-            left: 0;
-            background-image: linear-gradient(to right, #c10fd8 0%, #f9f047 100%);
-            transition: .5s ease;
-            display: block;
-            z-index: -1;
-        }
-
-        .btn-save:hover::before {
-            width: 9em;
-        }
-    </style>
+    .btn-update:hover {
+        background-color: #28a745;
+        transform: scale(1.05);
+        color: black;
+        background-color: white;
+        border: 1px solid black;
+    }
+</style>
     <!-- End Navbar -->
     <div class="content">
         <div class="row">
@@ -78,11 +67,37 @@
                                 <input type="text" class="form-control" id="phoneNumber" name="phoneNumber"
                                     value="{{ $user->phoneNumber }}">
                             </div>
-                            <button type="submit" class="btn-save">Update</button>
+                            <button type="submit" class="btn-update">Update</button>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    @if (Session::has('fail'))
+    <script>
+        $.toast({
+            heading: 'Notification',
+            text: "{{ Session::get('fail') }}",
+            showHideTransition: 'slide',
+            position: 'top-center',
+            icon: 'error',
+            hideAfter: 5000
+        })
+    </script>
+    @endif  
+    
+    @if (Session::has('success'))
+    <script>
+        $.toast({
+            heading: 'Notification',
+            text: "{{ Session::get('success') }}",
+            showHideTransition: 'slide',
+            position: 'top-center',
+            icon: 'success',
+            hideAfter: 5000
+        })
+    </script>
+    @endif
 @endsection()

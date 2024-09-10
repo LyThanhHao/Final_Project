@@ -10,7 +10,7 @@
           <h3 class="card-title font-weight-bold text-center">Table of User accounts</h3>
         </div>
         <div class="card-body">
-          <a href="{{ route('admin.accounts.create') }}" class="btn btn-primary">Create New User</a>
+          <a href="{{ route('admin.accounts.create') }}" class="btn-add">Create New User</a>
           <div>
             <table class="table" id="">
               <thead class="text-primary">
@@ -49,4 +49,32 @@
     </div>
   </div>
 </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.js"></script>
+@if (Session::has('fail'))
+<script>
+    $.toast({
+        heading: 'Notification',
+        text: "{{ Session::get('fail') }}",
+        showHideTransition: 'slide',
+        position: 'top-center',
+        icon: 'error',
+        hideAfter: 5000
+    })
+</script>
+@endif  
+
+@if (Session::has('success'))
+<script>
+    $.toast({
+        heading: 'Notification',
+        text: "{{ Session::get('success') }}",
+        showHideTransition: 'slide',
+        position: 'top-center',
+        icon: 'success',
+        hideAfter: 5000
+    })
+</script>
+@endif
+
 @endsection()

@@ -10,9 +10,9 @@
           <h3 class="card-title font-weight-bold text-center">Table of Courses</h3>
         </div>
         <div class="card-body">
-          <a href="{{ route('admin.courses.create') }}" class="btn btn-primary">Create New Course</a>
+          <a href="{{ route('admin.courses.create') }}" class="btn-add">Create New Course</a>
           <div>
-            <table class="table" id="">
+            <table class="table table-striped" id="">
               <thead class="text-primary">
                 <tr>
                   <th>Course Name</th>
@@ -39,7 +39,7 @@
                   </td>                
                   <td style="max-width: 100px;">{{ $course->category->cat_name }}</td>
                   <td>{{ $course->user->fullname }}</td>
-                  <td>{{ $course->status == 0 ? 'Hidden' : 'Publish' }}</td>
+                  <td style="color: {{ $course->status == 0 ? 'gray !important' : '#00f708 !important' }};">{{ $course->status == 0 ? 'Hidden' : 'Publish' }}</td>  
                   <td style="text-align: center;">
                     <a href="{{ route('admin.courses.edit', $course->id) }}"><i class="bi bi-pencil-square" style="color: white; margin: 0 5px;"></i></a>
                     <form action="{{ route('admin.courses.destroy', $course->id) }}" method="POST" style="display:inline-block;">
@@ -58,4 +58,32 @@
     </div>
   </div>
 </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.js"></script>
+@if (Session::has('fail'))
+<script>
+    $.toast({
+        heading: 'Notification',
+        text: "{{ Session::get('fail') }}",
+        showHideTransition: 'slide',
+        position: 'top-center',
+        icon: 'error',
+        hideAfter: 5000
+    })
+</script>
+@endif  
+
+@if (Session::has('success'))
+<script>
+    $.toast({
+        heading: 'Notification',
+        text: "{{ Session::get('success') }}",
+        showHideTransition: 'slide',
+        position: 'top-center',
+        icon: 'success',
+        hideAfter: 5000
+    })
+</script>
+@endif
+
 @endsection()

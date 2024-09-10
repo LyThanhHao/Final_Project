@@ -17,11 +17,11 @@ class CourseController extends Controller
     }
 
 
-    public function create(Course $course)
+    public function create()
     {   
         $category = Category::all();
         $users = User::all();
-        return view('admin.courses.create', compact('course', 'category', 'users'));
+        return view('admin.courses.create', compact('category', 'users'));
     }
 
 
@@ -30,12 +30,12 @@ class CourseController extends Controller
         $request->validate([
             'course_name' => 'required',
             'category_id' => 'required|exists:categories,id',
-            'user_id' => 'required|exists:users,id',
+            'teacher' => 'required|exists:users,id',
             'image' => 'required|file|mimes:jpg,jpeg,gif,png,webp,svg,',
             'file' => 'required|file|mimes:pdf,',
             'description' => 'required',
         ]);
-    
+
         $data = $request->except(['image', 'file']); 
     
         if ($request->has('image')) {
@@ -49,13 +49,15 @@ class CourseController extends Controller
             $request->file->move(public_path('uploads/course_file'), $file_name);
             $data['file'] = $file_name;
         }
+
+        $data['user_id'] = $request->input('teacher');
     
-        $course = Course::create($data);
+        $check = Course::create($data);
     
-        if ($course) {
-            return redirect()->route('admin.courses.index')->with('create_success', 'Course created successfully');
+        if ($check) {
+            return redirect()->route('admin.courses.index')->with('success', 'Course created successfully');
         }
-        return redirect()->route('admin.courses.index')->with('create_fail', 'Course creation failed');
+        return redirect()->route('admin.courses.index')->with('fail', 'Course creation failed');
     }
     
 
@@ -72,16 +74,51 @@ class CourseController extends Controller
 
     public function edit(Course $course)
     {
-        //
+        $categories = Category::all();
+        $teachers = User::where('role', 'teacher')->get();
+    
+        return view('admin.courses.edit', compact('course', 'categories', 'teachers'));
     }
-
+    
     public function update(Request $request, Course $course)
     {
-        //
-    }
+        $request->validate([
+            'course_name' => 'required',
+            'image' => 'nullable|file|mimes:jpg,jpeg,gif,png,webp,svg',
+            'description' => 'required',
+            'file' => 'nullable|file|mimes:pdf',
+            'category_id' => 'required|exists:categories,id',
+            'teacher' => 'required|exists:users,id',
+            'status' => 'required',
+        ]);
+        
+        $data = $request->except(['image', 'file']);
+        
+        if ($request->hasFile('image')) {
+            $img_name = $request->image->hashName();
+            $request->image->move(public_path('uploads/course_image'), $img_name);
+            $data['image'] = $img_name;
+        }
+    
+        if ($request->hasFile('file')) {
+            $file_name = $request->file->hashName();
+            $request->file->move(public_path('uploads/course_file'), $file_name);
+            $data['file'] = $file_name;
+        }
 
+        $data['user_id'] = $request->input('teacher');
+        
+        if ($course->update($data)) {
+            return redirect()->route('admin.courses.index')->with('success', 'Course updated successfully');
+        }
+        return redirect()->back()->with('fail', 'Course update failed! Something went wrong, please try again!');
+    }
+    
     public function destroy(Course $course)
     {
-        //
+        if ($course->delete()) {
+            return redirect()->route('admin.courses.index')->with('success', 'Course deleted successfully');
+        }
+        return redirect()->back()->with('fail', 'Course deletion failed! Something went wrong, please try again!');
     }
 }

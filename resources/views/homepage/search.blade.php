@@ -5,14 +5,19 @@
         <h2 class="text-center my-5">Search results for "{{ $keyword }}"</h2>
 
         @if ($courses->isEmpty())
-            <p style="text-align: center; font-size: 20px; font-weight: bold; color: red;   ">No courses found!</p>
+            <div class="mx-auto">
+                <hr class="mb-5" style="width: 400px;">
+                <p style="text-align: center; font-size: 20px; font-weight: bold; color: red;">No courses found!</p>
+            </div>
         @else
             <div class="row">
                 @foreach ($courses as $course)
                     <div id="course" class="col-lg-3 col-md-6 mb-4">
                         <div class="card h-100"
-                            style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); transition: transform 0.3s, box-shadow 0.3s;">
-                            <img class="img-fluid card-img-top" src="{{ asset('uploads/course_image/' . $course->image) }}"
+                            style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); transition: transform 0.3s, box-shadow 0.3s;;"
+                            title="{{ $course->course_name }}">
+                            <img style="height: 45%;" class="img-fluid card-img-top"
+                                src="{{ asset('uploads/course_image/' . $course->image) }}"
                                 alt="{{ $course->course_name }}">
                             <div class="card-body text-center">
                                 <p class="card-title text-truncate"
@@ -144,6 +149,5 @@
             font-size: 15px;
             color: white;
         }
-
     </style>
 @endsection
