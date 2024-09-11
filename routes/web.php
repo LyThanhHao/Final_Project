@@ -63,12 +63,26 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
 Route::group(['prefix' => 'teacher', 'middleware' => ['auth', 'teacher']], function () {
     //courses
     Route::get('/', [TeacherController::class, 'courses'])->name('teacher');
-    Route::get('/courses', [TeacherController::class, 'courses'])->name('teacher.courses');
+    Route::get('/courses', [TeacherController::class, 'courses'])->name('teacher.courses.index');
     Route::get('/courses/create', [TeacherController::class, 'create_course'])->name('teacher.courses.create');
     Route::post('/courses', [TeacherController::class, 'store_course'])->name('teacher.courses.store');
     Route::get('/courses/{course}/edit', [TeacherController::class, 'edit_course'])->name('teacher.courses.edit');
     Route::put('/courses/{course}', [TeacherController::class, 'update_course'])->name('teacher.courses.update');
     Route::delete('/courses/{course}', [TeacherController::class, 'destroy_course'])->name('teacher.courses.destroy');
+    //tests
+    Route::get('/tests', [TeacherController::class, 'tests'])->name('teacher.tests.index');
+    Route::get('/tests/create', [TeacherController::class, 'create_test'])->name('teacher.tests.create');
+    Route::post('/tests', [TeacherController::class, 'store_test'])->name('teacher.tests.store');
+    Route::get('/tests/{test}/edit', [TeacherController::class, 'edit_test'])->name('teacher.tests.edit');
+    Route::put('/tests/{test}', [TeacherController::class, 'update_test'])->name('teacher.tests.update');
+    Route::delete('/tests/{test}', [TeacherController::class, 'destroy_test'])->name('teacher.tests.destroy');
+    Route::get('/tests/{test}/detail', [TeacherController::class, 'test_detail'])->name('teacher.tests.detail');
+    //questions
+    Route::get('/questions/create', [TeacherController::class, 'create_question'])->name('teacher.questions.create');
+    Route::post('/questions', [TeacherController::class, 'store_question'])->name('teacher.questions.store');
+    Route::get('/questions/{question}/edit', [TeacherController::class, 'edit_question'])->name('teacher.questions.edit');
+    Route::put('/questions/{question}', [TeacherController::class, 'update_question'])->name('teacher.questions.update');
+    Route::delete('/questions/{question}', [TeacherController::class, 'destroy_question'])->name('teacher.questions.destroy');
 });
 
 //user routes

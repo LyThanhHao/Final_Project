@@ -280,14 +280,14 @@
                     <hr>
                     <ul class="dashboard-list">
                         <li class="dashboard-item {{ request()->is('teacher/courses') ? 'active' : '' }}">
-                            <a href="{{ route('teacher.courses') }}" class="dashboard-link">
+                            <a href="{{ route('teacher.courses.index') }}" class="dashboard-link">
                                 <i class="bi bi-file-text-fill"></i>
                                 Courses
                             </a>
                         </li>
                         <hr>
                         <li class="dashboard-item {{ request()->is('teacher/tests') ? 'active' : '' }}">
-                            <a href="#" class="dashboard-link">
+                            <a href="{{ route('teacher.tests.index') }}" class="dashboard-link">
                                 <i class="bi bi-pen-fill"></i>
                                 Test
                             </a>
