@@ -173,7 +173,7 @@ class TeacherController extends Controller
 
         $check = Question::create($data);
         if ($check) {
-            return redirect()->route('teacher.tests.detail', $test->id)->with('success', 'Question created successfully');
+            return redirect()->route('teacher.tests.detail', $data['test_id'])->with('success', 'Question created successfully');
         }
         return redirect()->back()->with('fail', 'Question creation failed! Something went wrong, please try again!');
     }

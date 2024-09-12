@@ -4,10 +4,10 @@
     <div class="content mt-4">
         <div class="card">
             <div class="card-header text-center">
-                <h3>Questions Management</h3>
+                <h3>Questions table of "{{ $test->test_name }}"</h3>
             </div>
             <div class="card-body">
-                <a href="#" class="btn btn-add mb-3">Add New Question</a>
+                <a href="{{ route('teacher.questions.create', $test->id) }}" class="btn btn-add mb-3">Add New Question</a>
                 <table class="table table-bordered">
                     <thead>
                         <tr>

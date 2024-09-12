@@ -14,6 +14,7 @@
                             <th style="max-width: 20px;">No.</th>
                             <th>Test Name</th>
                             <th>Course Name</th>
+                            <th style="max-width: 35px;">Questions Count</th>
                             <th style="max-width: 50px;">Action</th>
                         </tr>
                     </thead>
@@ -23,6 +24,7 @@
                                 <td class="text-center font-weight-bold">{{ $loop->iteration }}</td>
                                 <td>{{ $test->test_name }}</td>
                                 <td>{{ $test->course->course_name }}</td>
+                                <td style="text-align: center;">{{ $test->questions->count() }}</td>
                                 <td style="text-align: center; max-width: 50px;">
                                     <a href="{{ route('teacher.tests.detail', $test->id) }}" class="btn btn-detail">View detail</a>
                                     <a href="{{ route('teacher.tests.edit', $test->id) }}" class="btn btn-edit"><i class="bi bi-pencil-square"></i></a>
@@ -46,7 +48,7 @@
         }
 
         th {
-            font-size: 15px;
+            font-size: 13px;
             text-align: center;
             align-content: center;
         }

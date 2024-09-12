@@ -78,7 +78,7 @@ Route::group(['prefix' => 'teacher', 'middleware' => ['auth', 'teacher']], funct
     Route::delete('/tests/{test}', [TeacherController::class, 'destroy_test'])->name('teacher.tests.destroy');
     Route::get('/tests/{test}/detail', [TeacherController::class, 'test_detail'])->name('teacher.tests.detail');
     //questions
-    Route::get('/questions/create', [TeacherController::class, 'create_question'])->name('teacher.questions.create');
+    Route::get('/questions/create/{test}', [TeacherController::class, 'create_question'])->name('teacher.questions.create');
     Route::post('/questions', [TeacherController::class, 'store_question'])->name('teacher.questions.store');
     Route::get('/questions/{question}/edit', [TeacherController::class, 'edit_question'])->name('teacher.questions.edit');
     Route::put('/questions/{question}', [TeacherController::class, 'update_question'])->name('teacher.questions.update');

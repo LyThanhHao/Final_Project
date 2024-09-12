@@ -16,7 +16,7 @@ class Question extends Model
         'c',
         'd',
         'answer',
-        
+        'test_id',
     ];
 
     public function test()
