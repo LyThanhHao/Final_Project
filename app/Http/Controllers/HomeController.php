@@ -14,8 +14,15 @@ class HomeController extends Controller
 {
     public function index()
     {
+        $categories = Category::where('status', 1)
+            ->with('courses')
+            ->get()
+            ->sortByDesc(function($category) {
+                return $category->courses->count();
+            });
+        $teachers = User::where('role', 'Teacher')->get();
         $courses = Course::orderBy('id', 'DESC')->limit(3)->get();
-        return view('homepage.index', compact('courses'));
+        return view('homepage.index', compact('courses', 'categories', 'teachers'));
     }
 
     public function search(Request $request)

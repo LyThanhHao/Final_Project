@@ -52,10 +52,10 @@
                     <div class="form-group">
                         <label for="answer">Answer</label>
                         <select class="form-control" id="answer" name="answer" required>
-                            <option value="A" {{ old('answer') == 'A' ? 'selected' : '' }}>A</option>
-                            <option value="B" {{ old('answer') == 'B' ? 'selected' : '' }}>B</option>
-                            <option value="C" {{ old('answer') == 'C' ? 'selected' : '' }}>C</option>
-                            <option value="D" {{ old('answer') == 'D' ? 'selected' : '' }}>D</option>
+                            <option value="a" {{ old('answer') == 'a' ? 'selected' : '' }}>A</option>
+                            <option value="b" {{ old('answer') == 'b' ? 'selected' : '' }}>B</option>
+                            <option value="c" {{ old('answer') == 'c' ? 'selected' : '' }}>C</option>
+                            <option value="d" {{ old('answer') == 'd' ? 'selected' : '' }}>D</option>
                         </select>
                         @error('answer')
                             <small class="text-danger">{{ $message }}</small>

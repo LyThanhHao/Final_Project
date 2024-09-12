@@ -4,7 +4,7 @@
     <div class="content mt-4">
         <div class="card">
             <div class="card-header text-center">
-                <h3>Tests Management</h3>
+                <h3>List of Tests</h3>
             </div>
             <div class="card-body">
                 <a href="{{ route('teacher.tests.create') }}" class="btn btn-add mb-3">Add New Test</a>

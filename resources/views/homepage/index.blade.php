@@ -157,78 +157,17 @@
                 <h1>Explore Top Subjects</h1>
             </div>
             <div class="row">
-                <div class="col-lg-3 col-md-6 mb-4">
-                    <div class="cat-item position-relative overflow-hidden rounded mb-2">
-                        <img class="img-fluid" src="uploads/cat-1.jpg" alt="">
-                        <a class="cat-overlay text-white text-decoration-none" href="">
-                            <h4 class="text-white font-weight-medium">Web Design</h4>
-                            <span>100 Courses</span>
-                        </a>
+                @foreach ($categories as $category)
+                    <div class="col-lg-3 col-md-6 mb-4">
+                        <div class="cat-item position-relative overflow-hidden rounded mb-2">
+                            <img class="img-fluid" src="{{ asset('uploads/category_image/' . $category->cat_image) }}" alt="">
+                            <a class="cat-overlay text-white text-decoration-none" href="{{ route('category.filter', $category->id) }}">
+                                <h5 class="text-white font-weight-medium text-center">{{ $category->cat_name }}</h5>
+                                <span>{{ $category->courses->count() }} Courses</span>
+                            </a>
+                        </div>
                     </div>
-                </div>
-                <div class="col-lg-3 col-md-6 mb-4">
-                    <div class="cat-item position-relative overflow-hidden rounded mb-2">
-                        <img class="img-fluid" src="uploads/cat-2.jpg" alt="">
-                        <a class="cat-overlay text-white text-decoration-none" href="">
-                            <h4 class="text-white font-weight-medium">Development</h4>
-                            <span>100 Courses</span>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 mb-4">
-                    <div class="cat-item position-relative overflow-hidden rounded mb-2">
-                        <img class="img-fluid" src="uploads/cat-3.jpg" alt="">
-                        <a class="cat-overlay text-white text-decoration-none" href="">
-                            <h4 class="text-white font-weight-medium">Game Design</h4>
-                            <span>100 Courses</span>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 mb-4">
-                    <div class="cat-item position-relative overflow-hidden rounded mb-2">
-                        <img class="img-fluid" src="uploads/cat-4.jpg" alt="">
-                        <a class="cat-overlay text-white text-decoration-none" href="">
-                            <h4 class="text-white font-weight-medium">Apps Design</h4>
-                            <span>100 Courses</span>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 mb-4">
-                    <div class="cat-item position-relative overflow-hidden rounded mb-2">
-                        <img class="img-fluid" src="uploads/cat-5.jpg" alt="">
-                        <a class="cat-overlay text-white text-decoration-none" href="">
-                            <h4 class="text-white font-weight-medium">Marketing</h4>
-                            <span>100 Courses</span>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 mb-4">
-                    <div class="cat-item position-relative overflow-hidden rounded mb-2">
-                        <img class="img-fluid" src="uploads/cat-6.jpg" alt="">
-                        <a class="cat-overlay text-white text-decoration-none" href="">
-                            <h4 class="text-white font-weight-medium">Research</h4>
-                            <span>100 Courses</span>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 mb-4">
-                    <div class="cat-item position-relative overflow-hidden rounded mb-2">
-                        <img class="img-fluid" src="uploads/cat-7.jpg" alt="">
-                        <a class="cat-overlay text-white text-decoration-none" href="">
-                            <h4 class="text-white font-weight-medium">Content Writing</h4>
-                            <span>100 Courses</span>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 mb-4">
-                    <div class="cat-item position-relative overflow-hidden rounded mb-2">
-                        <img class="img-fluid" src="uploads/cat-8.jpg" alt="">
-                        <a class="cat-overlay text-white text-decoration-none" href="">
-                            <h4 class="text-white font-weight-medium">SEO</h4>
-                            <span>100 Courses</span>
-                        </a>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
     </div>
@@ -236,7 +175,7 @@
 
 
     <!-- Courses Start -->
-    <div class="container-fluid py-5">
+    <div class="container-fluid">
         <div class="container py-5">
             <div class="text-center mb-5">
                 <h5 class="text-primary text-uppercase mb-3 text-bold" style="letter-spacing: 5px;">Courses</h5>
@@ -247,9 +186,9 @@
                     @if ($course->status && $course->category->status)
                         <div id="course" class="col-lg-3 col-md-6 mb-4">
                             <div class="card h-100"
-                                style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); transition: transform 0.3s, box-shadow 0.3s;" title="{{ $course->course_name }}">
-                                <img class="img-fluid card-img-top"
-                                    style="height: 45%;"
+                                style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); transition: transform 0.3s, box-shadow 0.3s;"
+                                title="{{ $course->course_name }}">
+                                <img class="img-fluid card-img-top" style="height: 45%;"
                                     src="{{ asset('uploads/course_image/' . $course->image) }}"
                                     alt="{{ $course->course_name }}">
                                 <div class="card-body text-center">
@@ -267,8 +206,8 @@
                                                 alt=""
                                                 style="border-radius: 50%; width: 30px; height: 30px; margin-right: 8px;">
                                         @endif
-                                        <a href="" class="text-info"
-                                            style="text-decoration: underline;" title="{{ $course->user->fullname }}">{{ $course->user->fullname }}</a>
+                                        <a href="" class="text-info" style="text-decoration: underline;"
+                                            title="{{ $course->user->fullname }}">{{ $course->user->fullname }}</a>
                                     </div>
                                 </div>
                                 <div class="card-footer text-center">
@@ -293,8 +232,8 @@
                                                         d="M110 30L76 30"></path>
                                                 </svg>
 
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 65 75"
-                                                    class="book-page">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                    viewBox="0 0 65 75" class="book-page">
                                                     <path stroke-linecap="round" stroke-width="4" stroke="#fff"
                                                         d="M40 20H15">
                                                     </path>

@@ -167,6 +167,7 @@ class TeacherController extends Controller
             'c' => 'required',
             'd' => 'required',
             'answer' => 'required',
+            'test_id' => 'required|exists:tests,id',
         ]);
 
         $data = $request->all();
