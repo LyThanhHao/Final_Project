@@ -4,7 +4,7 @@
     <div class="content mt-4">
         <div class="card">
             <div class="card-header text-center">
-                <h3>List of questions for "{{ $test->test_name }}"</h3>
+                <h3 style="color: aliceblue;">List of questions for "{{ $test->test_name }}"</h3>
             </div>
             <div class="card-body">
                 <a href="{{ route('teacher.questions.create', $test->id) }}" class="btn btn-add mb-3">Add New Question</a>
@@ -13,7 +13,7 @@
                         <tr>
                             <th style="max-width: 20px;">No.</th>
                             <th>Question</th>
-                            <th style="max-width: 30px;">Action</th>
+                            <th style="width: 100px;">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -21,17 +21,14 @@
                             <tr>
                                 <td class="text-center font-weight-bold">{{ $loop->iteration }}</td>
                                 <td>{{ $question->question }}</td>
-                                <td style="text-align: center; max-width: 50px;">
-                                    <div style="display: flex; justify-content: space-around; align-items: center;">
-                                        <a href="{{ route('teacher.questions.edit', $question->id) }}" style="margin-right: 10px;">
-                                            <i class="bi bi-pencil-square"></i>
-                                        </a>
-                                        <form action="{{ route('teacher.questions.destroy', $question->id) }}" method="POST" style="display:inline-block;">
+                                <td style="text-align: center; position: relative;">
+                                    <button class="btn btn-toggle" onclick="toggleActions(this)"><i class="bi bi-list"></i></button>
+                                    <div class="action-buttons" style="display: none; position: absolute; top: 75%; left: 50%; transform: translateX(-50%); width: 75%; z-index: 1; background: white; border: 1px solid #ccc; border-radius: 5px;">
+                                        <a href="{{ route('teacher.questions.edit', $question->id) }}" class="btn btn-edit"><i class="bi bi-pencil-square"></i></a>
+                                        <form action="{{ route('teacher.questions.destroy', $question->id) }}" method="POST" style="display:inline-block; width: 100%;">
                                             @csrf
                                             @method('DELETE')
-                                            <button style="border: none; background-color: transparent;" type="submit" onclick="confirmDelete(event)">
-                                                <i class="bi bi-trash"></i>
-                                            </button>
+                                            <button class="btn btn-delete" type="submit" onclick="confirmDelete(event)"><i class="bi bi-trash"></i></button>
                                         </form>
                                     </div>
                                 </td>
@@ -61,11 +58,10 @@
             background-color: #28a745;
             transition: background-color 0.3s, transform 0.3s;
             color: white;
-            border: 1px solid black;
+            border-radius: 1em;
         }
 
         .btn-add:hover {
-            background-color: #28a745;
             transform: scale(1.05);
             color: black;
             background-color: white;
@@ -76,11 +72,10 @@
             background-color: grey;
             transition: background-color 0.3s, transform 0.3s;
             color: white;
-            border: 1px solid black;
+            border-radius: 1em;
         }
 
         .btn-back:hover {
-            background-color: #28a745;
             transform: scale(1.05);
             color: black;
             background-color: white;
@@ -93,6 +88,7 @@
             margin-bottom: 10px;
             width: 100%;
             padding: 5px;
+            font-size: 13px;
         }
 
         .btn-edit:hover {
@@ -106,6 +102,7 @@
             color: white;
             width: 100%;
             padding: 5px;
+            font-size: 13px;
         }
 
         .btn-delete:hover {
@@ -113,5 +110,48 @@
             background-color: white;
             color: black;
         }
+
+        .btn-toggle {
+            background-color: transparent;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .btn-toggle i {
+            color: #007bff;
+        }
+
+        .btn-toggle.active i {
+            color: red;
+        }
+
+        .action-buttons {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1;
+            background: white;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 5px;
+        }
+
+        .card-header {
+            background: linear-gradient(45deg, #007bff, #6610f2);
+            color: white;
+        }
     </style>
+
+    <script>
+        function toggleActions(button) {
+            const actionButtons = button.nextElementSibling;
+            const isVisible = actionButtons.style.display === 'block';
+            actionButtons.style.display = isVisible ? 'none' : 'block';
+            button.classList.toggle('active', !isVisible);
+            button.innerHTML = isVisible ? '<i class="bi bi-list"></i>' : '<i class="bi bi-x"></i>';
+        }
+    </script>
 @endsection()

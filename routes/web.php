@@ -20,10 +20,7 @@ Route::post('/login', [HomeController::class, 'check_login']);
 Route::get('/register', [HomeController::class, 'register'])->name('homepage.register');
 Route::post('/register', [HomeController::class, 'check_register']);
 Route::get('/verify-account/{email}', [HomeController::class, 'verify'])->name('homepage.verify');
-Route::get('/forgot-password', [HomeController::class, 'forgot_password'])->name('homepage.forgot_password');
-Route::post('/forgot-password', [HomeController::class, 'check_forgot_password']);
-Route::get('/reset-password', [HomeController::class, 'reset_password'])->name('homepage.reset_password');
-Route::post('/reset-password', [HomeController::class, 'check_reset_password']);
+
 Route::get('/logout', [HomeController::class, 'logout'])->name('homepage.logout');
 
 //courses routes
@@ -79,7 +76,7 @@ Route::group(['prefix' => 'teacher', 'middleware' => ['auth', 'teacher']], funct
     Route::get('/tests/{test}/question', [TeacherController::class, 'test_detail'])->name('teacher.tests.detail');
     //questions
     Route::get('/questions/create/{test}', [TeacherController::class, 'create_question'])->name('teacher.questions.create');
-    Route::post('/questions', [TeacherController::class, 'store_question'])->name('teacher.questions.store');
+    Route::post('/questions', [TeacherController::class, 'store_questions'])->name('teacher.questions.store');
     Route::get('/questions/{question}/edit', [TeacherController::class, 'edit_question'])->name('teacher.questions.edit');
     Route::put('/questions/{question}', [TeacherController::class, 'update_question'])->name('teacher.questions.update');
     Route::delete('/questions/{question}', [TeacherController::class, 'destroy_question'])->name('teacher.questions.destroy');
@@ -88,8 +85,7 @@ Route::group(['prefix' => 'teacher', 'middleware' => ['auth', 'teacher']], funct
 //user routes
 Route::get('/profile', [UserController::class, 'profile'])->name('profile');
 Route::put('/profile', [UserController::class, 'check_profile'])->name('check_change_profile');
-Route::post('/profile', [UserController::class, 'change_avatar'])->name('change_avatar');
-Route::get('/profile/password', [UserController::class, 'password'])->name('password');
+Route::post('/profile/avatar', [UserController::class, 'change_avatar'])->name('change_avatar');
 Route::post('/profile/password', [UserController::class, 'check_password'])->name('check_change_password');
 Route::get('/forgot-password', [UserController::class, 'forgot_password'])->name('forgot_password');
 Route::post('/forgot-password', [UserController::class, 'check_forgot_password'])->name('check_forgot_password');

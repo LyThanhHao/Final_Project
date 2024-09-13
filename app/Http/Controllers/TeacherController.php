@@ -117,17 +117,31 @@ class TeacherController extends Controller
         $request->validate([
             'course_id' => 'required',
             'test_name' => 'required',
+            'questions.*.question' => 'required',
+            'questions.*.a' => 'required',
+            'questions.*.b' => 'required',
+            'questions.*.c' => 'required',
+            'questions.*.d' => 'required',
+            'questions.*.answer' => 'required|in:a,b,c,d',
+        ]);
+        
+
+        $test = Test::create([
+            'test_name' => $request->test_name,
+            'course_id' => $request->course_id,
+            'user_id' => Auth::id(),
         ]);
 
-        $data = $request->all();
-
-        $data['user_id'] = Auth::user()->id;
-
-        $check = Test::create($data);
-        if ($check) {
-            return redirect()->route('teacher.tests.index')->with('success', 'Test created successfully');
+        $questions = [];
+        foreach ($request->questions as $questionData) {
+            $questionData['test_id'] = $test->id;
+            $questions[] = Question::create($questionData);
         }
-        return redirect()->back()->with('fail', 'Test creation failed! Something went wrong, please try again!');
+
+        if ($test && $questions) {
+            return redirect()->route('teacher.tests.index')->with('success', 'Test and questions created successfully');
+        }
+        return redirect()->back()->with('fail', 'Test and questions creation failed! Something went wrong, please try again!');
     }
 
     public function edit_test(Test $test){
@@ -150,8 +164,15 @@ class TeacherController extends Controller
         return redirect()->back()->with('fail', 'Test update failed! Something went wrong, please try again!');
     }
 
+    public function destroy_test(Test $test){
+        if ($test->delete()) {
+            return redirect()->route('teacher.tests.index')->with('success', 'Test deleted successfully');
+        }
+        return redirect()->back()->with('fail', 'Test deletion failed! Something went wrong, please try again!');
+    }
+
     public function test_detail(Test $test){
-        $questions = Question::where('test_id', $test->id)->orderBy('id', 'DESC')->get();
+        $questions = Question::where('test_id', $test->id)->orderBy('id', 'ASC')->get();
         return view('teacher.tests.detail', compact('test', 'questions'));
     }
 
@@ -159,24 +180,23 @@ class TeacherController extends Controller
         return view('teacher.questions.create', compact('test'));
     }
 
-    public function store_question(Request $request, Test $test){
+    public function store_questions(Request $request){
         $request->validate([
-            'question' => 'required',
-            'a' => 'required',
-            'b' => 'required',
-            'c' => 'required',
-            'd' => 'required',
-            'answer' => 'required',
             'test_id' => 'required|exists:tests,id',
+            'questions.*.question' => 'required',
+            'questions.*.a' => 'required',
+            'questions.*.b' => 'required',
+            'questions.*.c' => 'required',
+            'questions.*.d' => 'required',
+            'questions.*.answer' => 'required|in:a,b,c,d',
         ]);
 
-        $data = $request->all();
-
-        $check = Question::create($data);
-        if ($check) {
-            return redirect()->route('teacher.tests.detail', $data['test_id'])->with('success', 'Question created successfully');
+        foreach ($request->questions as $questionData) {
+            $questionData['test_id'] = $request->test_id;
+            Question::create($questionData);
         }
-        return redirect()->back()->with('fail', 'Question creation failed! Something went wrong, please try again!');
+
+        return redirect()->route('teacher.tests.detail', $request->test_id)->with('success', 'Questions created successfully');
     }
 
     public function edit_question(Question $question){

@@ -74,6 +74,10 @@
     .dashboard-link:hover i {
         color: #000;
     }
+
+    .dashboard-item.active .dashboard-link, .dashboard-item.active .dashboard-link i {
+        color: #fff;
+    }
 </style>
 
 <body>

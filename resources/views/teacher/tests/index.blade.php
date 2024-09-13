@@ -4,18 +4,18 @@
     <div class="content mt-4">
         <div class="card">
             <div class="card-header text-center">
-                <h3>List of Tests</h3>
+                <h3 style="color: aliceblue;">List of Tests</h3>
             </div>
             <div class="card-body">
                 <a href="{{ route('teacher.tests.create') }}" class="btn btn-add mb-3">Add New Test</a>
-                <table class="table table-bordered">
+                <table class="table table-bordered table-hover table-striped">
                     <thead>
                         <tr>
                             <th style="max-width: 20px;">No.</th>
                             <th>Test Name</th>
                             <th>Course Name</th>
                             <th style="max-width: 35px;">Questions Count</th>
-                            <th style="max-width: 50px;">Action</th>
+                            <th style="width: 130px;">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -25,14 +25,17 @@
                                 <td>{{ $test->test_name }}</td>
                                 <td>{{ $test->course->course_name }}</td>
                                 <td style="text-align: center;">{{ $test->questions->count() }}</td>
-                                <td style="text-align: center; max-width: 50px;">
-                                    <a href="{{ route('teacher.tests.detail', $test->id) }}" class="btn btn-detail">View detail</a>
-                                    <a href="{{ route('teacher.tests.edit', $test->id) }}" class="btn btn-edit"><i class="bi bi-pencil-square"></i></a>
-                                    <form action="{{ route('teacher.tests.destroy', $test->id) }}" method="POST" style="display:inline-block; width: 100%;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button class="btn btn-delete" type="submit" onclick="confirmDelete(event)"><i class="bi bi-trash"></i></button>
-                                    </form>
+                                <td style="text-align: center; position: relative;">
+                                    <button class="btn btn-toggle" onclick="toggleActions(this)"><i class="bi bi-list"></i></button>
+                                    <div class="action-buttons" style="display: none; position: absolute; top: 75%; left: 50%; transform: translateX(-50%); width: 75%; z-index: 1; background: white; border: 1px solid #ccc; border-radius: 5px; padding: 5px;">
+                                        <a href="{{ route('teacher.tests.detail', $test->id) }}" class="btn btn-detail">View detail</a>
+                                        <a href="{{ route('teacher.tests.edit', $test->id) }}" class="btn btn-edit"><i class="bi bi-pencil-square"></i></a>
+                                        <form action="{{ route('teacher.tests.destroy', $test->id) }}" method="POST" style="display:inline-block; width: 100%;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button class="btn btn-delete" type="submit" onclick="confirmDelete(event)"><i class="bi bi-trash"></i></button>
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
                         @endforeach
@@ -45,6 +48,11 @@
     <style>
         td {
             font-size: 13px;
+            transition: background-color 0.3s;
+        }
+
+        td:hover {
+            background-color: #f1f1f1;
         }
 
         th {
@@ -57,11 +65,10 @@
             background-color: #28a745;
             transition: background-color 0.3s, transform 0.3s;
             color: white;
-            border: 1px solid black;
+            border-radius: 1em;
         }
 
         .btn-add:hover {
-            background-color: #28a745;
             transform: scale(1.05);
             color: black;
             background-color: white;
@@ -74,12 +81,15 @@
             margin-bottom: 10px; 
             width: 100%;
             padding: 5px;
+            transition: background-color 0.3s, transform 0.3s;
+            font-size: 13px;
         }
 
         .btn-detail:hover {
             border: 1px solid black;
             background-color: white;
             color: black;
+            transform: scale(1.05);
         }
 
         .btn-edit {
@@ -88,12 +98,15 @@
             margin-bottom: 10px; 
             width: 100%;
             padding: 5px;
+            transition: background-color 0.3s, transform 0.3s;
+            font-size: 13px;
         }
 
         .btn-edit:hover {
             border: 1px solid black;
             background-color: white;
             color: black;
+            transform: scale(1.05);
         }
 
         .btn-delete {
@@ -101,12 +114,58 @@
             color: white; 
             width: 100%;
             padding: 5px;
+            transition: background-color 0.3s, transform 0.3s;
+            font-size: 13px;
         }
 
         .btn-delete:hover {
             border: 1px solid black;
             background-color: white;
             color: black;
+            transform: scale(1.05);
+        }
+
+        .btn-toggle {
+            background-color: transparent;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .btn-toggle i {
+            color: #007bff;
+        }
+
+        .btn-toggle.active i {
+            color: red;
+        }
+
+        .action-buttons {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1;
+            background: white;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 5px;
+        }
+
+        .card-header {
+            background: linear-gradient(45deg, #007bff, #6610f2);
+            color: white;
         }
     </style>
-@endsection()
+
+    <script>
+        function toggleActions(button) {
+            const actionButtons = button.nextElementSibling;
+            const isVisible = actionButtons.style.display === 'block';
+            actionButtons.style.display = isVisible ? 'none' : 'block';
+            button.classList.toggle('active', !isVisible);
+            button.innerHTML = isVisible ? '<i class="bi bi-list"></i>' : '<i class="bi bi-x"></i>';
+        }
+    </script>
+@endsection

@@ -65,14 +65,6 @@ class UserController extends Controller
         return redirect()->back()->with('fail', 'Something went wrong, please check the information again!');
     }
 
-    public function password()
-    {
-        if (Auth::check()) {
-            return view('homepage.password');
-        }
-        return Redirect::route('homepage.login');
-    }
-
     public function check_password(Request $request){
         $user = Auth::user();
         $request->validate([
@@ -99,7 +91,7 @@ class UserController extends Controller
         if (Auth::check()) {
             return redirect()->back();
         }
-        return view('homepage.forgot-password');
+        return view('homepage.forgot_password');
     }
 
     public function check_forgot_password(Request $request){

@@ -2,9 +2,9 @@
 
 @section('main')
     <div class="content mt-4">
-        <div class="card">
-            <div class="card-header text-center">
-                <h3>Add New Course</h3>
+        <div class="card shadow-lg">
+            <div class="card-header text-center text-white">
+                <h3 style="color: aliceblue;">Create a new course</h3>
             </div>
             <div class="card-body">
                 <form action="{{ route('teacher.courses.store') }}" method="POST" enctype="multipart/form-data">
@@ -19,13 +19,13 @@
                     <div class="form-group">
                         <label for="image" style="margin-bottom: 0">Course Image</label>
                         <br>
-                        <img id="current-image" src="" alt="" style="border-radius: 5px; width: 70px; height: 70px; margin-top: 5px;">
+                        <img id="current-image" src="" alt="" class="img-thumbnail mt-2" style="width: 100px; height: 100px;">
                         <br>
                         @error('image')
                             <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
-                    <input type="file" style="border: solid 1px; padding: 5px; width: 100%; border-radius: 5px; margin-bottom: 15px;" id="image" name="image" required onchange="previewImage(event)">
+                    <input type="file" class="form-control-file mb-3" id="image" name="image" required onchange="previewImage(event)">
                     <div class="form-group">
                         <label for="description">Description</label>
                         <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
@@ -34,14 +34,14 @@
                         @enderror
                     </div>
                     <div class="form-group">
-                        <label le="margin-bottom: 0" for="file">Course File</label>
+                        <label for="file">Course File</label>
                         <br>
                         @error('file')
                             <small class="text-danger">{{ $message }}</small>
                         @enderror
-                        <input type="file" style="border: solid 1px; padding: 5px; width: 100%; border-radius: 5px; margin-bottom: 10px;" id="file" name="file" required onchange="updateFileName(event)">
+                        <input type="file" class="form-control-file mb-3" id="file" name="file" required onchange="updateFileName(event)">
                     </div>
-                    <div class="form-group">
+                    <div class="form-group mb-3">
                         <label for="category">Category</label>
                         <select class="form-control" id="category" name="category_id" required>
                             @foreach ($categories as $category)
@@ -52,7 +52,7 @@
                             <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
-                    <button type="submit" class="btn btn-add">Add Course</button>
+                    <button type="submit" class="btn btn-add btn-block">Add Course</button>
                 </form>
             </div>
         </div>
@@ -63,33 +63,70 @@
             background-color: #28a745;
             transition: background-color 0.3s, transform 0.3s;
             color: white;
-            border: 1px solid black;
+            border-radius: 1em;
+            width: 20%;
         }
 
         .btn-add:hover {
-            background-color: #28a745;
             transform: scale(1.05);
             color: black;
             background-color: white;
             border: 1px solid black;
         }
+
+        .card {
+            border-radius: 15px;
+        }
+
+        .card-header {
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+            background: linear-gradient(45deg, #007bff, #6610f2);
+            color: white;
+        }
+
+        .card-body {
+            border-bottom-left-radius: 15px;
+            border-bottom-right-radius: 15px;
+        }
+
+        .form-control {
+            border-radius: 5px;
+        }
+
+        .form-group label {
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            transition: box-shadow 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+        }
+        
     </style>
 
     <script>
         function previewImage(event) {
-        var reader = new FileReader();
-        reader.onload = function(){
-            var output = document.getElementById('current-image');
-            output.src = reader.result;
+            var reader = new FileReader();
+            reader.onload = function(){
+                var output = document.getElementById('current-image');
+                output.src = reader.result;
             };
             reader.readAsDataURL(event.target.files[0]);
         }
     
         function updateFileName(event) {
-        var fileInput = event.target;
-        var fileName = fileInput.files[0].name;
-        var currentFileLink = document.getElementById('current-file');
-        currentFileLink.textContent = fileName;
+            var fileInput = event.target;
+            var fileName = fileInput.files[0].name;
+            var currentFileLink = document.getElementById('current-file');
+            currentFileLink.textContent = fileName;
         }
     </script>
 @endsection()

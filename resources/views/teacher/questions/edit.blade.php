@@ -2,9 +2,9 @@
 
 @section('main')
     <div class="content mt-4">
-        <div class="card">
-            <div class="card-header text-center">
-                <h3>Edit Question</h3>
+        <div class="card shadow-lg">
+            <div class="card-header text-center bg-primary text-white">
+                <h3 style="color: aliceblue;">Edit Question</h3>
             </div>
             <div class="card-body">
                 <form action="{{ route('teacher.questions.update', $question->id) }}" method="POST">
@@ -72,29 +72,49 @@
 
     <style>
         .btn-edit {
-            background-color: green; 
-            color: white; 
-            margin-bottom: 10px;
-            padding: 5px 10px;
+            background-color: #28a745;
+            transition: background-color 0.3s, transform 0.3s;
+            color: white;
+            border-radius: 1em;
         }
 
         .btn-edit:hover {
-            border: 1px solid black;
-            background-color: white;
+            transform: scale(1.05);
             color: black;
+            background-color: white;
+            border: 1px solid black;
         }
 
-        .btn-secondary {
+        .btn-back {
             background-color: gray;
             color: white;
             margin-bottom: 10px;
             padding: 5px 10px;
         }
 
-        .btn-secondary:hover {
+        .btn-back:hover {
+            transform: scale(1.05);
             border: 1px solid black;
             background-color: white;
             color: black;
+        }
+
+        .card {
+            border-radius: 10px;
+        }
+
+        .card-header {
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+
+        .form-control {
+            border-radius: 5px;
+        }
+
+        .card-header {
+            background: linear-gradient(45deg, #007bff, #6610f2);
+            color: white;
         }
     </style>
 @endsection

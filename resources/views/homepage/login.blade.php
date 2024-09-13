@@ -31,7 +31,7 @@
                 <p class="form-title">LOGIN TO YOUR ACCOUNT</p>
                 <div class="input-container">
                     <input type="email" id="email" class="form-control" name="email"
-                        placeholder="Enter your email" required>
+                        placeholder="name@gmail.com" required>
                     @error('email')
                         <small style="color: red;">{{ $message }}</small>
                     @enderror
