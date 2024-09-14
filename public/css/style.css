@@ -42,6 +42,32 @@
   box-sizing: border-box;
 }
 
+/* From Uiverse.io by zjssun */ 
+.btn-login {
+  padding: 10px 20px;
+  text-transform: uppercase;
+  border-radius: 8px;
+  font-size: 17px;
+  font-weight: 500;
+  color: #000;
+  text-shadow: none;
+  background: transparent;
+  cursor: pointer;
+  box-shadow: transparent;
+  border: 1px solid #000;
+  transition: 0.5s ease;
+  user-select: none;
+}
+
+.btn-login:hover {
+  color: #ffffff;
+  background: #008cff;
+  border: 1px solid #008cff;
+  text-shadow: 0 0 5px #ffffff, 0 0 10px #ffffff, 0 0 20px #ffffff;
+  box-shadow: 0 0 5px #008cff, 0 0 20px #008cff, 0 0 50px #008cff,
+    0 0 100px #008cff;
+}
+
 
 .menu {
   font-size: 16px;
@@ -400,6 +426,7 @@ h1, h2, h3, h4, h5, h6 {
   text-overflow: ellipsis;
   display: block;
   text-align: center;
+  
 }
 
 p {
@@ -10922,9 +10949,9 @@ h6,
 
 .navbar-light .navbar-nav .nav-link:hover,
 .navbar-light .navbar-nav .nav-link.active {
-  color: #0066ff;
-  transform: translateY(-3px);
-  /* Đẩy chữ lên trên 3px khi hover */
+    transform: translateY(-3px);
+    color: #0066ff;
+    text-shadow: 0 0 5px #ffffff, 0 0 10px #008cff, 0 0 20px #008cff;
 }
 
 @media (max-width: 991.98px) {

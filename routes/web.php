@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\TeacherController;
@@ -24,7 +25,8 @@ Route::get('/verify-account/{email}', [HomeController::class, 'verify'])->name('
 Route::get('/logout', [HomeController::class, 'logout'])->name('homepage.logout');
 
 //courses routes
-Route::get('/course/{course}/detail', [CourseController::class, 'coourse_detail'])->name('courses.detail');
+Route::get('/course/{course}/detail', [CourseController::class, 'course_detail'])->name('courses.detail');
+Route::post('/course/detail/comment', [CommentController::class, 'store'])->middleware('auth')->name('comments.store');
 
 //categories routes
 Route::get('/category/{category}/filter', [CategoryController::class, 'filter'])->name('category.filter');

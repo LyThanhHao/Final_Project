@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Comment;
 use App\Models\Course;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -61,15 +62,14 @@ class CourseController extends Controller
     }
     
 
-    public function coourse_detail(Course $course)
+    public function course_detail(Course $course)
     {
         $instructor = $course->user;
-
         $courseCount = Course::where('user_id', $instructor->id)->count();
-
         $relatedCourses = Course::where('category_id', $course->category_id)->where('id', '!=', $course->id)->limit(3)->get();
+        $comments = Comment::where('course_id', $course->id)->with('user')->get();
 
-        return view('courses.detail', compact('courseCount', 'relatedCourses', 'courseCount', 'course'));
+        return view('courses.detail', compact('courseCount', 'relatedCourses', 'courseCount', 'course', 'comments'));
     }
 
     public function edit(Course $course)

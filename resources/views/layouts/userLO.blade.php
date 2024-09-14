@@ -80,7 +80,7 @@
                             </div>
                         </div>
                     @else
-                        <a class="btn btn-primary py-2 px-4 ml-auto d-none d-lg-block"
+                        <a class="btn-login py-2 px-4 ml-auto d-none d-lg-block"
                             href="{{ route('homepage.login') }}">Log in</a>
                     @endif
                 </div>
