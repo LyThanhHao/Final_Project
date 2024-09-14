@@ -28,7 +28,7 @@
                                         <form action="{{ route('teacher.questions.destroy', $question->id) }}" method="POST" style="display:inline-block; width: 100%;">
                                             @csrf
                                             @method('DELETE')
-                                            <button class="btn btn-delete" type="submit" onclick="confirmDelete(event)"><i class="bi bi-trash"></i></button>
+                                            <button class="btn btn-delete" type="submit" onclick="confirmDelete(event, this)"><i class="bi bi-trash"></i></button>
                                         </form>
                                     </div>
                                 </td>

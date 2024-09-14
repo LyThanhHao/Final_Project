@@ -437,9 +437,10 @@
     <script type="text/javascript"></script>
     <!-- Control Center for Black Dashboard: parallax effects, scripts for the example pages etc -->
     <script src="js-dasboard/black-dashboard.min.js?v=1.0.0"></script>
-    
     <!-- toast notification -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.js"></script>
+    <!-- sweet alert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @if (Session::has('fail'))
         <script>
             $.toast({
@@ -590,14 +591,33 @@
                 application: "black-dashboard-free"
             });
     </script>
-    <script>
-        function confirmDelete(event) {
-            event.preventDefault();
 
-            const confirmation = confirm("Are you sure you want to delete this item?");
-            if (confirmation) {
-                event.target.closest('form').submit();
-            }
+    <script>
+        function toggleActions(button) {
+            const actionButtons = button.nextElementSibling;
+            const isVisible = actionButtons.style.display === 'block';
+            actionButtons.style.display = isVisible ? 'none' : 'block';
+            button.classList.toggle('active', !isVisible);
+            button.innerHTML = isVisible ? '<i class="bi bi-list"></i>' : '<i class="bi bi-x"></i>';
+        }
+
+        function confirmDelete(event, button) {
+            event.preventDefault(); // Ngăn hành động submit form mặc định
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Gọi hàm submit của form chứa nút "delete"
+                    button.closest('form').submit();
+                }
+            });
         }
     </script>
 

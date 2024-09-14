@@ -45,7 +45,7 @@
                     <form action="{{ route('admin.courses.destroy', $course->id) }}" method="POST" style="display:inline-block;">
                       @csrf
                       @method('DELETE')
-                      <button type="submit" onclick="confirmDelete(event)" style="border: none; background: border-box; color: white;"><i class="bi bi-trash"></i></button>
+                      <button type="submit" onclick="confirmDelete(event, this)" style="border: none; background: border-box; color: white;"><i class="bi bi-trash"></i></button>
                     </form>
                   </td>
                 </tr>

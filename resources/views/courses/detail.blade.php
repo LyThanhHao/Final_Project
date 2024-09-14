@@ -258,7 +258,9 @@
                         <h3>Course Description</h3>
                         <p>{{ $course->description }}</p>
                         <hr style="width: 300px; margin-left: 0">
-                        <a href="" class="btn mt-3 enroll-btn">Enroll Now</a>
+                        @if (!Auth::check() || (Auth::check() && Auth::user()->role != 'Teacher'))
+                            <a href="" class="btn mt-3 enroll-btn">Enroll Now</a>
+                        @endif
                     </div>
 
                     <div class="col-md-3">
