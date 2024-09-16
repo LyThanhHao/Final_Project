@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Comment;
 use App\Models\Course;
+use App\Models\Favorite;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CourseController extends Controller
 {
@@ -19,7 +21,7 @@ class CourseController extends Controller
 
 
     public function create()
-    {   
+    {
         $category = Category::all();
         $users = User::all();
         return view('admin.courses.create', compact('category', 'users'));
@@ -37,14 +39,14 @@ class CourseController extends Controller
             'description' => 'required',
         ]);
 
-        $data = $request->except(['image', 'file']); 
-    
+        $data = $request->except(['image', 'file']);
+
         if ($request->has('image')) {
             $img_name = $request->image->hashName();
             $request->image->move(public_path('uploads/course_image'), $img_name);
             $data['image'] = $img_name;
         }
-    
+
         if ($request->has('file')) {
             $file_name = $request->file->hashName();
             $request->file->move(public_path('uploads/course_file'), $file_name);
@@ -52,34 +54,40 @@ class CourseController extends Controller
         }
 
         $data['user_id'] = $request->input('teacher');
-    
+
         $check = Course::create($data);
-    
+
         if ($check) {
             return redirect()->route('admin.courses.index')->with('success', 'Course created successfully');
         }
         return redirect()->route('admin.courses.index')->with('fail', 'Course creation failed');
     }
-    
+
 
     public function course_detail(Course $course)
     {
+        $user = Auth::user();
+        if ($user) {
+            $favorite = Favorite::where('user_id', $user->id)->where('course_id', $course->id)->first();
+        } else {
+            $favorite = null;
+        }
         $instructor = $course->user;
         $courseCount = Course::where('user_id', $instructor->id)->count();
         $relatedCourses = Course::where('category_id', $course->category_id)->where('id', '!=', $course->id)->limit(3)->get();
         $comments = Comment::where('course_id', $course->id)->with('user')->get();
 
-        return view('courses.detail', compact('courseCount', 'relatedCourses', 'courseCount', 'course', 'comments'));
+        return view('courses.detail', compact('courseCount', 'relatedCourses', 'courseCount', 'course', 'comments', 'favorite'));
     }
 
     public function edit(Course $course)
     {
         $categories = Category::all();
         $teachers = User::where('role', 'teacher')->get();
-    
+
         return view('admin.courses.edit', compact('course', 'categories', 'teachers'));
     }
-    
+
     public function update(Request $request, Course $course)
     {
         $request->validate([
@@ -91,15 +99,15 @@ class CourseController extends Controller
             'teacher' => 'required|exists:users,id',
             'status' => 'required',
         ]);
-        
+
         $data = $request->except(['image', 'file']);
-        
+
         if ($request->hasFile('image')) {
             $img_name = $request->image->hashName();
             $request->image->move(public_path('uploads/course_image'), $img_name);
             $data['image'] = $img_name;
         }
-    
+
         if ($request->hasFile('file')) {
             $file_name = $request->file->hashName();
             $request->file->move(public_path('uploads/course_file'), $file_name);
@@ -107,18 +115,43 @@ class CourseController extends Controller
         }
 
         $data['user_id'] = $request->input('teacher');
-        
+
         if ($course->update($data)) {
             return redirect()->route('admin.courses.index')->with('success', 'Course updated successfully');
         }
         return redirect()->back()->with('fail', 'Course update failed! Something went wrong, please try again!');
     }
-    
+
     public function destroy(Course $course)
     {
         if ($course->delete()) {
             return redirect()->route('admin.courses.index')->with('success', 'Course deleted successfully');
         }
         return redirect()->back()->with('fail', 'Course deletion failed! Something went wrong, please try again!');
+    }
+
+    public function favorite(Request $request, $courseId)
+    {
+        $user = Auth::user();
+        // Lưu khóa học vào danh sách yêu thích
+        Favorite::create([
+            'user_id' => $user->id,
+            'course_id' => $courseId,
+        ]);
+
+        return response()->json(['success' => 'Course added to favorites'], 201);
+    }
+
+    public function unfavorite(Request $request, $courseId)
+    {
+        $user = Auth::user();
+
+        $favorite = Favorite::where('user_id', $user->id)->where('course_id', $courseId)->first();
+
+        if ($favorite) {
+            $favorite->delete();
+        }
+
+        return response()->json(['success' => 'Course removed from favorites'], 200);
     }
 }

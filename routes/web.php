@@ -26,7 +26,11 @@ Route::get('/logout', [HomeController::class, 'logout'])->name('homepage.logout'
 
 //courses routes
 Route::get('/course/{course}/detail', [CourseController::class, 'course_detail'])->name('courses.detail');
-Route::post('/course/detail/comment', [CommentController::class, 'store'])->middleware('auth')->name('comments.store');
+Route::group(['middleware' => ['auth']], function () {
+    Route::post('/course/detail/comment', [CommentController::class, 'store'])->name('comments.store');
+    Route::post('/courses/{course}/favorite', [CourseController::class, 'favorite'])->name('courses.favorite');
+    Route::delete('/courses/{course}/favorite', [CourseController::class, 'unfavorite'])->name('courses.unfavorite');
+});
 
 //categories routes
 Route::get('/category/{category}/filter', [CategoryController::class, 'filter'])->name('category.filter');
@@ -93,4 +97,3 @@ Route::get('/forgot-password', [UserController::class, 'forgot_password'])->name
 Route::post('/forgot-password', [UserController::class, 'check_forgot_password'])->name('check_forgot_password');
 Route::get('/reset-password/{token}', [UserController::class, 'reset_password'])->name('reset_password');
 Route::post('/reset-password/{token}', [UserController::class, 'check_reset_password'])->name('check_reset_password');
-

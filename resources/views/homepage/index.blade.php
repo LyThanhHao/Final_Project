@@ -124,8 +124,8 @@
 
 
     <!-- About Start -->
-    <div class="container-fluid py-5">
-        <div class="container py-5">
+    <div class="container-fluid py-4">
+        <div class="container py-4">
             <div class="row align-items-center">
                 <div class="col-lg-5">
                     <img class="img-fluid rounded mb-4 mb-lg-0" src="uploads/about.jpg" alt="">
@@ -150,7 +150,7 @@
 
 
     <!-- Category Start -->
-    <div class="container-fluid py-5">
+    <div class="container-fluid py-4">
         <div class="container pt-5 pb-3">
             <div class="text-center mb-5">
                 <h5 class="text-primary text-uppercase mb-3" style="letter-spacing: 5px;">Subjects</h5>
@@ -176,7 +176,7 @@
 
     <!-- Courses Start -->
     <div class="container-fluid">
-        <div class="container py-5">
+        <div class="container py-4">
             <div class="text-center mb-5">
                 <h5 class="text-primary text-uppercase mb-3 text-bold" style="letter-spacing: 5px;">Courses</h5>
                 <h1>New Courses</h1>
@@ -198,15 +198,9 @@
                                         {{ $course->course_name }}
                                     </p>
                                     <div class="d-flex justify-content-center align-items-center mt-3">
-                                        @if (empty($course->user->avatar))
-                                            <img src="{{ asset('uploads/avatar/avatar_default.jpg') }}" alt=""
-                                                style="border-radius: 50%; width: 30px; height: 30px; margin-right: 8px;">
-                                        @else
-                                            <img src="{{ asset('uploads/avatar/' . $course->user->avatar) }}"
-                                                alt=""
-                                                style="border-radius: 50%; width: 30px; height: 30px; margin-right: 8px;">
-                                        @endif
-                                        <a href="" class="text-info" style="text-decoration: underline;"
+                                        <img src="{{ empty($course->user->avatar) ? asset('uploads/avatar/avatar_default.jpg') : asset('uploads/avatar/' . $course->user->avatar) }}" alt=""
+                                            style="border-radius: 50%; width: 30px; height: 30px; margin-right: 8px;">
+                                        <a href="" class="text-info font-weight-bold" style="text-decoration: underline;"
                                             title="{{ $course->user->fullname }}">{{ $course->user->fullname }}</a>
                                     </div>
                                 </div>
@@ -259,8 +253,8 @@
 
 
     <!-- Registration Start -->
-    <div class="container-fluid bg-registration py-5" style="margin: 90px 0;">
-        <div class="container py-5">
+    <div class="container-fluid bg-registration py-4" style="margin: 90px 0;">
+        <div class="container py-4">
             <div class="row align-items-center">
                 <div class="col-lg-7 mb-5 mb-lg-0">
                     <div class="mb-4">
@@ -317,7 +311,7 @@
 
 
     <!-- Team Start -->
-    <div class="container-fluid py-5">
+    <div class="container-fluid py-4">
         <div class="container pt-5 pb-3">
             <div class="text-center mb-5">
                 <h5 class="text-primary text-uppercase mb-3" style="letter-spacing: 5px;">Teachers</h5>
@@ -444,7 +438,7 @@
 
 
     <!-- Blog Start -->
-    <div class="container-fluid py-5">
+    {{-- <div class="container-fluid py-5">
         <div class="container pt-5 pb-3">
             <div class="text-center mb-5">
                 <h5 class="text-primary text-uppercase mb-3" style="letter-spacing: 5px;">Our Blog</h5>
@@ -483,7 +477,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
     <!-- Blog End -->
 
     <!-- Back to Top -->

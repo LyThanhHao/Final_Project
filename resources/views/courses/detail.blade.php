@@ -226,7 +226,7 @@
             }
 
             .btn-comment i {
-                color: black;
+                color: snow;
             }
 
             .btn-comment:hover i {
@@ -373,6 +373,71 @@
                     background: transparent;
                 }
             }
+
+            .btn-save {
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                width: 40px;
+                height: 40px;
+                border: none;
+                border-radius: 50%;
+                cursor: pointer;
+                position: relative;
+                overflow: hidden;
+                transition-duration: 0.4s;
+                box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+                background: linear-gradient(to right, #34c5db, #2645f1);
+            }
+
+            .sign {
+                width: 100%;
+                transition-duration: 0.4s;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .sign i {
+                width: 17px;
+                fill: white;
+                color: white;
+            }
+
+            .text {
+                position: absolute;
+                right: 0%;
+                width: 0%;
+                opacity: 0;
+                color: #ecf0f1;
+                font-size: 1em;
+                font-weight: 600;
+                transition-duration: 0.4s;
+            }
+
+            .btn-save:hover {
+                width: 100px;
+                border-radius: 20px;
+                transition-duration: 0.4s;
+                background: linear-gradient(to right, #34c5db, #2645f1);
+            }
+
+            .btn-save:hover .sign {
+                width: 30%;
+                transition-duration: 0.4s;
+            }
+
+            .btn-save:hover .text {
+                opacity: 1;
+                width: 70%;
+                transition-duration: 0.4s;
+                padding-right: 10px;
+            }
+
+            .btn-save:active {
+                transform: translate(2px, 2px);
+                box-shadow: 0 0 0 rgba(0, 0, 0, 0.2);
+            }
         </style>
         <div class="container py-5">
             <div class="row">
@@ -399,21 +464,40 @@
                             <h3>Course Description</h3>
                             <p>{{ $course->description }}</p>
                             <hr style="width: 300px; margin-left: 0">
-                            @if (!Auth::check() || (Auth::check() && Auth::user()->role != 'Teacher'))
-                                <a href="" class="btn mt-3 enroll-btn">Enroll Now</a>
-                            @endif
+                            <div class="d-flex">
+                                @if (!Auth::check() || (Auth::check() && Auth::user()->role != 'Teacher'))
+                                    <div><a href="" class="btn enroll-btn mr-4">Enroll Now</a></div>
+                                @endif
+                                @if (!Auth::check() || (Auth::check() && Auth::user()->role == 'Student'))
+                                    <div>
+                                        @if (!$favorite)
+                                            <button class="btn-save" id="save-course" data-course-id="{{ $course->id }}"
+                                                title="Save this course to your favorite list">
+                                                <div class="sign">
+                                                    <i class="bi bi-bookmark"></i>
+                                                </div>
+                                                <div class="text" title="Save this course to your favorite list">Save
+                                                </div>
+                                            </button>
+                                        @else
+                                            <button class="btn-save" id="save-course" data-course-id="{{ $course->id }}"
+                                                title="Course has been saved to your favorite list">
+                                                <div class="sign">
+                                                    <i class="bi bi-bookmark-fill"></i>
+                                                </div>
+                                                <div class="text">Saved</div>
+                                            </button>
+                                        @endif
+                                    </div>
+                                @endif
+                            </div>
                         </div>
 
                         <div class="col-md-3">
                             <div class="card-client">
                                 <div class="user-picture">
-                                    @if (empty($course->user->avatar))
-                                        <img src="{{ asset('uploads/avatar/avatar_default.jpg' . $course->user->avatar) }}"
-                                            alt="{{ $course->user->fullname }}">
-                                    @else
-                                        <img src="{{ asset('uploads/avatar/' . $course->user->avatar) }}"
-                                            alt="{{ $course->user->fullname }}">
-                                    @endif
+                                    <img src="{{ asset('uploads/avatar/' . ($course->user->avatar ?? 'avatar_default.jpg')) }}"
+                                        alt="{{ $course->user->fullname }}">
                                 </div>
                                 <p class="name-client">{{ $course->user->fullname }}
                                     <span>Instructor</span>
@@ -489,15 +573,9 @@
                                                         {{ $relatedCourse->course_name }}
                                                     </p>
                                                     <div class="d-flex justify-content-center align-items-center mt-3">
-                                                        @if (empty($relatedCourse->user->avatar))
-                                                            <img src="{{ asset('uploads/avatar/avatar_default.jpg') }}"
-                                                                alt=""
-                                                                style="border-radius: 50%; width: 30px; height: 30px; margin-right: 8px;">
-                                                        @else
-                                                            <img src="{{ asset('uploads/avatar/' . $relatedCourse->user->avatar) }}"
-                                                                alt=""
-                                                                style="border-radius: 50%; width: 30px; height: 30px; margin-right: 8px;">
-                                                        @endif
+                                                        <img src="{{ asset('uploads/avatar/' . ($relatedCourse->user->avatar ?? 'avatar_default.jpg')) }}"
+                                                            alt=""
+                                                            style="border-radius: 50%; width: 30px; height: 30px; margin-right: 8px;">
                                                         <a href="" class="text-info"
                                                             style="text-decoration: underline;">{{ $relatedCourse->user->fullname }}</a>
                                                     </div>
@@ -569,14 +647,6 @@
                                 <div class="comment-box px-3">
                                     <div class="user-info d-flex align-items-center mb-2">
                                         <img src="{{ asset('uploads/avatar/') }}/${response.comment.user.avatar ?? 'avatar_default.jpg'}" alt="${response.comment.user.fullname}" class="rounded-circle" width="30" height="30">
-                                        <div class="user-name ml-2">${response.comment.user.fullname}</div>
-                                    </div>
-                                    <div class="comment-content">${response.comment.content}</div>
-                                    <hr>
-                                </div>
-                                <div class="comment-box px-3">
-                                    <div class="user-info d-flex align-items-center mb-2">
-                                        <img src="{{ asset('uploads/avatar/') }}/${response.comment.user.avatar ?? 'avatar_default.jpg'}" alt="${response.comment.user.fullname}" class="rounded-circle" width="30" height="30">
                                         <div>
                                             <div class="user-name">${response.comment.user.fullname}</div>
                                             <div class="comment-content" style="font-size: 0.9em;">${response.comment.content}</div>
@@ -597,6 +667,75 @@
                             }
                         }
                     });
+                });
+
+                $('#save-course').on('click', function() {
+                    var course = $(this).data('course-id');
+                    var isSaved = $(this).find('.bi').hasClass(
+                        'bi-bookmark-fill');
+                    if (isSaved) {
+                        $.ajax({
+                            url: `/courses/${course}/favorite`,
+                            method: 'DELETE',
+                            data: {
+                                _token: '{{ csrf_token() }}'
+                            },
+                            success: function(response) {
+                                $.toast({
+                                    heading: 'Notification',
+                                    text: 'Course removed from favorites',
+                                    showHideTransition: 'slide',
+                                    position: 'top-center',
+                                    icon: 'success',
+                                    hideAfter: 5000
+                                });
+                                $('#save-course').html(`
+                        <div class="sign">
+                            <i class="bi bi-bookmark"></i>
+                        </div>
+                        <div class="text" title="Course has been saved to your favorite list">Save</div>
+                    `);
+                            },
+                            error: function(jqXHR, textStatus, errorThrown) {
+                                if (jqXHR.status === 401) {
+                                    window.location.href = '{{ route('homepage.login') }}';
+                                } else {
+                                    console.log('Something went wrong!', jqXHR.responseText);
+                                }
+                            }
+                        });
+                    } else {
+                        $.ajax({
+                            url: `/courses/${course}/favorite`,
+                            method: 'POST',
+                            data: {
+                                _token: '{{ csrf_token() }}'
+                            },
+                            success: function(response) {
+                                $.toast({
+                                    heading: 'Notification',
+                                    text: 'Course added to favorites',
+                                    showHideTransition: 'slide',
+                                    position: 'top-center',
+                                    icon: 'success',
+                                    hideAfter: 5000
+                                });
+                                $('#save-course').html(`
+                        <div class="sign">
+                            <i class="bi bi-bookmark-fill"></i>
+                        </div>
+                        <div class="text" title="Save this course to your favorite list">Saved</div>
+                    `);
+                            },
+                            error: function(jqXHR, textStatus, errorThrown) {
+                                if (jqXHR.status === 401) {
+                                    window.location.href = '{{ route('homepage.login') }}';
+                                } else {
+                                    console.log('Something went wrong!', jqXHR.responseText);
+                                }
+                            }
+                        });
+                    }
                 });
             });
         </script>

@@ -27,4 +27,9 @@ class Course extends Model
     {
         return $this->hasMany(Comment::class);
     }
+
+    public function favorites()
+    {
+        return $this->belongsTo(Favorite::class);
+    }
 }

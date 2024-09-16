@@ -18,7 +18,7 @@ class TeacherController extends Controller
     }
 
     public function create_course(){
-        $categories = Category::orderBy('id', 'ASC')->get();
+        $categories = Category::where('status', 1)->orderBy('id', 'ASC')->get();
         return view('teacher.courses.create', compact('categories'));
     }
 

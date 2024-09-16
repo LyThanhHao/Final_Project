@@ -117,13 +117,13 @@
     </div>
 
     <style>
-        .btn {
+        /* .btn {
             background-color: #28a745;
             transform: scale(1.05);
             color: black;
             background-color: white;
             border-radius: 1em;
-        }
+        } */
 
         .btn-remove {
             background-color: #dc3545;
@@ -229,7 +229,7 @@
                         </select>
                     </div>
                     <div class="form-group text-center d-flex justify-content-between mt-4">
-                        <button type="button" class="btn btn-danger remove-question">Remove</button>
+                        <button type="button" class="btn btn-remove remove-question">Remove</button>
                     </div>
                 </div>
             `;

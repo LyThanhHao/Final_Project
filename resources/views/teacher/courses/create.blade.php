@@ -11,7 +11,7 @@
                     @csrf
                     <div class="form-group">
                         <label for="course_name">Course Name</label>
-                        <input type="text" class="form-control" id="course_name" name="course_name" required>
+                        <input type="text" class="form-control" id="course_name" name="course_name" value="{{ old('course_name') }}" required>
                         @error('course_name')
                             <small class="text-danger">{{ $message }}</small>
                         @enderror
@@ -19,7 +19,7 @@
                     <div class="form-group">
                         <label for="image" style="margin-bottom: 0">Course Image</label>
                         <br>
-                        <img id="current-image" src="" alt="" class="img-thumbnail mt-2" style="width: 100px; height: 100px;">
+                        <img id="current-image" src="{{ old('image') ? asset('uploads/course_image/' . old('image')) : '' }}" alt="" class="img-thumbnail mt-2" style="width: 100px; height: 100px;">
                         <br>
                         @error('image')
                             <small class="text-danger">{{ $message }}</small>
@@ -28,7 +28,7 @@
                     <input type="file" class="form-control-file mb-3" id="image" name="image" required onchange="previewImage(event)">
                     <div class="form-group">
                         <label for="description">Description</label>
-                        <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+                        <textarea class="form-control" id="description" name="description" rows="3" required>{{ old('description') }}</textarea>
                         @error('description')
                             <small class="text-danger">{{ $message }}</small>
                         @enderror
@@ -45,7 +45,7 @@
                         <label for="category">Category</label>
                         <select class="form-control" id="category" name="category_id" required>
                             @foreach ($categories as $category)
-                                <option value="{{ $category->id }}">{{ $category->cat_name }}</option>
+                                <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>{{ $category->cat_name }}</option>
                             @endforeach
                         </select>
                         @error('category_id')

@@ -40,6 +40,7 @@
                                 <td style="text-align: center; position: relative;">
                                     <button class="btn btn-toggle" onclick="toggleActions(this)"><i class="bi bi-list"></i></button>
                                     <div class="action-buttons" style="display: none; position: absolute; top: 50%; left: 50%; border: 1px solid #ccc; transform: translateX(-50%); z-index: 1; padding: 5px; width: max-content;">
+                                        <a href="{{ route('courses.detail', $course->id) }}" class="btn btn-view">View</a>
                                         <a href="{{ route('teacher.courses.edit', $course->id) }}" class="btn btn-edit"><i class="bi bi-pencil-square"></i></a>
                                         <form action="{{ route('teacher.courses.destroy', $course->id) }}" method="POST" style="display:inline-block; width: 100%;">
                                             @csrf
@@ -85,9 +86,10 @@
         .btn-edit {
             background-color: green;
             color: white;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
             width: 100%;
             padding: 5px;
+            font-size: 13px;
         }
 
         .btn-edit:hover {
@@ -101,12 +103,30 @@
             color: white;
             width: 100%;
             padding: 5px;
+            font-size: 13px;
         }
 
         .btn-delete:hover {
             border: 1px solid black;
             background-color: white;
             color: black;
+        }
+
+        .btn-view {
+            background-color: steelblue;
+            color: white;
+            margin-bottom: 5px;
+            width: 100%;
+            padding: 5px;
+            transition: background-color 0.3s, transform 0.3s;
+            font-size: 13px;
+        }
+
+        .btn-view:hover {
+            border: 1px solid black;
+            background-color: white;
+            color: black;
+            transform: scale(1.05);
         }
 
         .btn-toggle {
@@ -159,14 +179,4 @@
             padding: 5px;
         }
     </style>
-
-    <script>
-        function toggleActions(button) {
-            const actionButtons = button.nextElementSibling;
-            const isVisible = actionButtons.style.display === 'block';
-            actionButtons.style.display = isVisible ? 'none' : 'block';
-            button.classList.toggle('active', !isVisible);
-            button.innerHTML = isVisible ? '<i class="bi bi-list"></i>' : '<i class="bi bi-x"></i>';
-        }
-    </script>
 @endsection
