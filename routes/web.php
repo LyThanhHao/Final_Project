@@ -14,6 +14,10 @@ use Illuminate\Support\Facades\Route;
 //home routes
 Route::get('/', [HomeController::class, 'index'])->name('homepage');
 Route::get('/search', [HomeController::class, 'search'])->name('homepage.search');
+Route::get('/forgot-password', [UserController::class, 'forgot_password'])->name('forgot_password');
+Route::post('/forgot-password', [UserController::class, 'check_forgot_password'])->name('check_forgot_password');
+Route::get('/reset-password/{token}', [UserController::class, 'reset_password'])->name('reset_password');
+Route::post('/reset-password/{token}', [UserController::class, 'check_reset_password'])->name('check_reset_password');
 
 //account routes
 Route::get('/login', [HomeController::class, 'login'])->name('homepage.login');
@@ -26,10 +30,16 @@ Route::get('/logout', [HomeController::class, 'logout'])->name('homepage.logout'
 
 //courses routes
 Route::get('/course/{course}/detail', [CourseController::class, 'course_detail'])->name('courses.detail');
+
 Route::group(['middleware' => ['auth']], function () {
     Route::post('/course/detail/comment', [CommentController::class, 'store'])->name('comments.store');
     Route::post('/courses/{course}/favorite', [CourseController::class, 'favorite'])->name('courses.favorite');
     Route::delete('/courses/{course}/favorite', [CourseController::class, 'unfavorite'])->name('courses.unfavorite');
+    Route::get('/my-courses', [UserController::class, 'favorite_list'])->name('favorite_list');
+    Route::get('/profile', [UserController::class, 'profile'])->name('profile');
+    Route::put('/profile', [UserController::class, 'check_profile'])->name('check_change_profile');
+    Route::post('/profile/avatar', [UserController::class, 'change_avatar'])->name('change_avatar');
+    Route::post('/profile/password', [UserController::class, 'check_password'])->name('check_change_password');
 });
 
 //categories routes
@@ -88,12 +98,5 @@ Route::group(['prefix' => 'teacher', 'middleware' => ['auth', 'teacher']], funct
     Route::delete('/questions/{question}', [TeacherController::class, 'destroy_question'])->name('teacher.questions.destroy');
 });
 
-//user routes
-Route::get('/profile', [UserController::class, 'profile'])->name('profile');
-Route::put('/profile', [UserController::class, 'check_profile'])->name('check_change_profile');
-Route::post('/profile/avatar', [UserController::class, 'change_avatar'])->name('change_avatar');
-Route::post('/profile/password', [UserController::class, 'check_password'])->name('check_change_password');
-Route::get('/forgot-password', [UserController::class, 'forgot_password'])->name('forgot_password');
-Route::post('/forgot-password', [UserController::class, 'check_forgot_password'])->name('check_forgot_password');
-Route::get('/reset-password/{token}', [UserController::class, 'reset_password'])->name('reset_password');
-Route::post('/reset-password/{token}', [UserController::class, 'check_reset_password'])->name('check_reset_password');
+
+

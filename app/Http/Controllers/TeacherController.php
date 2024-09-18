@@ -29,7 +29,16 @@ class TeacherController extends Controller
             'description' => 'required',
             'file' => 'required|file|mimes:pdf,',
             'category_id' => 'required',
-        ]);
+        ], [
+            'course_name.required' => 'The course name is required.',
+            'image.file' => 'The course image must be a file.',
+            'image.mimes' => 'The course image must be a valid image file.',
+            'image.max' => 'The course image must be less than 2MB.',
+            'description.required' => 'The course description is required.',
+            'file.file' => 'The course file must be a file.',
+            'file.mimes' => 'The course file must be a valid file.',
+            'category_id.required' => 'The course category is required.',
+        ], );
         
         $data = $request->except(['image', 'file']); 
 
@@ -71,6 +80,16 @@ class TeacherController extends Controller
             'file' => 'nullable|file|mimes:pdf',
             'category_id' => 'required',
             'status' => 'required',
+        ], [
+            'course_name.required' => 'The course name is required.',
+            'image.file' => 'The course image must be a file.',
+            'image.mimes' => 'The course image must be a valid image file.',
+            'image.max' => 'The course image must be less than 2MB.',
+            'description.required' => 'The course description is required.',
+            'file.file' => 'The course file must be a file.',
+            'file.mimes' => 'The course file must be a valid file.',
+            'category_id.required' => 'The course category is required.',
+            'status.required' => 'The course status is required.',
         ]);
         
         $user = Auth::user();
@@ -123,8 +142,17 @@ class TeacherController extends Controller
             'questions.*.c' => 'required',
             'questions.*.d' => 'required',
             'questions.*.answer' => 'required|in:a,b,c,d',
+        ], [
+            'course_id.required' => 'The course is required.',
+            'test_name.required' => 'The test name is required.',
+            'questions.*.question.required' => 'The question is required.',
+            'questions.*.a.required' => 'The option A is required.',
+            'questions.*.b.required' => 'The option B is required.',
+            'questions.*.c.required' => 'The option C is required.',
+            'questions.*.d.required' => 'The option D is required.',
+            'questions.*.answer.required' => 'The correct answer is required.',
+            'questions.*.answer.in' => 'The correct answer must be one of the options (A, B, C, or D).',
         ]);
-        
 
         $test = Test::create([
             'test_name' => $request->test_name,
@@ -153,6 +181,9 @@ class TeacherController extends Controller
         $request->validate([
             'course_id' => 'required',
             'test_name' => 'required',
+        ], [
+            'course_id.required' => 'The course is required.',
+            'test_name.required' => 'The test name is required.',
         ]);
 
         $data = $request->all();
@@ -189,6 +220,16 @@ class TeacherController extends Controller
             'questions.*.c' => 'required',
             'questions.*.d' => 'required',
             'questions.*.answer' => 'required|in:a,b,c,d',
+        ], [
+            'test_id.required' => 'The test is required.',
+            'test_id.exists' => 'The test must exist.',
+            'questions.*.question.required' => 'The question is required.',
+            'questions.*.a.required' => 'The option A is required.',
+            'questions.*.b.required' => 'The option B is required.',
+            'questions.*.c.required' => 'The option C is required.',
+            'questions.*.d.required' => 'The option D is required.',
+            'questions.*.answer.required' => 'The correct answer is required.',
+            'questions.*.answer.in' => 'The correct answer must be one of the options (A, B, C, or D).',
         ]);
 
         foreach ($request->questions as $questionData) {
@@ -211,6 +252,14 @@ class TeacherController extends Controller
             'c' => 'required',
             'd' => 'required',
             'answer' => 'required',
+        ], [
+            'question.required' => 'The question is required.',
+            'a.required' => 'The option A is required.',
+            'b.required' => 'The option B is required.',
+            'c.required' => 'The option C is required.',
+            'd.required' => 'The option D is required.',
+            'answer.required' => 'The correct answer is required.',
+            'answer.in' => 'The correct answer must be one of the options (A, B, C, or D).',
         ]);
 
         $data = $request->all();

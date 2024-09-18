@@ -24,14 +24,14 @@
         <div class="form-image">
             <img src="{{ asset('uploads/image-login.jpeg') }}" alt="Image Description">
         </div>
+        <hr style="display: block;">
         <div class="divider"></div>
         <div class="form-content">
             <form id="login-form" class="mx-auto" method="POST" role="form" action="{{ route('homepage.login') }}">
                 @csrf
                 <p class="form-title">LOGIN TO YOUR ACCOUNT</p>
                 <div class="input-container">
-                    <input type="email" id="email" class="form-control" name="email"
-                        placeholder="name@gmail.com" required>
+                    <input type="email" id="email" class="form-control" name="email" placeholder="name@gmail.com" required>
                     @error('email')
                         <small style="color: red;">{{ $message }}</small>
                     @enderror

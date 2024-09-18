@@ -26,7 +26,8 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
     <script type="text/javascript"></script>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.css" />
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.css" />
 </head>
 
 <style>
@@ -75,7 +76,8 @@
         color: #000;
     }
 
-    .dashboard-item.active .dashboard-link, .dashboard-item.active .dashboard-link i {
+    .dashboard-item.active .dashboard-link,
+    .dashboard-item.active .dashboard-link i {
         color: #fff;
     }
 </style>
@@ -121,8 +123,8 @@
                                         </div>
                                     @elseif (Auth::user()->role == 'Teacher')
                                         <div class="submenu-item">
-                                            <a href="{{ route('teacher') }}"
-                                                class="submenu-link font-weight-bold" id="role">Manage courses</a>
+                                            <a href="{{ route('teacher') }}" class="submenu-link font-weight-bold"
+                                                id="role">Manage courses</a>
                                         </div>
                                     @endif
                                     <div class="submenu-item">
@@ -334,8 +336,7 @@
                             Subjects</h5>
                         <div class="d-flex flex-column justify-content-start">
                             @foreach ($cat_home as $temp)
-                                <a class="text-white mb-2"
-                                    href="{{ route('category.filter', $temp->id) }}"><i
+                                <a class="text-white mb-2" href="{{ route('category.filter', $temp->id) }}"><i
                                         class="fa fa-angle-right mr-2"></i>{{ $temp->cat_name }}</a>
                             @endforeach
                         </div>
@@ -467,6 +468,24 @@
                     button.closest('form').submit();
                 }
             });
+        }
+    </script>
+
+    <script>
+        function previewImage(event) {
+            var reader = new FileReader();
+            reader.onload = function() {
+                var output = document.getElementById('current-image');
+                output.src = reader.result;
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
+
+        function updateFileName(event) {
+            var fileInput = event.target;
+            var fileName = fileInput.files[0].name;
+            var currentFileLink = document.getElementById('current-file');
+            currentFileLink.textContent = fileName;
         }
     </script>
 

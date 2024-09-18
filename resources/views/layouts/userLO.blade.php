@@ -43,7 +43,7 @@
                 <div class="d-inline-flex align-items-center">
                     <form class="d-flex" method="GET" action="{{ route('homepage.search') }}">
                         <input class="form-control me-2 search-input" type="search" name="keyword"
-                            placeholder="What do you want to learn?" aria-label="Search">
+                            placeholder="Search...." aria-label="Search">
                         <button class="btn search-btn" type="submit">
                             <i class="fas fa-search"></i>
                         </button>
@@ -126,10 +126,9 @@
                             <li class="nav-item d-lg-none">
                                 <div class="col-lg-3 text-right">
                                     <div class="d-inline-flex align-items-center">
-                                        <form class="d-flex" method="POST">
-                                            @csrf
-                                            <input class="form-control me-2 search-input" type="search"
-                                                placeholder="What do you want to learn?" aria-label="Search">
+                                        <form class="d-flex" method="GET" action="{{ route('homepage.search') }}">
+                                            <input class="form-control me-2 search-input" type="search" name="keyword"
+                                                placeholder="Search...." aria-label="Search">
                                             <button class="btn search-btn" type="submit">
                                                 <i class="fas fa-search"></i>
                                             </button>
@@ -165,55 +164,51 @@
                             </li>
                             @if (Auth::check() && Auth::user()->role == 'Student')
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">Favorites List</a>
+                                    <a href="{{ route('favorite_list') }}" class="nav-link">Favorites List</a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="#" class="nav-link">My Courses</a>
                                 </li>
-                            @endif
-                            @if (Auth::check() && Auth::user()->role == 'Teacher')
+                            @elseif (Auth::check() && Auth::user()->role == 'Teacher')
                                 <li class="nav-item">
                                     <a href="{{ route('teacher') }}" class="nav-link">Manage courses</a>
                                 </li>
                             @endif
                             <li class="nav-item d-lg-none">
-                                <div class="nav-item dropdown">
-                                    @if (Auth::check())
-                                        <div class="menu">
-                                            <div class="item">
-                                                <div class="link">
-                                                    <span style="font-weight: 500;">Hello</span>
-                                                    <span>{{ Auth::user()->fullname }}</span>
-                                                    <i class="bi bi-chevron-down text-bold"></i>
-                                                </div>
-                                                <div class="submenu">
-                                                    <div class="submenu-item">
-                                                        <a href="{{ route('profile') }}" class="submenu-link">
-                                                            Profile </a>
+                                <div class="col-lg-3 text-right">
+                                    <div class="d-inline-flex align-items-center">
+                                        @if (Auth::check())
+                                            <div class="menu">
+                                                <div class="item">
+                                                    <div class="link">
+                                                        <span style="font-weight: 500;">Hello</span>
+                                                        <span>{{ Auth::user()->fullname }}</span>
+                                                        <i class="bi bi-chevron-down text-bold"></i>
                                                     </div>
-                                                    @if (Auth::user()->role == 'Admin')
+                                                    <div class="submenu">
                                                         <div class="submenu-item">
-                                                            <a href="{{ route('admin.accounts.index') }}"
-                                                                class="submenu-link font-weight-bold"
-                                                                style="color: orangered"> Admin </a>
+                                                            <a href="{{ route('profile') }}" class="submenu-link"> Profile </a>
                                                         </div>
-                                                    @elseif (Auth::user()->role == 'Teacher')
+                                                        @if (Auth::user()->role == 'Admin')
+                                                            <div class="submenu-item">
+                                                                <a href="{{ route('admin') }}" class="submenu-link font-weight-bold" id="role">Admin</a>
+                                                            </div>
+                                                        @elseif (Auth::user()->role == 'Teacher')
+                                                            <div class="submenu-item">
+                                                                <a href="{{ route('teacher') }}" class="submenu-link font-weight-bold" id="role">Manage courses</a>
+                                                            </div>
+                                                        @endif
                                                         <div class="submenu-item">
-                                                            <a href="{{ route('teacher') }}" class="submenu-link font-weight-bold"
-                                                                style="color: black"> Manage courses </a>
+                                                            <a href="{{ route('homepage.logout') }}" class="submenu-link">Log out </a>
                                                         </div>
-                                                    @endif
-                                                    <div class="submenu-item">
-                                                        <a href="{{ route('homepage.logout') }}"
-                                                            class="submenu-link"> Log out </a>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    @else
-                                        <a class="btn btn-primary py-2 px-4 ml-auto d-lg-none d-lg-block"
-                                            href="{{ route('homepage.login') }}">Log in</a>
-                                    @endif
+                                        @else
+                                            <a class="btn-login py-2 px-4 ml-auto d-lg-none d-lg-block"
+                                                href="{{ route('homepage.login') }}">Log in</a>
+                                        @endif
+                                    </div>
                                 </div>
                             </li>
                         </ul>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\VerifyAccount;
 use App\Models\Category;
 use App\Models\Course;
+use App\Models\Favorite;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,11 +18,12 @@ class HomeController extends Controller
         $categories = Category::where('status', 1)
             ->with('courses')
             ->get()
-            ->sortByDesc(function($category) {
+            ->sortByDesc(function ($category) {
                 return $category->courses->count();
             });
+        $favorites = Favorite::where('user_id', Auth::user()->id)->get();
         $teachers = User::where('role', 'Teacher')->get();
-        $courses = Course::orderBy('id', 'DESC')->limit(3)->get();
+        $courses = Course::orderBy('id', 'DESC')->limit(4)->get();
         return view('homepage.index', compact('courses', 'categories', 'teachers'));
     }
 
@@ -29,20 +31,23 @@ class HomeController extends Controller
     {
         $keyword = $request->input('keyword');
 
-        $courses = Course::where(function ($query) use ($keyword) {
+        $favorites = Favorite::where('user_id', Auth::user()->id)->get();
+
+        $courses = Course::where('status', 1)
+            ->where(function ($query) use ($keyword) {
                 $query->where('course_name', 'LIKE', "%{$keyword}%")
-                      ->orWhereHas('user', function ($q) use ($keyword) {
-                          $q->where('role', 'Teacher')
-                            ->where('fullname', 'LIKE', "%{$keyword}%");
-                      });
+                    ->orWhereHas('user', function ($q) use ($keyword) {
+                        $q->where('role', 'Teacher')->where('fullname', 'LIKE', "%{$keyword}%");
+                    });
             })
-            ->where('status', 1)
             ->whereHas('category', function ($q) {
                 $q->where('status', 1);
             })
-            ->get();
+            ->whereHas('user', function ($q) {
+                $q->where('role', 'Teacher');
+            })->get();
 
-        return view('homepage.search', compact('courses', 'keyword'));
+        return view('homepage.search', compact('courses', 'keyword', 'favorites'));
     }
 
     public function login()
@@ -99,8 +104,16 @@ class HomeController extends Controller
             'address' => 'required',
             'termsCheckbox' => 'required',
         ], [
-            'password.regex' => 'Password must contain at least one letter and one special character.',
+            'fullname.required' => 'The fullname is required.',
+            'email.required' => 'The email is required.',
+            'email.email' => 'The email must be a valid email address.',
+            'email.unique' => 'The email has already been taken.',
+            'password.required' => 'The password is required.',
             'password.min' => 'Password must be at least 5 characters long.',
+            'password.regex' => 'Password must contain at least one letter and one special character.',
+            'confirm_password.required' => 'The confirm password is required.',
+            'confirm_password.same' => 'The confirm password must be same as password.',
+            'termsCheckbox.required' => 'You must agree to the terms and conditions.',
         ]);
 
         $data = $request->only('fullname', 'email', 'password', 'phoneNumber', 'address');
@@ -120,6 +133,4 @@ class HomeController extends Controller
         User::where('email', $email)->update(['email_verified_at' => now()]);
         return redirect()->route('homepage.login')->with('success', 'Verify account successfully! Now you can login.');
     }
-
-    
 }

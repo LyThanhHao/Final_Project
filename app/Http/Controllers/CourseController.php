@@ -37,6 +37,15 @@ class CourseController extends Controller
             'image' => 'required|file|mimes:jpg,jpeg,gif,png,webp,svg,',
             'file' => 'required|file|mimes:pdf,',
             'description' => 'required',
+        ], [
+            'course_name.required' => 'The course name is required.',
+            'category_id.required' => 'The category is required.',
+            'category_id.exists' => 'The category must be a valid category.',
+            'teacher.required' => 'The teacher is required.',
+            'teacher.exists' => 'The teacher must be a valid teacher.',
+            'image.required' => 'The image is required.',
+            'image.file' => 'The image must be a file.',
+            'image.mimes' => 'The image must be a valid image file.',
         ]);
 
         $data = $request->except(['image', 'file']);
@@ -98,6 +107,15 @@ class CourseController extends Controller
             'category_id' => 'required|exists:categories,id',
             'teacher' => 'required|exists:users,id',
             'status' => 'required',
+        ], [
+            'course_name.required' => 'The course name is required.',
+            'image.file' => 'The image must be a file.',
+            'image.mimes' => 'The image must be a valid image file.',
+            'description.required' => 'The description is required.',
+            'file.file' => 'The file must be a file.',
+            'file.mimes' => 'The file must be a valid file.',
+            'category_id.required' => 'The category is required.',
+            'category_id.exists' => 'The category must be a valid category.',
         ]);
 
         $data = $request->except(['image', 'file']);
@@ -133,7 +151,6 @@ class CourseController extends Controller
     public function favorite(Request $request, $courseId)
     {
         $user = Auth::user();
-        // Lưu khóa học vào danh sách yêu thích
         Favorite::create([
             'user_id' => $user->id,
             'course_id' => $courseId,

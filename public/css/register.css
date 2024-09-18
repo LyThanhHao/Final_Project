@@ -19,6 +19,7 @@ body {
 
 .container-fluid {
     display: flex;
+    flex-direction: column;
     width: 100%;
     max-width: 900px;
     height: 90%;
@@ -30,9 +31,9 @@ body {
 }
 
 .form-image {
-    width: 50%;
-    height: auto;
-    background-color: #f0f0f0;
+    width: 100%;
+    height: 50%;
+    background-color: #fff;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -46,14 +47,12 @@ body {
 }
 
 .divider {
-    width: 1px;
-    background: rgba(0, 0, 0, 0.1);
-    margin: 0 20px;
-    height: auto;
+    display: none;
 }
 
 .form-content {
-    width: 50%;
+    width: 100%;
+    padding: 5px;
     overflow-y: auto;
     box-sizing: border-box;
     display: flex;
@@ -65,7 +64,7 @@ body {
 #register-form {
     background-color: #fff;
     display: block;
-    max-width: 400px;
+    max-width: 450px;
     width: 100%;
     border-radius: 0.5rem;
     padding: 20px;
@@ -91,22 +90,14 @@ body {
 }
 
 .input-container input {
-    padding-right: 2.5rem;
     background-color: #fff;
     padding: 1rem;
+    padding-right: 3rem;
     font-size: 0.875rem;
-    line-height: 1.25rem;    
-    width: 100%;
+    line-height: 1.25rem;
+    width: -webkit-fill-available;
     border-radius: 0.5rem;
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-}
-
-.input-container .position-absolute {
-    position: absolute;
-    top: 50%;
-    right: 1rem;
-    transform: translateY(-50%);
-    cursor: pointer;
 }
 
 .submit {
@@ -193,22 +184,39 @@ body {
     transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
-@media only screen and (max-width: 600px) {
-    form {
-        width: 100% !important;
+@media (min-width: 768px) {
+    .container-fluid {
+        flex-direction: row;
+    }
+
+    .form-image {
+        width: 50%;
+        height: auto;
+    }
+
+    .form-content {
+        width: 50%;
+    }
+
+    .divider {
+        display: block;
+        width: 1px;
+        background: rgba(0, 0, 0, 0.1);
+        margin: 0 20px;
+        height: auto;
+    }
+
+    .form-title {
+        font-size: 1.25rem;
+        line-height: 1.75rem;
+        font-weight: 600;
+        text-align: center;
+        color: #000;
     }
 }
 
-@media (max-width: 768px) {
-    .register-container {
-        flex-direction: column;
-    }
-
-    .register-image {
-        display: none;
-    }
-
-    .register-form-container {
-        padding: 20px;
+@media (max-width: 450px) {
+    .form-title {
+        margin-top: 5rem;
     }
 }

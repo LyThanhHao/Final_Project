@@ -129,21 +129,4 @@
         }
     </style>
 
-    <script>
-        function previewImage(event) {
-            var reader = new FileReader();
-            reader.onload = function() {
-                var output = document.getElementById('current-image');
-                output.src = reader.result;
-            };
-            reader.readAsDataURL(event.target.files[0]);
-        }
-
-        function updateFileName(event) {
-            var fileInput = event.target;
-            var fileName = fileInput.files[0].name;
-            var currentFileLink = document.getElementById('current-file');
-            currentFileLink.textContent = fileName;
-        }
-    </script>
 @endsection()

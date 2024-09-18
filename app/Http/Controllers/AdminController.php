@@ -29,6 +29,13 @@ class AdminController extends Controller
             'password' => 'required',
             'address' => 'required',
             'phoneNumber' => 'required'
+        ], [
+            'fullname.required' => 'The fullname is required.',
+            'email.required' => 'The email is required.',
+            'email.email' => 'The email must be a valid email address.',
+            'password.required' => 'The password is required.',
+            'address.required' => 'The address is required.',
+            'phoneNumber.required' => 'The phone number is required.',
         ]);
 
         $request['password'] = bcrypt(request('password'));
@@ -53,6 +60,13 @@ class AdminController extends Controller
             'role' => 'required',
             'address' => 'required',
             'phoneNumber' => 'required'
+        ], [
+            'fullname.required' => 'The fullname is required.',
+            'email.required' => 'The email is required.',
+            'email.email' => 'The email must be a valid email address.',
+            'role.required' => 'The role is required.',
+            'address.required' => 'The address is required.',
+            'phoneNumber.required' => 'The phone number is required.',
         ]);
 
         $data = $request->all();

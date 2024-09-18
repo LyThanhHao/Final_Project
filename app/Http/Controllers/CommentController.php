@@ -20,6 +20,12 @@ class CommentController extends Controller
         $request->validate([
             'course_id' => 'required|exists:courses,id',
             'content' => 'required|string|max:255',
+        ], [
+            'course_id.required' => 'The course ID is required.',
+            'course_id.exists' => 'The selected course ID is invalid.',
+            'content.required' => 'The content is required.',
+            'content.string' => 'The content must be a string.',
+            'content.max' => 'The content must be less than 255 characters.',
         ]);
 
         // Người dùng đã đăng nhập, thực hiện logic lưu comment

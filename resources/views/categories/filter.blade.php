@@ -8,20 +8,34 @@
                 <h1>{{ $category->cat_name }}</h1>
             </div>
             @if ($courses->isEmpty())
-            <div class="mx-auto">
-                <hr class="mb-5" style="width: 400px;">
-                <p style="text-align: center; font-size: 20px; font-weight: bold; color: red;">No courses found in this category!</p>
-            </div>
+                <div class="mx-auto">
+                    <hr class="mb-5" style="width: 400px;">
+                    <p style="text-align: center; font-size: 20px; font-weight: bold; color: red;">No courses found in this
+                        category!</p>
+                </div>
             @else
                 <div class="row">
                     @foreach ($courses as $course)
                         @if ($course->status && $course->category->status)
                             <div id="course" class="col-lg-3 col-md-6 mb-4">
-                                <div class="card h-100"
+                                <div class="card h-100 position-relative"
                                     style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); transition: transform 0.3s, box-shadow 0.3s;">
                                     <img style="height: 45%;" class="img-fluid card-img-top"
                                         src="{{ asset('uploads/course_image/' . $course->image) }}"
                                         alt="{{ $course->course_name }}">
+                                    @if (Auth::check())
+                                        @if (Auth::user()->favorites->contains($course->id))
+                                            <div class="bookmark-icon position-absolute">
+                                                <i class="bi bi-bookmark-dash-fill" data-course-id="{{ $course->id }}"
+                                                    title="Remove from favorite list"></i>
+                                            </div>
+                                        @else
+                                            <div class="bookmark-icon position-absolute">
+                                                <i class="bi bi-bookmark-plus-fill" data-course-id="{{ $course->id }}"
+                                                    title="Add to favorite list"></i>
+                                            </div>
+                                        @endif
+                                    @endif
                                     <div class="card-body text-center">
                                         <p class="card-title text-truncate"
                                             style="max-width: 100%; font-weight: bold; color:#5e5e5e"
@@ -38,7 +52,7 @@
                                                     style="border-radius: 50%; width: 30px; height: 30px; margin-right: 8px;">
                                             @endif
                                             <a href="" class="text-info"
-                                                style="text-decoration: underline;">{{ $course->user->fullname }}</a>
+                                                style="text-decoration: underline; font-weight: bold;">{{ $course->user->fullname }}</a>
                                         </div>
                                     </div>
                                     <div class="card-footer text-center">
@@ -164,5 +178,91 @@
             font-size: 15px;
             color: white;
         }
+
+        .bookmark-icon {
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+            color: rgb(0 90 255);
+            cursor: pointer;
+            text-shadow: 0 0 5px #ffffff, 0 0 10px #ffffff, 0 0 20px #008cff;
+        }
+
+        .bookmark-icon:hover {
+            transition: 0.5s;
+            transform: scale(1.2);
+            color: #ffffff;
+            text-shadow: 0 0 5px #ffffff, 0 0 10px #008cff, 0 0 20px #008cff;
+        }
     </style>
-@endsection()
+
+    <script>
+        document.querySelectorAll('.bookmark-icon i').forEach(icon => {
+            icon.addEventListener('click', function() {
+                const courseId = this.getAttribute('data-course-id');
+                const isAdding = this.classList.contains('bi-bookmark-plus-fill');
+                const method = isAdding ? 'POST' : 'DELETE';
+                const url = `/courses/${courseId}/favorite`;
+
+                fetch(url, {
+                        method: method,
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'Content-Type': 'application/json'
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            if (isAdding) {
+                                $.toast({
+                                    heading: 'Notification',
+                                    text: 'Course added to favorites',
+                                    showHideTransition: 'slide',
+                                    position: 'top-center',
+                                    icon: 'success',
+                                    hideAfter: 5000
+                                });
+                                this.classList.remove('bi-bookmark-plus-fill');
+                                this.classList.add('bi-bookmark-dash-fill');
+                                this.setAttribute('title', 'Remove from favorite list');
+                            } else {
+                                $.toast({
+                                    heading: 'Notification',
+                                    text: 'Course removed from favorites',
+                                    showHideTransition: 'slide',
+                                    position: 'top-center',
+                                    icon: 'success',
+                                    hideAfter: 5000
+                                });
+                                this.classList.remove('bi-bookmark-dash-fill');
+                                this.classList.add('bi-bookmark-plus-fill');
+                                this.setAttribute('title', 'Add to favorite list');
+                            }
+                        } else {
+                            $.toast({
+                                heading: 'Notification',
+                                text: isAdding ? 'Failed to add course to favorites' :
+                                    'Failed to remove course from favorites',
+                                showHideTransition: 'slide',
+                                position: 'top-center',
+                                icon: 'error',
+                                hideAfter: 5000
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        $.toast({
+                            heading: 'Notification',
+                            text: 'An error occurred while processing your request',
+                            showHideTransition: 'slide',
+                            position: 'top-center',
+                            icon: 'error',
+                            hideAfter: 5000
+                        });
+                    });
+            });
+        });
+    </script>
+@endsection

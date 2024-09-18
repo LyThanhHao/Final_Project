@@ -30,6 +30,6 @@ class Course extends Model
 
     public function favorites()
     {
-        return $this->belongsTo(Favorite::class);
+        return $this->belongsToMany(User::class, 'favorites', 'course_id', 'user_id');
     }
 }

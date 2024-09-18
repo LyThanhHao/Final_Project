@@ -13,7 +13,7 @@
                         @csrf
                         <div class="form-group">
                             <label for="course_name">Name of Course</label>
-                            <input type="text" class="form-control" id="course_name" name="course_name" required>
+                            <input type="text" class="form-control" id="course_name" name="course_name" value="{{ old('course_name') }}" required>
                             @error('course_name')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
@@ -55,14 +55,16 @@
                         </div>
                         <div class="form-group mb-0">
                             <label for="image">Image</label>
+                            <br>
+                            <img id="current-image" src="{{ old('image') ? asset('uploads/course_image/' . old('image')) : '' }}" alt="" class="img-thumbnail mt-2" style="width: 100px; height: 100px; margin-bottom: 10px;">
                         </div>
                         @error('image')
                             <small class="text-danger">{{ $message }}</small>
                         @enderror
-                        <input type="file" class="form-control mb-3" id="image" name="image" required>
+                        <input type="file" class="form-control mb-3" id="image" name="image" onchange="previewImage(event)">
                         <div class="form-group">
                             <label for="description">Description</label>
-                            <input type="text" class="form-control" id="description" name="description" required>
+                            <input type="text" class="form-control" id="description" name="description" value="{{ old('description') }}" required>
                             @error('description')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror

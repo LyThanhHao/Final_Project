@@ -51,7 +51,6 @@
   font-weight: 500;
   color: #000;
   text-shadow: none;
-  background: transparent;
   cursor: pointer;
   box-shadow: transparent;
   border: 1px solid #000;
@@ -395,6 +394,15 @@ h1, h2, h3, h4, h5, h6 {
   border: 1px solid #ddd;
   width: 260px;
   height: 38px;
+  padding: 0 15px;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.container-fluid .search-input:focus {
+  border-color: #0066ff;
+  box-shadow: 0 4px 8px rgba(0, 102, 255, 0.2);
+  outline: none;
 }
 
 .container-fluid .search-btn {
@@ -407,10 +415,23 @@ h1, h2, h3, h4, h5, h6 {
   align-items: center;
   justify-content: center;
   color: white;
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+}
+
+.container-fluid .search-btn:hover {
+  background-color: #0056e0;
+  box-shadow: 0 4px 8px rgba(0, 102, 255, 0.2);
 }
 
 .container-fluid .search-btn i {
   font-size: 16px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.container-fluid .search-btn:hover i {
+  transform: scale(1.2);
+  color: #fff;
 }
 
 .container-fluid .navbar-nav {

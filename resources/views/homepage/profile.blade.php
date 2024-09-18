@@ -172,7 +172,7 @@
             </nav>
             <hr class="mt-0 mb-4">
             <div class="row">
-                <div class="col-md-4"> <!-- Thay thế col-xl-4 bằng col-md-4 -->
+                <div class="col-md-4">
                     <div class="card mb-4 mb-md-0">
                         <div class="card-header">Profile Picture</div>
                         <div class="card-body text-center">

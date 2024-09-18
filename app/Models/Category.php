@@ -12,7 +12,7 @@ class Category extends Model
     // protected $primaryKey = 'id';
 
     protected $fillable = [
-        'cat_name', 'status'
+        'cat_name', 'status', 'cat_image',
     ];
 
     public function courses()

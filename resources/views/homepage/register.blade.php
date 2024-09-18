@@ -13,8 +13,6 @@
 
     <!-- SweetAlert2 CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-    <!-- SweetAlert2 JS -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- Toast notification -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.css" />
     <!-- Bootstrap Icons -->
@@ -28,9 +26,10 @@
         <div class="form-image">
             <img src="{{ asset('uploads/image-register.jpeg') }}" alt="Image Description">
         </div>
+        <hr style="display: block;">
         <div class="divider"></div>
         <div class="form-content">
-            <form id="register-form" class="mx-auto" method="POST" role="form">
+            <form id="register-form" class="mx-auto" method="POST" role="form" action="{{ route('homepage.register') }}">
                 @csrf
                 <p class="form-title">LET'S CREATE YOUR ACCOUNT</p>
                 <div class="input-container">
@@ -46,10 +45,11 @@
                         <small style="color: red;">{{ $message }}</small>
                     @enderror
                 </div>
-                <div class="input-container">
-                    <input type="password" id="password" class="form-control" name="password"
+                <div class="input-container position-relative">
+                    <input id="password" type="password" class="form-control" name="password"
                         placeholder="Enter your password" required>
-                    <span id="toggle-password" class="position-absolute">
+                    <span id="toggle-password" class="position-absolute top-50 end-0 translate-middle-y me-3"
+                        style="cursor: pointer;">
                         <i id="icon-toggle-password" class="bi bi-eye-slash-fill"></i>
                     </span>
                     @error('password')
@@ -60,13 +60,14 @@
                     <label style="font-size: 11px;" for="password">Password must be at least 5 characters long. <br>
                         Contains at least one number and symbol (like !@$!%*?&#).</label>
                 </div>
-                <div class="input-container">
-                    <input type="password" id="confirm-password" class="form-control" name="confirm_password"
+                <div class="input-container position-relative">
+                    <input id="password_confirmation" type="password" class="form-control" name="password_confirmation"
                         placeholder="Confirm your password" required>
-                    <span id="toggle-confirm-password" class="position-absolute">
-                        <i id="icon-toggle-confirm-password" class="bi bi-eye-slash-fill"></i>
+                    <span id="toggle-password-confirmation" class="position-absolute top-50 end-0 translate-middle-y me-3"
+                        style="cursor: pointer;">
+                        <i id="icon-toggle-password-confirmation" class="bi bi-eye-slash-fill"></i>
                     </span>
-                    @error('confirm_password')
+                    @error('password_confirmation')
                         <small style="color: red;">{{ $message }}</small>
                     @enderror
                 </div>
@@ -150,9 +151,9 @@
             }
         });
 
-        document.getElementById('toggle-confirm-password').addEventListener('click', function() {
-            const passwordField = document.getElementById('confirm-password');
-            const iconToggle = document.getElementById('icon-toggle-confirm-password');
+        document.getElementById('toggle-password-confirmation').addEventListener('click', function() {
+            const passwordField = document.getElementById('password_confirmation');
+            const iconToggle = document.getElementById('icon-toggle-password-confirmation');
             const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
             passwordField.setAttribute('type', type);
 
