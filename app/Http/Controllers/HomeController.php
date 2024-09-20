@@ -15,37 +15,48 @@ class HomeController extends Controller
 {
     public function index()
     {
+        $user = Auth::user();
         $categories = Category::where('status', 1)
             ->with('courses')
             ->get()
             ->sortByDesc(function ($category) {
                 return $category->courses->count();
             });
-        $favorites = Favorite::where('user_id', Auth::user()->id)->get();
-        $teachers = User::where('role', 'Teacher')->get();
-        $courses = Course::orderBy('id', 'DESC')->limit(4)->get();
-        return view('homepage.index', compact('courses', 'categories', 'teachers'));
+        // $courses = Course::orderBy('id', 'DESC')
+        //     ->where('status', 1)
+        //     ->whereHas('category', function ($query) {
+        //         $query->where('status', 1);
+        //     })
+        //     ->whereHas('user', function ($query) {
+        //         $query->where('role', 'Teacher');
+        //     })
+        //     ->limit(4)
+        //     ->get();
+        $courses = Course::orderBy('id', 'DESC')
+            ->where('status', 1)
+            ->whereHas('category', function ($query) {
+                $query->where('status', 1);
+            })->limit(4)->get();
+        if ($user) {
+            $favorites = $user ? Favorite::where('user_id', $user->id)->get() : null;
+        } else {
+            $favorites = null;
+        }
+        return view('homepage.index', compact('courses', 'categories', 'favorites'));
     }
 
     public function search(Request $request)
     {
+        $user = Auth::user();
         $keyword = $request->input('keyword');
-
-        $favorites = Favorite::where('user_id', Auth::user()->id)->get();
-
+        $favorites = $user ? Favorite::where('user_id', $user->id)->get() : null;
         $courses = Course::where('status', 1)
             ->where(function ($query) use ($keyword) {
                 $query->where('course_name', 'LIKE', "%{$keyword}%")
                     ->orWhereHas('user', function ($q) use ($keyword) {
                         $q->where('role', 'Teacher')->where('fullname', 'LIKE', "%{$keyword}%");
                     });
-            })
-            ->whereHas('category', function ($q) {
-                $q->where('status', 1);
-            })
-            ->whereHas('user', function ($q) {
-                $q->where('role', 'Teacher');
-            })->get();
+            })->whereHas('category', function ($q) {$q->where('status', 1);})->get();
 
         return view('homepage.search', compact('courses', 'keyword', 'favorites'));
     }

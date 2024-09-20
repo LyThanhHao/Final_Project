@@ -2,7 +2,11 @@
 
     @section('main')
         <style>
-            /* From Uiverse.io by vinodjangid07 */
+            .card:hover {
+                transform: translateY(-10px);
+                box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            }
+
             .readmore-btn {
                 width: -webkit-fill-available;
                 height: 48px;
@@ -468,7 +472,7 @@
                                 @if (!Auth::check() || (Auth::check() && Auth::user()->role != 'Teacher'))
                                     <div><a href="" class="btn enroll-btn mr-4">Enroll Now</a></div>
                                 @endif
-                                @if (!Auth::check() || (Auth::check() && Auth::user()->role == 'Student'))
+                                @if (!Auth::check() || (Auth::check() && Auth::user()->role != 'Teacher'))
                                     <div>
                                         @if (!$favorite)
                                             <button class="btn-save" id="save-course" data-course-id="{{ $course->id }}"
@@ -577,7 +581,7 @@
                                                             alt=""
                                                             style="border-radius: 50%; width: 30px; height: 30px; margin-right: 8px;">
                                                         <a href="" class="text-info"
-                                                            style="text-decoration: underline;">{{ $relatedCourse->user->fullname }}</a>
+                                                            style="text-decoration: underline; font-weight: bold;">{{ $relatedCourse->user->fullname }}</a>
                                                     </div>
                                                 </div>
                                                 <div class="card-footer text-center">

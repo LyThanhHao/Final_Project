@@ -162,7 +162,7 @@
                             <li class="nav-item">
                                 <a href="contact.html" class="nav-link">Contact</a>
                             </li>
-                            @if (Auth::check() && Auth::user()->role == 'Student')
+                            @if (Auth::check() && (Auth::user()->role == 'Student' || Auth::user()->role == 'Admin'))
                                 <li class="nav-item">
                                     <a href="{{ route('favorite_list') }}" class="nav-link">Favorites List</a>
                                 </li>
@@ -187,7 +187,7 @@
                                                     </div>
                                                     <div class="submenu">
                                                         <div class="submenu-item">
-                                                            <a href="{{ route('profile') }}" class="submenu-link"> Profile </a>
+                                                            <a href="{{ route('profile') }}" class="submenu-link">Profile</a>
                                                         </div>
                                                         @if (Auth::user()->role == 'Admin')
                                                             <div class="submenu-item">

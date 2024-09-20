@@ -23,8 +23,8 @@
                                     <img style="height: 45%;" class="img-fluid card-img-top"
                                         src="{{ asset('uploads/course_image/' . $course->image) }}"
                                         alt="{{ $course->course_name }}">
-                                    @if (Auth::check())
-                                        @if (Auth::user()->favorites->contains($course->id))
+                                    @if (!Auth::check() || (Auth::check() && Auth::user()->role != 'Teacher'))
+                                        @if ($favorites && $favorites->contains('course_id', $course->id))
                                             <div class="bookmark-icon position-absolute">
                                                 <i class="bi bi-bookmark-dash-fill" data-course-id="{{ $course->id }}"
                                                     title="Remove from favorite list"></i>
@@ -197,71 +197,67 @@
     </style>
 
     <script>
-        document.querySelectorAll('.bookmark-icon i').forEach(icon => {
-            icon.addEventListener('click', function() {
-                const courseId = this.getAttribute('data-course-id');
-                const isAdding = this.classList.contains('bi-bookmark-plus-fill');
-                const method = isAdding ? 'POST' : 'DELETE';
+        $(document).ready(function() {
+            // Bookmark event handler
+            $('.bookmark-icon i').on('click', function() {
+                const courseId = $(this).data('course-id');
+                const isSaved = $(this).hasClass('bi-bookmark-dash-fill'); // Check current state
+
+                // Determine the correct AJAX method and URL based on the current state
+                const method = isSaved ? 'DELETE' : 'POST';
                 const url = `/courses/${courseId}/favorite`;
 
-                fetch(url, {
-                        method: method,
-                        headers: {
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                            'Content-Type': 'application/json'
-                        }
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            if (isAdding) {
-                                $.toast({
-                                    heading: 'Notification',
-                                    text: 'Course added to favorites',
-                                    showHideTransition: 'slide',
-                                    position: 'top-center',
-                                    icon: 'success',
-                                    hideAfter: 5000
-                                });
-                                this.classList.remove('bi-bookmark-plus-fill');
-                                this.classList.add('bi-bookmark-dash-fill');
-                                this.setAttribute('title', 'Remove from favorite list');
-                            } else {
-                                $.toast({
-                                    heading: 'Notification',
-                                    text: 'Course removed from favorites',
-                                    showHideTransition: 'slide',
-                                    position: 'top-center',
-                                    icon: 'success',
-                                    hideAfter: 5000
-                                });
-                                this.classList.remove('bi-bookmark-dash-fill');
-                                this.classList.add('bi-bookmark-plus-fill');
-                                this.setAttribute('title', 'Add to favorite list');
-                            }
+                $.ajax({
+                    url: url,
+                    method: method,
+                    data: {
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        if (isSaved) {
+                            $.toast({
+                                heading: 'Notification',
+                                text: 'Course removed from favorites',
+                                showHideTransition: 'slide',
+                                position: 'top-center',
+                                icon: 'success',
+                                hideAfter: 5000
+                            });
+                            // Update the icon and title
+                            $(`i[data-course-id="${courseId}"]`).removeClass(
+                                    'bi-bookmark-dash-fill').addClass('bi-bookmark-plus-fill')
+                                .attr('title', 'Add to favorite list');
                         } else {
                             $.toast({
                                 heading: 'Notification',
-                                text: isAdding ? 'Failed to add course to favorites' :
-                                    'Failed to remove course from favorites',
+                                text: 'Course added to favorites',
+                                showHideTransition: 'slide',
+                                position: 'top-center',
+                                icon: 'success',
+                                hideAfter: 5000
+                            });
+                            // Update the icon and title
+                            $(`i[data-course-id="${courseId}"]`).removeClass(
+                                    'bi-bookmark-plus-fill').addClass('bi-bookmark-dash-fill')
+                                .attr('title', 'Remove from favorite list');
+                        }
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        if (jqXHR.status === 401) {
+                            window.location.href = '{{ route('homepage.login') }}';
+                        } else {
+                            console.log('Something went wrong!', jqXHR.responseText);
+                            $.toast({
+                                heading: 'Notification',
+                                text: 'An error occurred while processing your request',
                                 showHideTransition: 'slide',
                                 position: 'top-center',
                                 icon: 'error',
                                 hideAfter: 5000
                             });
                         }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        $.toast({
-                            heading: 'Notification',
-                            text: 'An error occurred while processing your request',
-                            showHideTransition: 'slide',
-                            position: 'top-center',
-                            icon: 'error',
-                            hideAfter: 5000
-                        });
-                    });
+                    }
+                });
             });
         });
     </script>

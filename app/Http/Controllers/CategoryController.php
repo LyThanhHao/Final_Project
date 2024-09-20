@@ -52,7 +52,8 @@ class CategoryController extends Controller
 
     public function filter(Category $category)
     {
-        $favorites = Favorite::where('user_id', Auth::user()->id)->get();
+        $user = Auth::user();
+        $favorites = $user ? Favorite::where('user_id', $user->id)->get() : null;
         $courses = $category->courses;
         return view('categories.filter', compact('category', 'courses', 'favorites'));
     }
