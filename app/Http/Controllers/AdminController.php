@@ -25,7 +25,7 @@ class AdminController extends Controller
     {
         $request->validate([
             'fullname' => 'required',
-            'email' => 'required|email',
+            'email' => 'required|email|unique:users,email',
             'password' => 'required',
             'address' => 'required',
             'phoneNumber' => 'required'
@@ -33,11 +33,13 @@ class AdminController extends Controller
             'fullname.required' => 'The fullname is required.',
             'email.required' => 'The email is required.',
             'email.email' => 'The email must be a valid email address.',
+            'email.unique' => 'The email has already been taken.',
             'password.required' => 'The password is required.',
             'address.required' => 'The address is required.',
             'phoneNumber.required' => 'The phone number is required.',
         ]);
 
+        $request['role'] = 'Student';
         $request['password'] = bcrypt(request('password'));
         $user = User::create($request->all());
 
@@ -86,8 +88,6 @@ class AdminController extends Controller
 
     public function destroy_account(User $user)
     {
-        $user->delete();
-
         if ($user->delete()) {
             return redirect()->route('admin.accounts.index')->with('success', 'User deleted successfully');
         }

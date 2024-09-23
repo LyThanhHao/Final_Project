@@ -38,7 +38,7 @@ class CategoryController extends Controller
 
         if ($request->hasFile('cat_image')) {
             $img_name = $request->cat_image->hashName();
-            $request->cat_image->move(public_path('uploads/category_images'), $img_name);
+            $request->cat_image->move(public_path('uploads/category_image'), $img_name);
             $data['cat_image'] = $img_name;
         }
 
@@ -81,7 +81,7 @@ class CategoryController extends Controller
 
         if ($request->hasFile('cat_image')) {
             $img_name = $request->cat_image->hashName();
-            $request->cat_image->move(public_path('uploads/category_images'), $img_name);
+            $request->cat_image->move(public_path('uploads/category_image'), $img_name);
             $data['cat_image'] = $img_name;
         }
 

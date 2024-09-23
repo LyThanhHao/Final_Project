@@ -112,6 +112,47 @@
                 width: 250%;
             }
 
+            .view-btn {
+                border: none;
+                border-radius: 5px;
+                font-weight: bold;
+                letter-spacing: 5px;
+                text-transform: uppercase;
+                cursor: pointer;
+                color: #2caf37;
+                transition: all 1000ms;
+                font-size: 8px;
+                position: relative;
+                overflow: hidden;
+                outline: 2px solid #2caf37;
+                line-height: 2;
+                font-size: 13px;
+            }
+
+            .view-btn:hover {
+                color: #ffffff;
+                transform: scale(1.1);
+                outline: 2px solid #70ca77;
+                box-shadow: 4px 5px 17px -4px #639126;
+            }
+
+            .view-btn::before {
+                content: "";
+                position: absolute;
+                left: -50px;
+                top: 0;
+                width: 0;
+                height: 100%;
+                background-color: #2caf37;
+                transform: skewX(45deg);
+                z-index: -1;
+                transition: width 1000ms;
+            }
+
+            .view-btn:hover::before {
+                width: 250%;
+            }
+
             .button-message a .btn-send {
                 width: -webkit-fill-available;
                 height: 40px;
@@ -469,9 +510,18 @@
                             <p>{{ $course->description }}</p>
                             <hr style="width: 300px; margin-left: 0">
                             <div class="d-flex">
-                                @if (!Auth::check() || (Auth::check() && Auth::user()->role != 'Teacher'))
-                                    <div><a href="" class="btn enroll-btn mr-4">Enroll Now</a></div>
-                                @endif
+                                <form action="{{ route('courses.enroll', $course->id) }}" method="POST"
+                                    style="display: inline;">
+                                    @if (!Auth::check() || (Auth::check() && Auth::user()->role != 'Teacher'))
+                                        @if ($enrolled)
+                                            <div><a href="{{ route('courses.view', $course->id) }}" class="btn view-btn mr-4 px-4">View</a></div>
+                                        @else
+                                            @csrf
+                                            <div><button type="submit" class="btn enroll-btn mr-4">Enroll Now</button>
+                                            </div>
+                                        @endif
+                                    @endif
+                                </form>
                                 @if (!Auth::check() || (Auth::check() && Auth::user()->role != 'Teacher'))
                                     <div>
                                         @if (!$favorite)

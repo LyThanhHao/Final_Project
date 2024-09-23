@@ -21,15 +21,16 @@ Route::post('/reset-password/{token}', [UserController::class, 'check_reset_pass
 
 //account routes
 Route::get('/login', [HomeController::class, 'login'])->name('homepage.login');
-Route::post('/login', [HomeController::class, 'check_login']);
+Route::post('/login', [HomeController::class, 'check_login'])->name('homepage.check_login');
 Route::get('/register', [HomeController::class, 'register'])->name('homepage.register');
-Route::post('/register', [HomeController::class, 'check_register']);
+Route::post('/register', [HomeController::class, 'check_register'])->name('homepage.check_register');
 Route::get('/verify-account/{email}', [HomeController::class, 'verify'])->name('homepage.verify');
 
 Route::get('/logout', [HomeController::class, 'logout'])->name('homepage.logout');
 
 //courses routes
 Route::get('/course/{course}/detail', [CourseController::class, 'course_detail'])->name('courses.detail');
+
 
 Route::group(['middleware' => ['auth']], function () {
     Route::post('/course/detail/comment', [CommentController::class, 'store'])->name('comments.store');
@@ -40,6 +41,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::put('/profile', [UserController::class, 'check_profile'])->name('check_change_profile');
     Route::post('/profile/avatar', [UserController::class, 'change_avatar'])->name('change_avatar');
     Route::post('/profile/password', [UserController::class, 'check_password'])->name('check_change_password');
+    Route::post('/course/enroll/{course_id}', [CourseController::class, 'enroll'])->name('courses.enroll');
+    Route::get('/course/view/{course_id}', [CourseController::class, 'view'])->name('courses.view');
 });
 
 //categories routes
@@ -89,13 +92,7 @@ Route::group(['prefix' => 'teacher', 'middleware' => ['auth', 'teacher']], funct
     Route::get('/tests/{test}/edit', [TeacherController::class, 'edit_test'])->name('teacher.tests.edit');
     Route::put('/tests/{test}', [TeacherController::class, 'update_test'])->name('teacher.tests.update');
     Route::delete('/tests/{test}', [TeacherController::class, 'destroy_test'])->name('teacher.tests.destroy');
-    Route::get('/tests/{test}/question', [TeacherController::class, 'test_detail'])->name('teacher.tests.detail');
-    //questions
-    Route::get('/questions/create/{test}', [TeacherController::class, 'create_question'])->name('teacher.questions.create');
-    Route::post('/questions', [TeacherController::class, 'store_questions'])->name('teacher.questions.store');
-    Route::get('/questions/{question}/edit', [TeacherController::class, 'edit_question'])->name('teacher.questions.edit');
-    Route::put('/questions/{question}', [TeacherController::class, 'update_question'])->name('teacher.questions.update');
-    Route::delete('/questions/{question}', [TeacherController::class, 'destroy_question'])->name('teacher.questions.destroy');
+    Route::get('/tests/{test}/detail', [TeacherController::class, 'test_detail'])->name('teacher.tests.detail');
 });
 
 

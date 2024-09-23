@@ -4,36 +4,27 @@
     <div class="content mt-4">
         <div class="card">
             <div class="card-header text-center">
-                <h3 style="color: aliceblue;">List of questions for "{{ $test->test_name }}"</h3>
+                <h3 style="color: aliceblue;">List of results of "{{ $test->test_name }}"</h3>
             </div>
             <div class="card-body">
-                <a href="{{ route('teacher.questions.create', $test->id) }}" class="btn btn-add mb-3">Add New Question</a>
                 <table class="table table-bordered">
                     <thead>
                         <tr>
                             <th style="max-width: 20px;">No.</th>
-                            <th>Question</th>
+                            <th style="max-width: 70px;">Student Name</th>
+                            <th style="max-width: 50px;">Score</th>
                             <th style="width: 100px;">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($questions as $question)
-                            <tr>
-                                <td class="text-center font-weight-bold">{{ $loop->iteration }}</td>
-                                <td>{{ $question->question }}</td>
-                                <td style="text-align: center; position: relative;">
-                                    <button class="btn btn-toggle" onclick="toggleActions(this)"><i class="bi bi-list"></i></button>
-                                    <div class="action-buttons" style="display: none; position: absolute; top: 75%; left: 50%; transform: translateX(-50%); width: 75%; z-index: 1; background: white; border: 1px solid #ccc; border-radius: 5px;">
-                                        <a href="{{ route('teacher.questions.edit', $question->id) }}" class="btn btn-edit"><i class="bi bi-pencil-square"></i></a>
-                                        <form action="{{ route('teacher.questions.destroy', $question->id) }}" method="POST" style="display:inline-block; width: 100%;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button class="btn btn-delete" type="submit" onclick="confirmDelete(event, this)"><i class="bi bi-trash"></i></button>
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
-                        @endforeach
+                        <tr>
+                            <td style="text-align: center; font-weight: bold;">1</td>
+                            <td style="text-align: center;">Ly Thanh Hao</td>
+                            <td style="text-align: center;">10</td>
+                            <td style="text-align: center; position: relative;">
+                                <a href="" class="btn btn-edit"><i class="bi bi-pencil-square"></i></a>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
                 <div style="display: flex; justify-content: center;">

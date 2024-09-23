@@ -17,11 +17,17 @@
                                 <label for="fullname">Full Name</label>
                                 <input type="text" class="form-control" id="fullname" name="fullname"
                                     value="{{ $user->fullname }}">
+                                @error('fullname')
+                                    <small style="color: red;">{{ $message }}</small>
+                                @enderror
                             </div>
                             <div class="form-group">
                                 <label for="email">Email</label>
                                 <input type="email" class="form-control" id="email" name="email"
                                     value="{{ $user->email }}">
+                                @error('email')
+                                    <small style="color: red;">{{ $message }}</small>
+                                @enderror
                             </div>
                             <div class="form-group">
                                 <label for="role">Role</label>
@@ -33,16 +39,25 @@
                                     <option style="color: black;" value="Teacher"
                                         {{ $user->role == 'Teacher' ? 'selected' : '' }}>Teacher</option>
                                 </select>
+                                @error('role')
+                                    <small style="color: red;">{{ $message }}</small>
+                                @enderror
                             </div>
                             <div class="form-group">
                                 <label for="address">Address</label>
                                 <input type="text" class="form-control" id="address" name="address"
                                     value="{{ $user->address }}">
+                                @error('address')
+                                    <small style="color: red;">{{ $message }}</small>
+                                @enderror
                             </div>
                             <div class="form-group">
                                 <label for="phoneNumber">Phone Number</label>
                                 <input type="text" class="form-control" id="phoneNumber" name="phoneNumber"
                                     value="{{ $user->phoneNumber }}">
+                                @error('phoneNumber')
+                                    <small style="color: red;">{{ $message }}</small>
+                                @enderror
                             </div>
                             <button type="submit" class="btn-update">Update</button>
                         </form>

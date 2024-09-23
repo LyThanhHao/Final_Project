@@ -32,4 +32,9 @@ class Course extends Model
     {
         return $this->belongsToMany(User::class, 'favorites', 'course_id', 'user_id');
     }
+
+    public function enrolls()
+    {
+        return $this->hasMany(Enroll::class, 'course_id', 'id');
+    }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Comment;
 use App\Models\Course;
+use App\Models\Enroll;
 use App\Models\Favorite;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -81,12 +82,13 @@ class CourseController extends Controller
         } else {
             $favorite = null;
         }
+        $enrolled = Enroll::where('user_id', $user->id)->where('course_id', $course->id)->first();
         $instructor = $course->user;
         $courseCount = Course::where('user_id', $instructor->id)->count();
         $relatedCourses = Course::where('category_id', $course->category_id)->where('id', '!=', $course->id)->limit(3)->get();
         $comments = Comment::where('course_id', $course->id)->with('user')->get();
 
-        return view('courses.detail', compact('courseCount', 'relatedCourses', 'courseCount', 'course', 'comments', 'favorite'));
+        return view('courses.detail', compact('courseCount', 'relatedCourses', 'courseCount', 'course', 'comments', 'favorite', 'enrolled'));
     }
 
     public function edit(Course $course)
@@ -148,7 +150,7 @@ class CourseController extends Controller
         return redirect()->back()->with('fail', 'Course deletion failed! Something went wrong, please try again!');
     }
 
-    public function favorite(Request $request, $courseId)
+    public function favorite($courseId)
     {
         $user = Auth::user();
         Favorite::create([
@@ -159,7 +161,7 @@ class CourseController extends Controller
         return response()->json(['success' => 'Course added to favorites'], 201);
     }
 
-    public function unfavorite(Request $request, $courseId)
+    public function unfavorite($courseId)
     {
         $user = Auth::user();
 
@@ -170,5 +172,31 @@ class CourseController extends Controller
         }
 
         return response()->json(['success' => 'Course removed from favorites'], 200);
+    }
+
+    public function enroll(Request $request, $course_id)
+    {
+        $user = Auth::user();
+        $course = Course::findOrFail($course_id);
+        $existingEnroll = Enroll::where('user_id', $user->id)
+            ->where('course_id', $course->id)
+            ->first();
+
+        if (!$existingEnroll) {
+            Enroll::create([
+                'user_id' => $user->id,
+                'course_id' => $course->id,
+            ]);
+        }
+
+        return view('courses.view', compact('course', 'existingEnroll'));
+    }
+
+    public function view(Request $request, $course_id)
+    {
+        $user = Auth::user();
+        $course = Course::findOrFail($course_id);
+        
+        return view('courses.view', compact('course'));
     }
 }

@@ -30,85 +30,21 @@
                             <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
+                    <div class="form-group">
+                        <label for="question_count">Number of Questions</label>
+                        <select class="form-control" id="question_count" name="question_count" required>
+                            <option value="">Choose the number of questions</option>
+                            <option value="10">10 Questions</option>
+                            <option value="20">20 Questions</option>
+                        </select>
+                    </div>
                     <div class="text-center my-4">
                         <hr class="w-50 mx-auto" style="border: 1px solid rgba(0, 0, 0, 0.2);">
                     </div>
                     <div id="questions-container">
-                        <div class="card mt-4 question-card shadow-sm">
-                            <div class="card-header text-center text-white" style="background-color: #007bff;">
-                                <h4 style="color: aliceblue;">Question 1</h4>
-                            </div>
-                            <div class="card-body">
-                                <div class="form-group">
-                                    <label for="questions[0][question]">Question</label>
-                                    <input type="text" class="form-control" id="questions[0][question]"
-                                        name="questions[0][question]" placeholder="Enter question"
-                                        value="{{ old('questions[0][question]') }}" required>
-                                    @error('questions[0][question]')
-                                        <small class="text-danger">{{ $message }}</small>
-                                    @enderror
-                                </div>
-                                <div class="form-row">
-                                    <div class="form-group col-md-6">
-                                        <label for="questions[0][a]">A:</label>
-                                        <input type="text" class="form-control" id="questions[0][a]"
-                                            name="questions[0][a]" value="{{ old('questions[0][a]') }}" required>
-                                        @error('questions[0][a]')
-                                            <small class="text-danger">{{ $message }}</small>
-                                        @enderror
-                                    </div>
-                                    <div class="form-group col-md-6">
-                                        <label for="questions[0][b]">B:</label>
-                                        <input type="text" class="form-control" id="questions[0][b]"
-                                            name="questions[0][b]" value="{{ old('questions[0][b]') }}" required>
-                                        @error('questions[0][b]')
-                                            <small class="text-danger">{{ $message }}</small>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="form-row">
-                                    <div class="form-group col-md-6">
-                                        <label for="questions[0][c]">C:</label>
-                                        <input type="text" class="form-control" id="questions[0][c]"
-                                            name="questions[0][c]" value="{{ old('questions[0][c]') }}" required>
-                                        @error('questions[0][c]')
-                                            <small class="text-danger">{{ $message }}</small>
-                                        @enderror
-                                    </div>
-                                    <div class="form-group col-md-6">
-                                        <label for="questions[0][d]">D:</label>
-                                        <input type="text" class="form-control" id="questions[0][d]"
-                                            name="questions[0][d]" value="{{ old('questions[0][d]') }}" required>
-                                        @error('questions[0][d]')
-                                            <small class="text-danger">{{ $message }}</small>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="questions[0][answer]">Answer</label>
-                                    <select class="form-control" id="questions[0][answer]" name="questions[0][answer]"
-                                        required>
-                                        <option value="a" {{ old('questions[0][answer]') == 'a' ? 'selected' : '' }}>A
-                                        </option>
-                                        <option value="b" {{ old('questions[0][answer]') == 'b' ? 'selected' : '' }}>B
-                                        </option>
-                                        <option value="c" {{ old('questions[0][answer]') == 'c' ? 'selected' : '' }}>C
-                                        </option>
-                                        <option value="d" {{ old('questions[0][answer]') == 'd' ? 'selected' : '' }}>D
-                                        </option>
-                                    </select>
-                                    @error('questions[0][answer]')
-                                        <small class="text-danger">{{ $message }}</small>
-                                    @enderror
-                                </div>
-                                <div class="form-group text-center d-flex justify-content-between mt-4">
-                                    <button type="button" class="btn btn-remove remove-question">Remove</button>
-                                </div>
-                            </div>
-                        </div>
+                        <!-- Questions will be generated here -->
                     </div>
                     <div class="form-group text-center d-flex justify-content-between mt-4">
-                        <button type="button" id="add-question" class="btn btn-next">Next Question</button>
                         <button type="submit" class="btn btn-submit">Submit</button>
                     </div>
                 </form>
@@ -117,14 +53,6 @@
     </div>
 
     <style>
-        /* .btn {
-            background-color: #28a745;
-            transform: scale(1.05);
-            color: black;
-            background-color: white;
-            border-radius: 1em;
-        } */
-
         .btn-remove {
             background-color: #dc3545;
             color: white;
@@ -183,64 +111,59 @@
     </style>
 
     <script>
-        document.getElementById('add-question').addEventListener('click', function() {
+        document.getElementById('question_count').addEventListener('change', function() {
             const questionsContainer = document.getElementById('questions-container');
-            const questionCount = questionsContainer.getElementsByClassName('question-card').length;
-            const newQuestionIndex = questionCount;
+            const questionCount = parseInt(this.value);
+            questionsContainer.innerHTML = ''; // Clear existing questions
 
-            const newQuestionCard = document.createElement('div');
-            newQuestionCard.classList.add('card', 'mt-4', 'question-card', 'shadow-sm');
-            newQuestionCard.innerHTML = `
-                <div class="card-header text-center bg-secondary text-white">
-                    <h4 style="color: aliceblue;">Question ${newQuestionIndex + 1}</h4>
-                </div>
-                <div class="card-body">
-                    <div class="form-group">
-                        <label for="questions[${newQuestionIndex}][question]">Question</label>
-                        <input type="text" class="form-control" id="questions[${newQuestionIndex}][question]" name="questions[${newQuestionIndex}][question]" placeholder="Enter question" required>
+            for (let i = 0; i < questionCount; i++) {
+                const newQuestionCard = document.createElement('div');
+                newQuestionCard.classList.add('card', 'mt-4', 'question-card', 'shadow-sm');
+                newQuestionCard.innerHTML = `
+                    <div class="card-header text-center bg-secondary text-white">
+                        <h4 style="color: aliceblue;">Question ${i + 1}</h4>
                     </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label for="questions[${newQuestionIndex}][a]">A:</label>
-                            <input type="text" class="form-control" id="questions[${newQuestionIndex}][a]" name="questions[${newQuestionIndex}][a]" required>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="questions[${i}][question]">Question</label>
+                            <input type="text" class="form-control" id="questions[${i}][question]" name="questions[${i}][question]" placeholder="Enter question" required>
                         </div>
-                        <div class="form-group col-md-6">
-                            <label for="questions[${newQuestionIndex}][b]">B:</label>
-                            <input type="text" class="form-control" id="questions[${newQuestionIndex}][b]" name="questions[${newQuestionIndex}][b]" required>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="questions[${i}][a]">A:</label>
+                                <input type="text" class="form-control" id="questions[${i}][a]" name="questions[${i}][a]" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="questions[${i}][b]">B:</label>
+                                <input type="text" class="form-control" id="questions[${i}][b]" name="questions[${i}][b]" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="questions[${i}][c]">C:</label>
+                                <input type="text" class="form-control" id="questions[${i}][c]" name="questions[${i}][c]" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="questions[${i}][d]">D:</label>
+                                <input type="text" class="form-control" id="questions[${i}][d]" name="questions[${i}][d]" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="questions[${i}][answer]">Answer</label>
+                            <select class="form-control" id="questions[${i}][answer]" name="questions[${i}][answer]" required>
+                                <option value="a">A</option>
+                                <option value="b">B</option>
+                                <option value="c">C</option>
+                                <option value="d">D</option>
+                            </select>
                         </div>
                     </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label for="questions[${newQuestionIndex}][c]">C:</label>
-                            <input type="text" class="form-control" id="questions[${newQuestionIndex}][c]" name="questions[${newQuestionIndex}][c]" required>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="questions[${newQuestionIndex}][d]">D:</label>
-                            <input type="text" class="form-control" id="questions[${newQuestionIndex}][d]" name="questions[${newQuestionIndex}][d]" required>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="questions[${newQuestionIndex}][answer]">Answer</label>
-                        <select class="form-control" id="questions[${newQuestionIndex}][answer]" name="questions[${newQuestionIndex}][answer]" required>
-                            <option value="a">A</option>
-                            <option value="b">B</option>
-                            <option value="c">C</option>
-                            <option value="d">D</option>
-                        </select>
-                    </div>
-                    <div class="form-group text-center d-flex justify-content-between mt-4">
-                        <button type="button" class="btn btn-remove remove-question">Remove</button>
-                    </div>
-                </div>
-            `;
-
-            questionsContainer.appendChild(newQuestionCard);
-        });
-
-        document.addEventListener('click', function(e) {
-            if (e.target && e.target.classList.contains('remove-question')) {
-                e.target.closest('.question-card').remove();
+                `;
+                questionsContainer.appendChild(newQuestionCard);
             }
         });
+
+        // Trigger change event to generate initial questions
+        document.getElementById('question_count').dispatchEvent(new Event('change'));
     </script>
 @endsection

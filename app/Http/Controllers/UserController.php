@@ -82,7 +82,7 @@ class UserController extends Controller
                 }
             }],
             'newPassword' => 'required|min:5|regex:/[a-zA-Z]/|regex:/[@$!%*?&#]/',
-            'confirmPassword' => 'required|same:newPassword',
+            'password_confirmation' => 'required|same:newPassword',
         ]);
 
         $data = $request->only('newPassword');

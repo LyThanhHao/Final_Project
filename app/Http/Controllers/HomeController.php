@@ -110,7 +110,7 @@ class HomeController extends Controller
             'fullname' => 'required',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:5|regex:/[a-zA-Z]/|regex:/[@$!%*?&#]/',
-            'confirm_password' => 'required|same:password',
+            'password_confirmation' => 'required|same:password',
             'phoneNumber' => 'required',
             'address' => 'required',
             'termsCheckbox' => 'required',
@@ -122,16 +122,19 @@ class HomeController extends Controller
             'password.required' => 'The password is required.',
             'password.min' => 'Password must be at least 5 characters long.',
             'password.regex' => 'Password must contain at least one letter and one special character.',
-            'confirm_password.required' => 'The confirm password is required.',
-            'confirm_password.same' => 'The confirm password must be same as password.',
+            'password_confirmation.required' => 'The confirm password is required.',
+            'password_confirmation.same' => 'The confirm password must be same as password.',
             'termsCheckbox.required' => 'You must agree to the terms and conditions.',
         ]);
 
         $data = $request->only('fullname', 'email', 'password', 'phoneNumber', 'address');
+        $data['role'] = 'Student';
         //ma hoa password
         $data['password'] = bcrypt($request->password);
 
-        if ($acc = User::create($data)) {
+        $acc = User::create($data);
+
+        if ($acc) {
             Mail::to($acc->email)->send(new VerifyAccount($acc));
             return redirect()->route('homepage.login')->with('success', 'Registration successful!, Please check your email to verify your account');
         }

@@ -14,13 +14,16 @@
             <div class="form-group">
               <label for="cat_name">Name of Category</label>
               <input type="text" class="form-control" id="cat_name" name="cat_name" required>
+              @error('cat_name')
+                  <small style="color: red;">{{ $message }}</small>
+              @enderror
             </div>
             <div class="form-group mb-0">
               <label for="cat_image">Category Image</label>
               <br>
               <img id="current-image" src="{{ old('cat_image') ? asset('uploads/category_image/' . old('cat_image')) : '' }}" alt="" class="img-thumbnail mt-2" style="width: 100px; height: 100px; margin-bottom: 10px;">
               @error('cat_image')
-                  <small class="text-danger">{{ $message }}</small>
+                  <small style="color: red;">{{ $message }}</small>
               @enderror
             </div>
             <input type="file" class="form-control mb-3" id="cat_image" name="cat_image" onchange="previewImage(event)">

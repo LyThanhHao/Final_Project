@@ -27,7 +27,7 @@
         <hr style="display: block;">
         <div class="divider"></div>
         <div class="form-content">
-            <form id="login-form" class="mx-auto" method="POST" role="form" action="{{ route('homepage.login') }}">
+            <form id="login-form" class="mx-auto" method="POST" role="form" action="{{ route('homepage.check_login') }}">
                 @csrf
                 <p class="form-title">LOGIN TO YOUR ACCOUNT</p>
                 <div class="input-container">

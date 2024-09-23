@@ -17,6 +17,7 @@
               <thead class="text-primary">
                 <tr>
                   <th>Category Name</th>
+                  <th>Image</th>
                   <th>Status</th>
                   <th style="text-align: center;">Actions</th>
                 </tr>
@@ -25,6 +26,7 @@
                 @foreach($categories as $category)
                 <tr>
                   <td>{{ $category->cat_name }}</td>
+                  <td><img src="{{ asset('uploads/category_image/' . $category->cat_image) }}" style="border-radius: 5px; width: 70px; height: 70px;" alt=""></td>
                   <td style="color: {{ $category->status == 0 ? 'gray !important' : '#00f708 !important' }};">{{ $category->status == 0 ? 'Hidden' : 'Publish' }}</td>
                   <td style="text-align: center;">
                     <a href="{{ route('admin.categories.edit', $category->id) }}"><i class="bi bi-pencil-square" style="color: white;"></i></a>

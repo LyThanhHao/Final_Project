@@ -166,14 +166,14 @@
                 @enderror
             </div>
             <div class="form-group">
-                <label style="margin-top: 15px;" for="password_confirm">Confirm Password</label>
+                <label style="margin-top: 15px;" for="password_confirmation">Confirm Password</label>
                 <div class="input-container">
-                    <input type="password" id="password_confirma" name="password_confirm" placeholder="Confirm your new password" required="">
-                    <span class="icon" id="toggle-confirm-password">
-                        <i class="bi bi-eye-slash-fill" id="icon-toggle-confirm-password"></i>
+                    <input type="password" id="password_confirmation" name="password_confirmation" placeholder="Confirm your new password" required="">
+                    <span class="icon" id="toggle-password-confirmation">
+                        <i class="bi bi-eye-slash-fill" id="icon-toggle-password-confirmation"></i>
                     </span>
                 </div>
-                @error('password_confirm')
+                @error('password_confirmation')
                     <small style="color: red; margin-top: 5px;">{{ $message }}</small>
                 @enderror
             </div>
@@ -230,9 +230,9 @@
         }
     });
 
-    document.getElementById('toggle-confirm-password').addEventListener('click', function() {
-        const passwordField = document.getElementById('password_confirm');
-        const iconToggle = document.getElementById('icon-toggle-confirm-password');
+    document.getElementById('toggle-password-confirmation').addEventListener('click', function() {
+        const passwordField = document.getElementById('password_confirmation');
+        const iconToggle = document.getElementById('icon-toggle-password-confirmation');
         const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
         passwordField.setAttribute('type', type);
 

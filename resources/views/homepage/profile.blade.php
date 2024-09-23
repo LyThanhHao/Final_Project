@@ -288,15 +288,15 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label class="small mb-1" for="confirmPassword">Confirm Password</label>
+                                    <label class="small mb-1" for="password_confirmation">Confirm Password</label>
                                     <div class="input-container">
-                                        <input class="form-control" id="confirmPassword" name="confirmPassword"
+                                        <input class="form-control" id="password_confirmation" name="password_confirmation"
                                             type="password" placeholder="Confirm new password" required>
-                                        <span id="toggle-confirm-password" class="position-absolute">
-                                            <i id="icon-toggle-confirm-password" class="bi bi-eye-slash-fill"></i>
+                                        <span id="toggle-password-confirmation" class="position-absolute">
+                                            <i id="icon-toggle-password-confirmation" class="bi bi-eye-slash-fill"></i>
                                         </span>
                                     </div>
-                                    @error('confirmPassword')
+                                    @error('password_confirmation')
                                         <small style="color: red;">{{ $message }}</small>
                                     @enderror
                                 </div>
@@ -339,9 +339,9 @@
                 }
             });
 
-            document.getElementById('toggle-confirm-password').addEventListener('click', function() {
-                const passwordField = document.getElementById('confirmPassword');
-                const iconToggle = document.getElementById('icon-toggle-confirm-password');
+            document.getElementById('toggle-password-confirmation').addEventListener('click', function() {
+                const passwordField = document.getElementById('password_confirmation');
+                const iconToggle = document.getElementById('icon-toggle-password-confirmation');
                 const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
                 passwordField.setAttribute('type', type);
 
