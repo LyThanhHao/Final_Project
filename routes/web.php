@@ -36,13 +36,15 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/course/detail/comment', [CommentController::class, 'store'])->name('comments.store');
     Route::post('/courses/{course}/favorite', [CourseController::class, 'favorite'])->name('courses.favorite');
     Route::delete('/courses/{course}/favorite', [CourseController::class, 'unfavorite'])->name('courses.unfavorite');
-    Route::get('/my-courses', [UserController::class, 'favorite_list'])->name('favorite_list');
+    Route::get('/my-favorite-list', [UserController::class, 'favorite_list'])->name('favorite_list');
     Route::get('/profile', [UserController::class, 'profile'])->name('profile');
     Route::put('/profile', [UserController::class, 'check_profile'])->name('check_change_profile');
     Route::post('/profile/avatar', [UserController::class, 'change_avatar'])->name('change_avatar');
     Route::post('/profile/password', [UserController::class, 'check_password'])->name('check_change_password');
     Route::post('/course/enroll/{course_id}', [CourseController::class, 'enroll'])->name('courses.enroll');
     Route::get('/course/view/{course_id}', [CourseController::class, 'view'])->name('courses.view');
+    Route::get('/enrolled-courses', [HomeController::class, 'getEnrolledCourses'])->name('enrolled.courses');
+    Route::get('/my-courses', [HomeController::class, 'my_courses'])->name('my_courses');
 });
 
 //categories routes

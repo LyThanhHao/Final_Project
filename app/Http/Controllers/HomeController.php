@@ -56,7 +56,9 @@ class HomeController extends Controller
                     ->orWhereHas('user', function ($q) use ($keyword) {
                         $q->where('role', 'Teacher')->where('fullname', 'LIKE', "%{$keyword}%");
                     });
-            })->whereHas('category', function ($q) {$q->where('status', 1);})->get();
+            })->whereHas('category', function ($q) {
+                $q->where('status', 1);
+            })->get();
 
         return view('homepage.search', compact('courses', 'keyword', 'favorites'));
     }
@@ -146,5 +148,23 @@ class HomeController extends Controller
         $acc = User::where('email', $email)->whereNull('email_verified_at')->firstOrFail();
         User::where('email', $email)->update(['email_verified_at' => now()]);
         return redirect()->route('homepage.login')->with('success', 'Verify account successfully! Now you can login.');
+    }
+
+    public function getEnrolledCourses()
+    {
+        $user = Auth::user();
+        $enrolledCourses = Course::whereHas('enrolls', function ($query) use ($user) {
+            $query->where('user_id', $user->id);
+        })->get();
+        return response()->json($enrolledCourses);
+    }
+
+    public function my_courses()
+    {
+        $user = Auth::user();
+        $courses = Course::whereHas('enrolls', function ($query) use ($user) {
+            $query->where('user_id', $user->id);
+        })->get();
+        return view('homepage.my_courses', compact('courses'));
     }
 }

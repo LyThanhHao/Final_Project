@@ -62,19 +62,33 @@
                                 </div>
                                 <div class="submenu">
                                     <div class="submenu-item">
-                                        <a href="{{ route('profile') }}" class="submenu-link"> Profile </a>
+                                        <a href="{{ route('profile') }}" class="submenu-link">
+                                            <i class="bi bi-person-circle"></i>
+                                            Profile
+                                        </a>
                                     </div>
                                     @if (Auth::user()->role == 'Admin')
-                                        <div class="submenu-item">
-                                            <a href="{{ route('admin') }}" class="submenu-link font-weight-bold" id="role">Admin</a>
+                                        <div class="submenu-item d-flex align-items-center">
+                                            <a href="{{ route('admin') }}" class="submenu-link font-weight-bold"
+                                                id="role">
+                                                <i class="bi bi-person-fill-gear"></i>
+                                                Admin
+                                            </a>
                                         </div>
                                     @elseif (Auth::user()->role == 'Teacher')
                                         <div class="submenu-item">
-                                            <a href="{{ route('teacher') }}" class="submenu-link font-weight-bold" id="role">Manage courses</a>
+                                            <a href="{{ route('teacher') }}" class="submenu-link font-weight-bold"
+                                                id="role">
+                                                <i class="bi bi-book"></i>
+                                                Manage courses
+                                            </a>
                                         </div>
                                     @endif
                                     <div class="submenu-item">
-                                        <a href="{{ route('homepage.logout') }}" class="submenu-link">Log out </a>
+                                        <a href="{{ route('homepage.logout') }}" class="submenu-link">
+                                            <i class="bi bi-box-arrow-right"></i>
+                                            Log out
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -127,8 +141,8 @@
                                 <div class="col-lg-3 text-right">
                                     <div class="d-inline-flex align-items-center">
                                         <form class="d-flex" method="GET" action="{{ route('homepage.search') }}">
-                                            <input class="form-control me-2 search-input" type="search" name="keyword"
-                                                placeholder="Search...." aria-label="Search">
+                                            <input class="form-control me-2 search-input" type="search"
+                                                name="keyword" placeholder="Search...." aria-label="Search">
                                             <button class="btn search-btn" type="submit">
                                                 <i class="fas fa-search"></i>
                                             </button>
@@ -167,7 +181,19 @@
                                     <a href="{{ route('favorite_list') }}" class="nav-link">Favorites List</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">My Courses</a>
+                                    <button id="myCoursesButton" class="nav-link"
+                                        style="border: none; background-color: unset;">My Courses</button>
+                                    <div id="coursesPopup" class="popup" style="display: none;">
+                                        <div class="popup-header d-flex justify-content-between align-items-center">
+                                            <span style="font-weight: 600; color: #333; font-size: 18px;">My
+                                                Courses</span>
+                                            <a href="{{ route('my_courses') }}" class="view-all">View all</a>
+                                        </div>
+                                        <hr style="width: 75%;">
+                                        <ul id="coursesList" class="courses-list">
+                                            <!-- The course will be displayed here -->
+                                        </ul>
+                                    </div>
                                 </li>
                             @elseif (Auth::check() && Auth::user()->role == 'Teacher')
                                 <li class="nav-item">
@@ -187,19 +213,25 @@
                                                     </div>
                                                     <div class="submenu">
                                                         <div class="submenu-item">
-                                                            <a href="{{ route('profile') }}" class="submenu-link">Profile</a>
+                                                            <a href="{{ route('profile') }}"
+                                                                class="submenu-link">Profile</a>
                                                         </div>
                                                         @if (Auth::user()->role == 'Admin')
                                                             <div class="submenu-item">
-                                                                <a href="{{ route('admin') }}" class="submenu-link font-weight-bold" id="role">Admin</a>
+                                                                <a href="{{ route('admin') }}"
+                                                                    class="submenu-link font-weight-bold"
+                                                                    id="role">Admin</a>
                                                             </div>
                                                         @elseif (Auth::user()->role == 'Teacher')
                                                             <div class="submenu-item">
-                                                                <a href="{{ route('teacher') }}" class="submenu-link font-weight-bold" id="role">Manage courses</a>
+                                                                <a href="{{ route('teacher') }}"
+                                                                    class="submenu-link font-weight-bold"
+                                                                    id="role">Manage courses</a>
                                                             </div>
                                                         @endif
                                                         <div class="submenu-item">
-                                                            <a href="{{ route('homepage.logout') }}" class="submenu-link">Log out </a>
+                                                            <a href="{{ route('homepage.logout') }}"
+                                                                class="submenu-link">Log out </a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -346,6 +378,73 @@
             })
         </script>
     @endif
+
+    <script>
+        $(document).ready(function() {
+            $('#myCoursesButton').on('click', function() {
+                // Toggle hiển thị popup
+                if ($('#coursesPopup').is(':visible')) {
+                    $('#coursesPopup').hide();
+                    return;
+                }
+
+                $.ajax({
+                    url: '{{ route('enrolled.courses') }}',
+                    method: 'GET',
+                    success: function(data) {
+                        $('#coursesList').empty();
+
+                        // Kiểm tra nếu danh sách trống
+                        if (data.length === 0) {
+                            // Hiển thị thông báo nếu danh sách trống
+                            $('#coursesList').append(`
+                        <li class="no-courses" style="color: red; font-size: 15px; text-align: center; font-weight: 500;">
+                            You have not enrolled in any courses yet
+                        </li>`);
+                            // Làm cho nút "View all" không nhấn được
+                            $('.view-all').addClass('disabled-link').css('pointer-events',
+                                'none').css('color', 'gray');
+                        } else {
+                            // Hiển thị danh sách khóa học nếu có
+                            data.forEach(course => {
+                                const imagePath =
+                                    `{{ asset('uploads/course_image') }}/${course.image}`;
+                                const url = `{{ url('course/view') }}/${course.id}`;
+
+                                $('#coursesList').append(`
+                            <li class="course-item">
+                                <a href="${url}" class="d-flex align-items-center">
+                                    <div class="course-image">
+                                        <img src="${imagePath}" alt="${course.course_name}">
+                                    </div>
+                                    <div class="course-info">
+                                        <h4 class="course-title" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                            ${course.course_name}
+                                        </h4>
+                                        <span class="course-action" style="color: #ff3300; font-weight: bold;">View Course</span>
+                                    </div>
+                                </a>
+                            </li>
+                        `);
+                            });
+                        }
+
+                        $('#coursesPopup').show();
+                    },
+                    error: function() {
+                        alert('Cannot get course list. Please try again later.');
+                    }
+                });
+            });
+
+            $(document).mouseup(function(e) {
+                var popup = $("#coursesPopup");
+                if (!popup.is(e.target) && popup.has(e.target).length === 0) {
+                    popup.hide();
+                }
+            });
+        });
+    </script>
 
 </body>
 

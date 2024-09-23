@@ -42,7 +42,79 @@
   box-sizing: border-box;
 }
 
-/* From Uiverse.io by zjssun */ 
+.popup {
+  position: absolute;
+  top: 60px;
+  right: 10px;
+  width: 350px;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  z-index: 1000;
+}
+
+.popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 10px;
+}
+.view-all {
+  color: #ff6600;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: bold;
+  padding: 5px 10px;
+}
+.view-all:hover {
+  background: #dddddd;
+  border-radius: 10px;
+  transition: 0.3s ease;
+}
+.courses-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.course-item {
+  display: flex;
+  align-items: center;
+  padding: 9px 12px;
+}
+.course-item:hover{
+  background: #dddddd;
+  border-radius: 8px;
+  transition: 0.3s ease;
+}
+.course-image img {
+  width: 80px;
+  height: 50px;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+.course-info {
+  flex-grow: 1;
+}
+.course-title {
+  font-size: 16px;
+  font-weight: bold;
+  margin: 0;
+}
+.course-status {
+  font-size: 14px;
+  color: #666;
+}
+.course-action {
+  color: #ff3300;
+  font-weight: bold;
+  text-decoration: none;
+  display: block;
+  margin-top: 5px;
+}
+
+
 .btn-login {
   padding: 10px 20px;
   text-transform: uppercase;
@@ -185,7 +257,7 @@
 
 .submenu .submenu-link {
   display: block;
-  padding: 12px 24px;
+  padding: 12px 20px;
   width: 100%;
   position: relative;
   text-align: center;
@@ -225,6 +297,10 @@
 
 .submenu .submenu-link:hover {
   color: #ffffff;
+}
+
+.submenu .submenu-link i {
+  margin-right: 5px;
 }
 
 

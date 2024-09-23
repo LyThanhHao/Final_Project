@@ -14,7 +14,7 @@ class TeacherController extends Controller
     public function courses()
     {
         $teacher = Auth::user();
-        $courses = $teacher->courses()->withCount('enrolls')->get();
+        $courses = Course::where('user_id', $teacher->id)->withCount('enrolls')->get();
         return view('teacher.courses.index', compact('courses'));
     }
 

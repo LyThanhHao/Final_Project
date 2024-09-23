@@ -7,12 +7,13 @@
                 <h3 style="color: aliceblue;">List of results of "{{ $test->test_name }}"</h3>
             </div>
             <div class="card-body">
-                <table class="table table-bordered">
+                <table class="table table-bordered table-hover table-striped">
                     <thead>
                         <tr>
                             <th style="max-width: 20px;">No.</th>
                             <th style="max-width: 70px;">Student Name</th>
                             <th style="max-width: 50px;">Score</th>
+                            <th style="max-width: 50px;">Time</th>
                             <th style="width: 100px;">Action</th>
                         </tr>
                     </thead>
@@ -21,8 +22,9 @@
                             <td style="text-align: center; font-weight: bold;">1</td>
                             <td style="text-align: center;">Ly Thanh Hao</td>
                             <td style="text-align: center;">10</td>
+                            <td style="text-align: center;">10:00</td>
                             <td style="text-align: center; position: relative;">
-                                <a href="" class="btn btn-edit"><i class="bi bi-pencil-square"></i></a>
+                                <a href="" class="btn btn-edit"><i class="bi bi-pencil-square" title="Edit"></i></a>
                             </td>
                         </tr>
                     </tbody>

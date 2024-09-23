@@ -68,12 +68,12 @@
     .dashboard-item.active .dashboard-link,
     .dashboard-link:hover {
         background-color: dodgerblue;
-        color: #000;
+        color: #fff;
     }
 
     .dashboard-item.active .dashboard-link i,
     .dashboard-link:hover i {
-        color: #000;
+        color: #fff;
     }
 
     .dashboard-item.active .dashboard-link,

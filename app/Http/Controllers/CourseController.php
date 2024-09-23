@@ -77,18 +77,14 @@ class CourseController extends Controller
     public function course_detail(Course $course)
     {
         $user = Auth::user();
-        if ($user) {
-            $favorite = Favorite::where('user_id', $user->id)->where('course_id', $course->id)->first();
-        } else {
-            $favorite = null;
-        }
-        $enrolled = Enroll::where('user_id', $user->id)->where('course_id', $course->id)->first();
+        $favorite = $user ? Favorite::where('user_id', $user->id)->where('course_id', $course->id)->first() : null;
+        $enrolled = $user ? Enroll::where('user_id', $user->id)->where('course_id', $course->id)->first() : null;
         $instructor = $course->user;
-        $courseCount = Course::where('user_id', $instructor->id)->count();
+        $courseCount = $instructor->courses()->count();
         $relatedCourses = Course::where('category_id', $course->category_id)->where('id', '!=', $course->id)->limit(3)->get();
-        $comments = Comment::where('course_id', $course->id)->with('user')->get();
-
-        return view('courses.detail', compact('courseCount', 'relatedCourses', 'courseCount', 'course', 'comments', 'favorite', 'enrolled'));
+        $comments = $course->comments()->with('user')->get();
+    
+        return view('courses.detail', compact('courseCount', 'relatedCourses', 'course', 'comments', 'favorite', 'enrolled'));
     }
 
     public function edit(Course $course)

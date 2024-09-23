@@ -11,11 +11,11 @@
                 <table class="table table-hover table-striped table-bordered">
                     <thead>
                         <tr>
-                            <th style="width: 80px;">Course Name</th>
+                            <th style="width: 100px;">Course Name</th>
                             <th style="max-width: 50px;">Course Image</th>
-                            <th>Description</th>
+                            <th style="width: 130px;">Description</th>
                             <th>File</th>
-                            <th>Category</th>
+                            <th style="width: 120px;">Category</th>
                             <th>Paticipants</th>
                             <th>Status</th>
                             <th>Actions</th>
@@ -35,8 +35,8 @@
                                         <i class="fas fa-file-pdf"></i> {{ $course->file }}
                                     </a>
                                 </td>
-                                <td style="max-width: 100px;">{{ $course->category->cat_name }}</td>
-                                <td style="max-width: 100px;">{{ $course->enrolls_count }}</td>
+                                <td style="">{{ $course->category->cat_name }}</td>
+                                <td style="text-align: center;">{{ $course->enrolls_count }}</td>
                                 <td style="color: {{ $course->status == 0 ? 'gray !important' : 'green !important' }}; font-weight: bold;">
                                     {{ $course->status == 0 ? 'Hidden' : 'Publish' }}</td>
                                 <td style="text-align: center; position: relative;">
