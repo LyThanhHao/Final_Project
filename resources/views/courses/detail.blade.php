@@ -75,7 +75,7 @@
                 border: none;
                 border-radius: 5px;
                 font-weight: bold;
-                letter-spacing: 5px;
+                letter-spacing: 3px;
                 text-transform: uppercase;
                 cursor: pointer;
                 color: #2c9caf;
@@ -116,7 +116,7 @@
                 border: none;
                 border-radius: 5px;
                 font-weight: bold;
-                letter-spacing: 5px;
+                letter-spacing: 3px;
                 text-transform: uppercase;
                 cursor: pointer;
                 color: #2caf37;
@@ -449,7 +449,7 @@
                 color: white;
             }
 
-            .text {
+            .text-save {
                 position: absolute;
                 right: 0%;
                 width: 0%;
@@ -472,7 +472,7 @@
                 transition-duration: 0.4s;
             }
 
-            .btn-save:hover .text {
+            .btn-save:hover .text-save {
                 opacity: 1;
                 width: 70%;
                 transition-duration: 0.4s;
@@ -514,7 +514,8 @@
                                     style="display: inline;">
                                     @if (!Auth::check() || (Auth::check() && Auth::user()->role != 'Teacher'))
                                         @if ($enrolled)
-                                            <div><a href="{{ route('courses.view', $course->id) }}" class="btn view-btn mr-4 px-4">View</a></div>
+                                            <div><a href="{{ route('courses.view', $course->id) }}"
+                                                    class="btn view-btn mr-4 px-4">Go To Course</a></div>
                                         @else
                                             @csrf
                                             <div><button type="submit" class="btn enroll-btn mr-4">Enroll Now</button>
@@ -530,7 +531,7 @@
                                                 <div class="sign">
                                                     <i class="bi bi-bookmark"></i>
                                                 </div>
-                                                <div class="text" title="Save this course to your favorite list">Save
+                                                <div class="text-save" title="Save this course to your favorite list">Save
                                                 </div>
                                             </button>
                                         @else
@@ -539,7 +540,7 @@
                                                 <div class="sign">
                                                     <i class="bi bi-bookmark-fill"></i>
                                                 </div>
-                                                <div class="text">Saved</div>
+                                                <div class="text-save">Saved</div>
                                             </button>
                                         @endif
                                     </div>
@@ -790,6 +791,38 @@
                             }
                         });
                     }
+                });
+                $('form[action="{{ route('courses.enroll', $course->id) }}"]').on('submit', function(e) {
+                    e.preventDefault();
+                    var form = $(this);
+
+                    $.ajax({
+                        url: form.attr('action'),
+                        method: 'POST',
+                        data: form.serialize(),
+                        success: function(response) {
+                            Swal.fire({
+                                title: "Good job!",
+                                text: "You clicked the button!",
+                                icon: "success",
+                                showCancelButton: true,
+                                confirmButtonText: 'Start Learning'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href =
+                                        "{{ route('courses.view', $course->id) }}";
+                                }
+                            });
+                            form.replaceWith(`<div><a href="{{ route('courses.view', $course->id) }}" class="btn view-btn mr-4 px-4">Go To Course</a></div>`);
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            Swal.fire({
+                                title: "Error!",
+                                text: "There was an issue enrolling in the course.",
+                                icon: "error"
+                            });
+                        }
+                    });
                 });
             });
         </script>

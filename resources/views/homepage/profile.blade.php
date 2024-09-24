@@ -181,7 +181,7 @@
 </head>
 
 <body>
-    <div class="container-xl px-4 mt-4">
+    <div class="container-xl mt-4">
         <div class="header-container">
             <img width="40" height="40" src="https://img.icons8.com/office/40/gender-neutral-user.png" alt=""/>
             <span style="font-weight: bold; text-align: center; font-size: 40px; color: #3936f6">Personal Information</span>

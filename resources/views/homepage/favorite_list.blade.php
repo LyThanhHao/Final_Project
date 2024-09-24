@@ -9,8 +9,7 @@
             @if ($courses->isEmpty())
                 <div class="mx-auto">
                     <hr class="mb-5" style="width: 400px;">
-                    <p style="text-align: center; font-size: 20px; font-weight: bold; color: red;">Nothing in your favorite
-                        list!</p>
+                    <p style="text-align: center; font-size: 20px; font-weight: bold; color: red;">Nothing in your favorite list!</p>
                 </div>
             @else
                 <div class="row">

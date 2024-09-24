@@ -3,31 +3,38 @@
 @section('main')
     <div class="container mt-5">
         <h2>My Learning</h2>
-        @foreach ($courses as $course)
-            <div class="card mt-3 shadow" style="border-radius: 15px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-                <div class="card-body d-flex justify-content-between align-items-center">
-                    <div class="d-flex align-items-center">
-                        <img src="{{ asset('uploads/course_image/' . $course->image) }}" alt="{{ $course->course_name }}"
-                            style="width: 120px; height: 120px; border-radius: 15px; object-fit: cover;">
-                        <div class="ml-3">
-                            <span class="card-title"
-                                style="font-weight: bold; color: #0c64f2; font-size: 28px;">{{ $course->course_name }}</span>
-                            <p class="card-text mb-0 mt-2" style="font-size: 16px;">Course by
-                                <strong>{{ $course->user->fullname }}</strong></p>
-                            <p class="card-text" style="font-size: 14px; color: #6c757d;">Updated on:
-                                {{ $course->updated_at->format('d/m/Y') }}</p>
+        @if ($courses->isEmpty())
+            <hr style="width: 75%;">
+            <p style="text-align: center; font-size: 20px; font-weight: 500; color: red;">You will find your in-progress courses here.</p>
+        @else
+            @foreach ($courses as $course)
+                <div class="card mt-3 shadow" style="border-radius: 15px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                    <div class="card-body d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center">
+                            <img src="{{ asset('uploads/course_image/' . $course->image) }}" alt="{{ $course->course_name }}"
+                                style="width: 120px; height: 120px; border-radius: 15px; object-fit: cover;">
+                            <div class="ml-3">
+                                <span class="card-title"
+                                    style="font-weight: bold; color: #0c64f2; font-size: 28px;">{{ $course->course_name }}</span>
+                                <p class="card-text mb-0 mt-2" style="font-size: 16px;">Course by
+                                    <strong>{{ $course->user->fullname }}</strong>
+                                </p>
+                                <p class="card-text" style="font-size: 14px; color: #6c757d;">Updated on:
+                                    {{ $course->updated_at->format('d/m/Y') }}</p>
+                            </div>
                         </div>
+                        <hr style="width: 1px; height: 100px; background-color: #e9ecef; border: none; margin-right: 50px;">
+                        <a href="{{ route('courses.view', $course->id) }}" class="btn-view-course"><span class="button_top">Go To Course</span></a>
                     </div>
-                    <a href="{{ route('courses.view', $course->id) }}" class="btn-view-course"><span class="button_top">Go To Course</span></a>
                 </div>
-            </div>
-        @endforeach
+            @endforeach
+        @endif
     </div>
 
     <style>
         .btn-view-course {
             --button_radius: 0.75em;
-            --button_color: #2859f9;
+            --button_color: #0c64f2;
             --button_outline_color: #000000;
             font-size: 17px;
             font-weight: bold;
