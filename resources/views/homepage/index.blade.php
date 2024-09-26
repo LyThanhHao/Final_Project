@@ -217,20 +217,18 @@
                                         </div>
                                     @endif
                                 @endif
-                                <div class="card-body text-center">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center">
+                                        <img src="{{ asset('uploads/avatar/' . ($course->user->avatar ?? 'avatar_default.jpg')) }}"
+                                            alt="" style="border-radius: 10px; width: 25px; height: 25px; margin-right: 6px;">
+                                        <span style="font-size: 14px;" class="text-info">{{ $course->user->fullname }}</span>
+                                    </div>
                                     <p class="card-title text-truncate"
-                                        style="max-width: 100%; font-weight: bold; color:#5e5e5e"
+                                        style="max-width: 100%; font-weight: bold; color:#5e5e5e; margin: 10px 0; text-align: center"
                                         title="{{ $course->course_name }}">
                                         {{ $course->course_name }}
                                     </p>
-                                    <div class="d-flex justify-content-center align-items-center mt-3">
-                                        <img src="{{ empty($course->user->avatar) ? asset('uploads/avatar/avatar_default.jpg') : asset('uploads/avatar/' . $course->user->avatar) }}"
-                                            alt=""
-                                            style="border-radius: 50%; width: 30px; height: 30px; margin-right: 8px;">
-                                        <a href="" class="text-info font-weight-bold"
-                                            style="text-decoration: underline;"
-                                            title="{{ $course->user->fullname }}">{{ $course->user->fullname }}</a>
-                                    </div>
+                                    <span><i class="bi bi-people-fill"></i> {{$course->enrolls()->count()}}</span>
                                 </div>
                                 <div class="card-footer text-center">
                                     <a href="{{ route('courses.detail', $course->id) }}">

@@ -80,11 +80,12 @@ class CourseController extends Controller
         $favorite = $user ? Favorite::where('user_id', $user->id)->where('course_id', $course->id)->first() : null;
         $enrolled = $user ? Enroll::where('user_id', $user->id)->where('course_id', $course->id)->first() : null;
         $instructor = $course->user;
+        $enrollCount = $course->enrolls()->count();
         $courseCount = $instructor->courses()->count();
         $relatedCourses = Course::where('category_id', $course->category_id)->where('id', '!=', $course->id)->limit(3)->get();
         $comments = $course->comments()->with('user')->get();
     
-        return view('courses.detail', compact('courseCount', 'relatedCourses', 'course', 'comments', 'favorite', 'enrolled'));
+        return view('courses.detail', compact('courseCount', 'relatedCourses', 'course', 'comments', 'favorite', 'enrolled', 'enrollCount'));
     }
 
     public function edit(Course $course)
@@ -192,7 +193,7 @@ class CourseController extends Controller
     {
         $user = Auth::user();
         $course = Course::findOrFail($course_id);
-        
-        return view('courses.view', compact('course'));
+        $instructor = $course->user;
+        return view('courses.view', compact('course', 'instructor'));
     }
 }

@@ -14,13 +14,17 @@
                             <img src="{{ asset('uploads/course_image/' . $course->image) }}" alt="{{ $course->course_name }}"
                                 style="width: 120px; height: 120px; border-radius: 15px; object-fit: cover;">
                             <div class="ml-3">
-                                <span class="card-title"
-                                    style="font-weight: bold; color: #0c64f2; font-size: 28px;">{{ $course->course_name }}</span>
-                                <p class="card-text mb-0 mt-2" style="font-size: 16px;">Course by
-                                    <strong>{{ $course->user->fullname }}</strong>
-                                </p>
-                                <p class="card-text" style="font-size: 14px; color: #6c757d;">Updated on:
-                                    {{ $course->updated_at->format('d/m/Y') }}</p>
+                                <div>
+                                    <span style="font-size: 14px;">{{$course->user->fullname}}</span>
+                                    <br>
+                                    <span style="font-weight: bold; color: #0c64f2; font-size: 28px;">{{ $course->course_name }}</span>
+                                </div>
+                                <div style="margin-top: 5px;">
+                                    <span class="card-text" style="font-size: 14px; color: #6c757d;">Updated on:
+                                        {{ $course->updated_at->format('d/m/Y') }}</span>
+                                    <br>
+                                    <strong>Test completed: </strong><span>0/5</span>
+                                </div>
                             </div>
                         </div>
                         <hr style="width: 1px; height: 100px; background-color: #e9ecef; border: none; margin-right: 50px;">

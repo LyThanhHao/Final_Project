@@ -226,15 +226,6 @@
                 font-size: 16px;
             }
 
-            .button-message:before {
-                content: " ";
-                display: block;
-                width: 100%;
-                height: 2px;
-                margin: 20px 0;
-                background: #7cdacc;
-            }
-
             .button-message a {
                 position: relative;
                 margin-right: 15px;
@@ -514,13 +505,12 @@
                                     style="display: inline;">
                                     @if (!Auth::check() || (Auth::check() && Auth::user()->role != 'Teacher'))
                                         @if ($enrolled)
-                                            <div><a href="{{ route('courses.view', $course->id) }}"
-                                                    class="btn view-btn mr-4 px-4">Go To Course</a></div>
+                                            <div><a href="{{ route('courses.view', $course->id) }}" class="btn view-btn mb-3 mr-4 px-4">Go To Course</a></div>
                                         @else
                                             @csrf
-                                            <div><button type="submit" class="btn enroll-btn mr-4">Enroll Now</button>
-                                            </div>
+                                            <div><button type="submit" class="btn enroll-btn mr-4 mb-3">Enroll Now</button></div>
                                         @endif
+                                        <span><strong>{{ $enrollCount }}</strong> already enrolled</span>
                                     @endif
                                 </form>
                                 @if (!Auth::check() || (Auth::check() && Auth::user()->role != 'Teacher'))
@@ -531,8 +521,7 @@
                                                 <div class="sign">
                                                     <i class="bi bi-bookmark"></i>
                                                 </div>
-                                                <div class="text-save" title="Save this course to your favorite list">Save
-                                                </div>
+                                                <div class="text-save" title="Save this course to your favorite list">Save</div>
                                             </button>
                                         @else
                                             <button class="btn-save" id="save-course" data-course-id="{{ $course->id }}"
@@ -555,9 +544,10 @@
                                         alt="{{ $course->user->fullname }}">
                                 </div>
                                 <p class="name-client">{{ $course->user->fullname }}
-                                    <span>Instructor</span>
-                                    <span>{{ $courseCount }} Courses</span>
+                                    <span style="font-style: italic; margin-bottom: 15px;">Instructor</span>
+                                    <span style="color: greenyellow">{{ $courseCount }} Courses</span>
                                 </p>
+                                <hr style="display: block; width: 100%; height: 2px; margin: 20px 0; background: #7cdacc;">
                                 <div class="button-message">
                                     <a href=""><button href="" class="btn-send">Send Message</button></a>
                                 </div>
@@ -581,8 +571,7 @@
                                             <span class="bar"></span>
                                             <label>Write comment</label>
                                         </div>
-                                        <button type="submit" class="btn btn-comment"><i
-                                                class="fas fa-paper-plane"></i></button>
+                                        <button type="submit" class="btn btn-comment"><i class="fas fa-paper-plane"></i></button>
                                     </div>
                                 </form>
                             </div>
@@ -615,25 +604,24 @@
                                 @foreach ($relatedCourses as $relatedCourse)
                                     @if ($relatedCourse->status && $relatedCourse->category->status)
                                         <div id="course" class="col-lg-3 col-md-6 mt-3">
-                                            <div class="card h-100"
-                                                style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); transition: transform 0.3s, box-shadow 0.3s;">
+                                            <div class="card h-100" style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); transition: transform 0.3s, box-shadow 0.3s;">
                                                 <img style="height: 45%;" class="img-fluid card-img-top"
                                                     src="{{ asset('uploads/course_image/' . $relatedCourse->image) }}"
                                                     alt="{{ $relatedCourse->course_name }}"
                                                     title="{{ $relatedCourse->course_name }}">
-                                                <div class="card-body text-center">
+                                                <div class="card-body">
+                                                    <div class="d-flex align-items-center">
+                                                        <img src="{{ asset('uploads/avatar/' . ($relatedCourse->user->avatar ?? 'avatar_default.jpg')) }}"
+                                                            alt="" style="border-radius: 50%; width: 30px; height: 30px; margin-right: 6px;">
+                                                        <b href="" class="text-info"
+                                                            style="font-weight: 500;">{{ $relatedCourse->user->fullname }}</b>
+                                                    </div>
                                                     <p class="card-title text-truncate"
-                                                        style="max-width: 100%; font-weight: bold; color:#5e5e5e"
+                                                        style="max-width: 100%; font-weight: bold; color:#5e5e5e; margin: 10px 0; text-align: center"
                                                         title="{{ $relatedCourse->course_name }}">
                                                         {{ $relatedCourse->course_name }}
                                                     </p>
-                                                    <div class="d-flex justify-content-center align-items-center mt-3">
-                                                        <img src="{{ asset('uploads/avatar/' . ($relatedCourse->user->avatar ?? 'avatar_default.jpg')) }}"
-                                                            alt=""
-                                                            style="border-radius: 50%; width: 30px; height: 30px; margin-right: 8px;">
-                                                        <a href="" class="text-info"
-                                                            style="text-decoration: underline; font-weight: bold;">{{ $relatedCourse->user->fullname }}</a>
-                                                    </div>
+                                                    <span><i class="bi bi-people-fill"></i> {{$relatedCourse->enrolls()->count()}}</span>
                                                 </div>
                                                 <div class="card-footer text-center">
                                                     <a href="{{ route('courses.detail', $relatedCourse->id) }}">
@@ -658,7 +646,6 @@
                                                                     <path stroke-linecap="round" stroke-width="4"
                                                                         stroke="#fff" d="M110 30L76 30"></path>
                                                                 </svg>
-
                                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                                                     viewBox="0 0 65 75" class="book-page">
                                                                     <path stroke-linecap="round" stroke-width="4"
