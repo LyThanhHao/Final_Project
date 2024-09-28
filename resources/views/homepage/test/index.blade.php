@@ -23,9 +23,6 @@
                 <li>
                     <a href="#" class="d-block mb-2">Your tests grade</a>
                 </li>
-                {{-- <li>
-                    <a href="#" class="d-block mb-2">Messages <span class="badge badge-primary">3</span></a>
-                </li> --}}
                 <li class="dropdown mb-2">
                     <button class="w-100 text-left d-flex align-items-center dropdown-toggle toggle-arrow no-chevron"
                         type="button" data-toggle="collapse" data-target="#testDropdown" aria-expanded="false"
@@ -36,7 +33,7 @@
                         <ul class="list-unstyled ml-3">
                             @foreach ($course->tests as $test)
                                 <li>
-                                    <a class="dropdown-item d-flex align-items-center" href="{{ route('test.view', $test->id,) }}">
+                                    <a class="dropdown-item d-flex align-items-center" href="{{ route('test.view', $test->id) }}">
                                         <i class="bi bi-pencil mr-2"></i>{{ $test->test_name }}
                                     </a>
                                 </li>
@@ -47,9 +44,26 @@
             </ul>
         </div>
 
-        <!-- Nội dung PDF -->
-        <div class="pdf-content">
-            <iframe src="{{ asset('uploads/course_file/' . $course->file) }}" width="100%" height="600px"></iframe>
+        <!-- Nội dung chính của trang index bài test -->
+        <div class="test-content">
+            <h1>Practice Test - {{ $test->test_name }}</h1>
+            <div class="d-flex justify-content-between align-items-center mt-3">
+                <h4>Submit your assignment</h4>
+                <button class="btn btn-start">Start assignment</button>
+            </div>
+            <hr>
+            <div class="d-flex justify-content-between mt-4" style="align-items: center;">
+                <div>
+                    <h5>Receive grade</h5>
+                    <p><b>To Pass </b><span class="text-muted">80% or higher</span></p>
+                </div>
+                <hr style="width: 1px; height: 65px; background-color: #e9ecef; border: none; margin-right: 40px;">
+                <div>
+                    <h5>Your grade</h5>
+                    <p>-</p>
+                </div>
+            </div>
+            <hr>
         </div>
     </div>
 
@@ -62,7 +76,6 @@
             margin-top: 2rem;
         }
 
-        /* Sidebar (bảng điều khiển bên trái) */
         .sidebar {
             height: fit-content;
             width: 25%;
@@ -73,7 +86,6 @@
             margin-right: 20px;
         }
 
-        /* Các liên kết trong sidebar */
         .sidebar a {
             display: block;
             color: #333;
@@ -90,7 +102,6 @@
             background-color: #dadbdb;
         }
 
-        /* Style cho button giống thẻ a */
         button {
             border: none;
             background: none;
@@ -139,16 +150,58 @@
             background: #007bff;
         }
 
-        /* Hiển thị nội dung PDF */
-        .pdf-content {
+        .test-content {
             width: 75%;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
         }
 
-        /* Responsive cho màn hình nhỏ */
+        .test-content h1 {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .test-content h4, .test-content h5 {
+            font-size: 1.25rem;
+            font-weight: bold;
+        }
+
+        .test-content p {
+            font-size: 1rem;
+        }
+
+        .test-content .btn {
+            font-size: 1rem;
+            padding: 10px 20px;
+        }
+
+        .test-content .text-muted {
+            color: #6c757d;
+        }
+
+        .test-content a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .test-content a:hover {
+            text-decoration: underline;
+        }
+
+        .btn-start {
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
+            padding: 10px 20px;
+            border: 1px solid #007bff;
+            width: max-content;
+        }
+
+        .btn-start:hover {
+            background-color: #fff;
+            color: #007bff;
+            border: 1px solid #007bff;
+        }
+
         @media (max-width: 768px) {
             .main-content {
                 flex-direction: column;
@@ -158,14 +211,13 @@
                 width: 100%;
             }
 
-            .pdf-content {
+            .test-content {
                 width: 100%;
             }
         }
     </style>
 
     <script>
-        // Script để thay đổi icon mũi tên khi dropdown mở và đóng
         document.querySelectorAll('.toggle-arrow').forEach(button => {
             button.addEventListener('click', function() {
                 const icon = this.querySelector('i');

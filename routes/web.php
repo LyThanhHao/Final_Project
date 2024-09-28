@@ -6,9 +6,8 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\TeacherController;
+use App\Http\Controllers\TestController;
 use App\Http\Controllers\UserController;
-use App\Models\Category;
-use App\Models\Course;
 use Illuminate\Support\Facades\Route;
 
 //home routes
@@ -46,6 +45,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/course/view/{course_id}', [CourseController::class, 'view'])->name('courses.view');
     Route::get('/courses-enrolled', [HomeController::class, 'getEnrolledCourses'])->name('courses.enrolled');
     Route::get('/my-courses', [HomeController::class, 'my_courses'])->name('my_courses');
+    Route::get('/test/{test_id}', [TestController::class, 'index'])->name('test.view');
 });
 
 //categories routes
