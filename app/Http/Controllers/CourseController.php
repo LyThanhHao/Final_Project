@@ -84,7 +84,7 @@ class CourseController extends Controller
         $courseCount = $instructor->courses()->count();
         $relatedCourses = Course::where('category_id', $course->category_id)->where('id', '!=', $course->id)->limit(3)->get();
         $comments = $course->comments()->with('user')->get();
-    
+
         return view('courses.detail', compact('courseCount', 'relatedCourses', 'course', 'comments', 'favorite', 'enrolled', 'enrollCount'));
     }
 
@@ -186,8 +186,23 @@ class CourseController extends Controller
             ]);
         }
 
-        return view('courses.view', compact('course', 'existingEnroll'));
+        return response()->json(['success' => true]);
     }
+
+    public function unenroll($course_id)
+    {
+        $user = Auth::user();
+        $enrollment = Enroll::where('course_id', $course_id)->where('user_id', $user->id)->first();
+    
+        if ($enrollment) {
+            $enrollment->delete();
+            return redirect()->back();
+        }
+    
+        return redirect()->back()->with('error', 'Unable to unenroll from the course.');
+    }
+    
+
 
     public function view(Request $request, $course_id)
     {

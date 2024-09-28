@@ -42,8 +42,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/profile/avatar', [UserController::class, 'change_avatar'])->name('change_avatar');
     Route::post('/profile/password', [UserController::class, 'check_password'])->name('check_change_password');
     Route::post('/course/enroll/{course_id}', [CourseController::class, 'enroll'])->name('courses.enroll');
+    Route::delete('/my-courses/{course}/unenroll', [CourseController::class, 'unenroll'])->name('courses.unenroll');   
     Route::get('/course/view/{course_id}', [CourseController::class, 'view'])->name('courses.view');
-    Route::get('/enrolled-courses', [HomeController::class, 'getEnrolledCourses'])->name('enrolled.courses');
+    Route::get('/courses-enrolled', [HomeController::class, 'getEnrolledCourses'])->name('courses.enrolled');
     Route::get('/my-courses', [HomeController::class, 'my_courses'])->name('my_courses');
 });
 

@@ -383,14 +383,9 @@
     <script>
         $(document).ready(function() {
             $('#myCoursesButton').on('click', function() {
-                // Toggle hiển thị popup
-                if ($('#coursesPopup').is(':visible')) {
-                    $('#coursesPopup').hide();
-                    return;
-                }
 
                 $.ajax({
-                    url: '{{ route('enrolled.courses') }}',
+                    url: '{{ route('courses.enrolled') }}',
                     method: 'GET',
                     success: function(data) {
                         $('#coursesList').empty();
