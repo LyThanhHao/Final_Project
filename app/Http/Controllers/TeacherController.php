@@ -144,6 +144,8 @@ class TeacherController extends Controller
         $request->validate([
             'course_id' => 'required',
             'test_name' => 'required',
+            'deadline' => 'required|date',
+            'test_time' => 'required|integer|min:1',
             'questions.*.question' => 'required',
             'questions.*.a' => 'required',
             'questions.*.b' => 'required',
@@ -154,6 +156,9 @@ class TeacherController extends Controller
             'course_id.required' => 'The course is required.',
             'test_name.required' => 'The test name is required.',
             'questions.*.question.required' => 'The question is required.',
+            'test_time.required' => 'The test time is required.',
+            'test_time.integer' => 'The test time must be an integer.',
+            'test_time.min' => 'The test time must be at least 1 minute.',
             'questions.*.a.required' => 'The option A is required.',
             'questions.*.b.required' => 'The option B is required.',
             'questions.*.c.required' => 'The option C is required.',
@@ -166,6 +171,8 @@ class TeacherController extends Controller
             'test_name' => $request->test_name,
             'course_id' => $request->course_id,
             'user_id' => Auth::id(),
+            'deadline' => $request->deadline,
+            'test_time' => $request->test_time,
         ]);
 
         $questions = [];
@@ -191,6 +198,8 @@ class TeacherController extends Controller
         $request->validate([
             'course_id' => 'required',
             'test_name' => 'required',
+            'deadline' => 'required|date',
+            'test_time' => 'required|integer|min:1',
             'questions.*.question' => 'required',
             'questions.*.a' => 'required',
             'questions.*.b' => 'required',
@@ -201,6 +210,9 @@ class TeacherController extends Controller
             'course_id.required' => 'The course is required.',
             'test_name.required' => 'The test name is required.',
             'questions.*.question.required' => 'The question is required.',
+            'test_time.required' => 'The test time is required.',
+            'test_time.integer' => 'The test time must be an integer.',
+            'test_time.min' => 'The test time must be at least 1 minute.',
             'questions.*.a.required' => 'The option A is required.',
             'questions.*.b.required' => 'The option B is required.',
             'questions.*.c.required' => 'The option C is required.',
@@ -211,6 +223,8 @@ class TeacherController extends Controller
         $check_test = $test->update([
             'course_id' => $request->course_id,
             'test_name' => $request->test_name,
+            'deadline' => $request->deadline,
+            'test_time' => $request->test_time,
         ]);
 
         $check_question = [];

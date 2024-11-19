@@ -145,12 +145,12 @@
             Reset Password
         </div>
 
-        <form class="form" method="POST"">
+        <form class="form" method="POST" action="{{ route('check_reset_password', ['token' => $token]) }}">
             @csrf
             <div>
                 <label style="font-size: 13px; font-style: italic;" for="password">Password must be at
                     least 5 characters long. <br>
-                    Contains at least one number and symbol (like !@$!%*?&#).</label>
+                    Contains at least one letter, one number and one symbol (like !@$!%*?&#).</label>
             </div>
             <br>
             <div class="form-group">

@@ -41,7 +41,7 @@
                                     {{ $course->status == 0 ? 'Hidden' : 'Publish' }}</td>
                                 <td style="text-align: center; position: relative;">
                                     <button class="btn btn-toggle" onclick="toggleActions(this)"><i class="bi bi-list"></i></button>
-                                    <div class="action-buttons" style="display: none; position: absolute; top: 50%; left: 50%; border: 1px solid #ccc; transform: translateX(-50%); z-index: 1; padding: 5px; width: max-content;">
+                                    <div class="action-buttons" style="display: none; position: absolute; top: 50%; left: 50%; border: 1px solid #ccc; transform: translateX(-50%); z-index: 1; padding: 5px; width: max-content; background-color: lightgray;">
                                         <a href="{{ route('courses.detail', $course->id) }}" class="btn btn-view">View</a>
                                         <a href="{{ route('teacher.courses.edit', $course->id) }}" class="btn btn-edit"><i class="bi bi-pencil-square"></i></a>
                                         <form action="{{ route('teacher.courses.destroy', $course->id) }}" method="POST" style="display:inline-block; width: 100%;">

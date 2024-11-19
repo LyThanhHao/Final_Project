@@ -111,7 +111,7 @@ class HomeController extends Controller
         $request->validate([
             'fullname' => 'required',
             'email' => 'required|email|unique:users',
-            'password' => 'required|min:5|regex:/[a-zA-Z]/|regex:/[@$!%*?&#]/',
+            'password' => 'required|min:5|regex:/[a-zA-Z]/|regex:/[0-9]/|regex:/[@$!%*?&#]/',
             'password_confirmation' => 'required|same:password',
             'phoneNumber' => 'required',
             'address' => 'required',
@@ -123,7 +123,7 @@ class HomeController extends Controller
             'email.unique' => 'The email has already been taken.',
             'password.required' => 'The password is required.',
             'password.min' => 'Password must be at least 5 characters long.',
-            'password.regex' => 'Password must contain at least one letter and one special character.',
+            'password.regex' => 'Password must contain at least one letter, one number, and one special character.',
             'password_confirmation.required' => 'The confirm password is required.',
             'password_confirmation.same' => 'The confirm password must be same as password.',
             'termsCheckbox.required' => 'You must agree to the terms and conditions.',
@@ -138,7 +138,7 @@ class HomeController extends Controller
 
         if ($acc) {
             Mail::to($acc->email)->send(new VerifyAccount($acc));
-            return redirect()->route('homepage.login')->with('success', 'Registration successful!, Please check your email to verify your account');
+            return redirect()->route('homepage.login')->with('register-success', 'Please check your email to verify your account!');
         }
         return redirect()->back()->with('fail', 'Something wrong, please try again!');
     }

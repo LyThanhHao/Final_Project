@@ -22,13 +22,15 @@
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 
+    <!-- SweetAlert2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+
     <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
     <script type="text/javascript"></script>
     
 
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.css" />
 </head>
 
 <body>
@@ -405,7 +407,7 @@
                             data.forEach(course => {
                                 const imagePath =
                                     `{{ asset('uploads/course_image') }}/${course.image}`;
-                                const url = `{{ url('course/view') }}/${course.id}`;
+                                const url = `{{ url('courses/view') }}/${course.id}`;
 
                                 $('#coursesList').append(`
                             <li class="course-item">

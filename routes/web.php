@@ -32,20 +32,23 @@ Route::get('/course/{course}/detail', [CourseController::class, 'course_detail']
 
 
 Route::group(['middleware' => ['auth']], function () {
-    Route::post('/course/detail/comment', [CommentController::class, 'store'])->name('comments.store');
+    Route::post('/courses/detail/comment', [CommentController::class, 'store'])->name('comments.store');
     Route::post('/courses/{course}/favorite', [CourseController::class, 'favorite'])->name('courses.favorite');
     Route::delete('/courses/{course}/favorite', [CourseController::class, 'unfavorite'])->name('courses.unfavorite');
-    Route::get('/my-favorite-list', [UserController::class, 'favorite_list'])->name('favorite_list');
+    Route::get('/my_favorite_list', [UserController::class, 'favorite_list'])->name('favorite_list');
     Route::get('/profile', [UserController::class, 'profile'])->name('profile');
     Route::put('/profile', [UserController::class, 'check_profile'])->name('check_change_profile');
     Route::post('/profile/avatar', [UserController::class, 'change_avatar'])->name('change_avatar');
     Route::post('/profile/password', [UserController::class, 'check_password'])->name('check_change_password');
     Route::post('/course/enroll/{course_id}', [CourseController::class, 'enroll'])->name('courses.enroll');
-    Route::delete('/my-courses/{course}/unenroll', [CourseController::class, 'unenroll'])->name('courses.unenroll');   
-    Route::get('/course/view/{course_id}', [CourseController::class, 'view'])->name('courses.view');
-    Route::get('/courses-enrolled', [HomeController::class, 'getEnrolledCourses'])->name('courses.enrolled');
-    Route::get('/my-courses', [HomeController::class, 'my_courses'])->name('my_courses');
-    Route::get('/test/{test_id}', [TestController::class, 'index'])->name('test.view');
+    Route::delete('/my_courses/{course}/unenroll', [CourseController::class, 'unenroll'])->name('courses.unenroll');   
+    Route::get('/courses/view/{course_id}', [CourseController::class, 'view'])->name('courses.view');
+    Route::get('/courses_enrolled', [HomeController::class, 'getEnrolledCourses'])->name('courses.enrolled');
+    Route::get('/my_courses', [HomeController::class, 'my_courses'])->name('my_courses');
+    Route::get('/tests/{test_id}', [TestController::class, 'index'])->name('test.view');
+    Route::get('/tests/{test}/taking', [TestController::class, 'takingTest'])->name('taking_test');
+    Route::post('/tests/{test}/submit', [TestController::class, 'submitTest'])->name('submit_test');
+    Route::get('/tests/{test}/results', [TestController::class, 'showResults'])->name('test.results');
 });
 
 //categories routes
@@ -55,7 +58,7 @@ Route::get('/category/{category}/filter', [CategoryController::class, 'filter'])
 //admin routes
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function () {
     //accounts
-    Route::get('/', [AdminController::class, 'account'])->name('admin');
+Route::get('/', [AdminController::class, 'account'])->name('admin');
     Route::get('/accounts', [AdminController::class, 'account'])->name('admin.accounts.index');
     Route::get('/accounts/create', [AdminController::class, 'create_account'])->name('admin.accounts.create');
     Route::post('/accounts', [AdminController::class, 'store_account'])->name('admin.accounts.store');

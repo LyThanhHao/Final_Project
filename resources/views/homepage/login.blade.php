@@ -15,6 +15,8 @@
         href="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.css" />
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- SweetAlert2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
 
     <title>Login Form</title>
 </head>
@@ -27,11 +29,13 @@
         <hr style="display: block;">
         <div class="divider"></div>
         <div class="form-content">
-            <form id="login-form" class="mx-auto" method="POST" role="form" action="{{ route('homepage.check_login') }}">
+            <form id="login-form" class="mx-auto" method="POST" role="form"
+                action="{{ route('homepage.check_login') }}">
                 @csrf
                 <p class="form-title">LOGIN TO YOUR ACCOUNT</p>
                 <div class="input-container">
-                    <input type="email" id="email" class="form-control" name="email" placeholder="name@gmail.com" required>
+                    <input type="email" id="email" class="form-control" name="email"
+                        placeholder="name@gmail.com" required>
                     @error('email')
                         <small style="color: red;">{{ $message }}</small>
                     @enderror
@@ -47,7 +51,7 @@
                         <small style="color: red;">{{ $message }}</small>
                     @enderror
                 </div>
-                <div style="margin: 10px 0; font-size: 14px;">
+                <div style="margin: 15px 0; font-size: 14px;">
                     <a href="{{ route('forgot_password') }}" class="mt-3">Forgot password?</a>
                 </div>
                 <button type="submit" class="submit">Login</button>
@@ -59,12 +63,13 @@
             </form>
         </div>
     </div>
+
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
     <!-- jQuery Toast Plugin -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.js"></script>
-
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
@@ -93,6 +98,16 @@
                 icon: 'success',
                 hideAfter: 5000
             })
+        </script>
+    @endif
+
+    @if (Session::has('register-success'))
+        <script>
+            Swal.fire({
+                title: "Registration Success!",
+                text: "{{ Session::get('register-success') }}",
+                icon: "info"
+            });
         </script>
     @endif
 

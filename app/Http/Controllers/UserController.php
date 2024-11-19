@@ -2,26 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\ForgotPassword;
 use App\Models\User;
-use App\Models\UserResetToken;
+use App\Mail\ForgotPassword;
 use Illuminate\Http\Request;
+use App\Models\UserResetToken;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Redirect;
-use Str;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
     public function profile()
     {
-        $user = Auth::user();
+        $user = User::find(Auth::id());
         return view('homepage.profile', compact('user'));
     }
 
     public function check_profile(Request $request){
-        $user = Auth::user();
+        $user = User::find(Auth::id());
         $request->validate([
             'fullname' => 'required',
             'email' => '|email|unique:users,email,'.$user->id,
@@ -44,7 +44,7 @@ class UserController extends Controller
     }
 
     public function change_avatar(Request $request){
-        $user = Auth::user();
+        $user = User::find(Auth::id());
         $request->validate([
             'avatar' => 'required|file|mimes:jpg, jpeg, gif, png, webp, svg,'
         ], [
@@ -74,7 +74,7 @@ class UserController extends Controller
     }
 
     public function check_password(Request $request){
-        $user = Auth::user();
+        $user = User::find(Auth::id());
         $request->validate([
             'currentPassword' => ['required', function($attribute, $value, $fail) use ($user) { 
                 if (!Hash::check($value, $user->password)) {
@@ -102,50 +102,81 @@ class UserController extends Controller
         return view('homepage.forgot_password');
     }
 
-    public function check_forgot_password(Request $request){
+    public function check_forgot_password(Request $request)
+    {
         $request->validate([
             'email' => 'required|email|exists:users',
         ]);
-        
+    
         $user = User::where('email', $request->email)->first();
-        $token = Str::random(40);
+        $existingToken = UserResetToken::where('email', $request->email)->first();
+    
+        if ($existingToken) {
+            // Kiểm tra xem token có quá 3 ngày không
+            if ($existingToken->updated_at->lt(now()->subDays(3))) {
+                // Cập nhật token mới nếu token đã quá 3 ngày
+                $existingToken->update([
+                    'token' => Str::random(40),
+                    'created_at' => now(),
+                    'updated_at' => now()
+                ]);
+    
+                Mail::to($request->email)->send(new ForgotPassword($user, $existingToken->token));
+                return redirect()->route('forgot_password')->with('send-success', 'Please check your email to reset your password!');
+            } else {
+                // Nếu token chưa quá hạn, có thể từ chối yêu cầu hoặc thông báo cho người dùng
+                return redirect()->route('forgot_password')->with('resend-fail', 'A reset link has already been sent. Please check your email!');
+            }
+        }
+    
+        // Nếu không tồn tại token, tạo token mới
         $tokenData = [
             'email' => $request->email,
-            'token' => $token,
+            'token' => Str::random(40),
+            'created_at' => now(),
+            'updated_at' => now(),
         ];
-
-        if(UserResetToken::create($tokenData)){
-            Mail::to($request->email)->send(new ForgotPassword($user, $token));
-            return view('homepage.forgot_password')->with('success', 'Please check your email to reset your password!');
+    
+        if (UserResetToken::create($tokenData)) {
+            Mail::to($request->email)->send(new ForgotPassword($user, $tokenData['token']));
+            return redirect()->route('forgot_password')->with('send-success', 'Please check your email to reset your password!');
         }
-        return view('homepage.forgot_password')->with('fail', 'Something went wrong, please try again!');
+        return redirect()->route('forgot_password')->with('fail', 'Something went wrong, please try again!');
     }
+    
 
-    public function reset_password($token){
-        $resetToken = UserResetToken::where('token', $token)
-            ->where('created_at', '>', now()->subDays(3))
-            ->firstOrFail();
-        if($resetToken){
-            return view('homepage.reset_password')->with('success', 'Successfully! Now you can reset your password');
+    public function reset_password($token)
+    {
+        try {
+            $resetToken = UserResetToken::where('token', $token)
+                ->where('updated_at', '>', now()->subDays(3))
+                ->firstOrFail();
+    
+            // Chuyển hướng tới trang nhập mật khẩu mới (thay vì route chính nó)
+            return view('homepage.reset_password', ['token' => $token])->with('success', 'Successfully! Now you can reset your password');
+        } catch (ModelNotFoundException $e) {
+            // Xử lý khi không tìm thấy token hoặc token không thỏa mãn điều kiện
+            return redirect()->route('forgot_password')->with('token-error', 'The reset link is invalid or has expired.');
         }
-        return view('homepage.reset_password')->with('fail', 'Something went wrong, please try again!');
     }
+    
 
     public function check_reset_password($token, Request $request){
         $request->validate([
-            'password' => 'required|min:5|regex:/[a-zA-Z]/|regex:/[@$!%*?&#]/',
-            'password_confirm' => 'required|same:password',
+            'password' => 'required|min:5|regex:/[a-zA-Z]/|regex:/[0-9]/|regex:/[@$!%*?&#]/',
+            'password_confirmation' => 'required|same:password',
         ], [
             'password.required' => 'The password is required.',
             'password.min' => 'The password must be at least 5 characters.',
-            'password.regex' => 'The password must contain at least one letter and one special character.',
+            'password.regex' => 'The password must contain at least one letter, one number, and one special character.',
             'password_confirm.required' => 'The password confirmation is required.',
             'password_confirm.same' => 'The password confirmation must be same as password.',
         ]);
-
+        $data = $request->only('password');
+        
         $resetToken = UserResetToken::where('token', $token)->firstOrFail();
         $user = $resetToken->user;
-
+        
         $data['password'] = bcrypt($request->password);
 
         $check = $user->update($data);

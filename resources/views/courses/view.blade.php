@@ -21,11 +21,8 @@
             <hr>
             <ul class="list-unstyled">
                 <li>
-                    <a href="#" class="d-block mb-2">Your tests grade</a>
+                    <a href="#" class="d-block mb-2">Tests Taken</a>
                 </li>
-                {{-- <li>
-                    <a href="#" class="d-block mb-2">Messages <span class="badge badge-primary">3</span></a>
-                </li> --}}
                 <li class="dropdown mb-2">
                     <button class="w-100 text-left d-flex align-items-center dropdown-toggle toggle-arrow no-chevron"
                         type="button" data-toggle="collapse" data-target="#testDropdown" aria-expanded="false"

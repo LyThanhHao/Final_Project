@@ -38,6 +38,27 @@
                             <option value="20">20 Questions</option>
                         </select>
                     </div>
+                    <div class="form-group">
+                        <label for="deadline">Deadline</label>
+                        <input type="datetime-local" class="form-control" id="deadline" name="deadline" value="{{ old('deadline') }}">
+                        @error('deadline')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
+                    <div class="form-group">
+                        <label for="test_time">Test Time (minutes)</label>
+                        <select class="form-control" id="test_time" name="test_time" required>
+                            <option value="10" {{ old('test_time') == 10 ? 'selected' : '' }}>10 minutes</option>
+                            <option value="20" {{ old('test_time') == 20 ? 'selected' : '' }}>20 minutes</option>
+                            <option value="30" {{ old('test_time') == 30 ? 'selected' : '' }}>30 minutes</option>
+                            <option value="40" {{ old('test_time') == 40 ? 'selected' : '' }}>40 minutes</option>
+                            <option value="50" {{ old('test_time') == 50 ? 'selected' : '' }}>50 minutes</option>
+                            <option value="60" {{ old('test_time') == 60 ? 'selected' : '' }}>60 minutes</option>
+                        </select>
+                        @error('test_time')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
                     <div class="text-center my-4">
                         <hr class="w-50 mx-auto" style="border: 1px solid rgba(0, 0, 0, 0.2);">
                     </div>
@@ -50,6 +71,7 @@
                 </form>
             </div>
         </div>
+        <button id="scrollToTopBtn" class="scroll-to-top" style="display: none;">↑</button>
     </div>
 
     <style>
@@ -108,6 +130,26 @@
         .form-group select:focus {
             box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
         }
+
+        .scroll-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 24px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .scroll-to-top:hover {
+            background-color: #0056b3;
+        }
     </style>
 
     <script>
@@ -126,7 +168,7 @@
                     <div class="card-body">
                         <div class="form-group">
                             <label for="questions[${i}][question]">Question</label>
-                            <input type="text" class="form-control" id="questions[${i}][question]" name="questions[${i}][question]" placeholder="Enter question" required>
+                            <textarea type="text" class="form-control" id="questions[${i}][question]" name="questions[${i}][question]" placeholder="Enter question" required></textarea>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-6">
@@ -165,5 +207,21 @@
 
         // Trigger change event to generate initial questions
         document.getElementById('question_count').dispatchEvent(new Event('change'));
+
+        window.addEventListener('scroll', function() {
+            const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+            if (window.scrollY > 200) {
+                scrollToTopBtn.style.display = 'block';
+            } else {
+                scrollToTopBtn.style.display = 'none';
+            }
+        });
+
+        document.getElementById('scrollToTopBtn').addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
     </script>
 @endsection

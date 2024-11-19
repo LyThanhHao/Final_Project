@@ -10,6 +10,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.css"
         integrity="sha512-wJgJNTBBkLit7ymC6vvzM1EcSWeM9mmOu+1USHaRBbHkm6W9EgM0HY27+UtUaprntaYQJF75rc8gjxllKs5OIQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Toast notification -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.css" />
+    <!-- SweetAlert2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
 </head>
 
 <style>
@@ -20,6 +26,7 @@
         align-items: center;
         height: 100vh;
         margin: 0;
+        font-family: 'Poppins', sans-serif;
     }
 
     .form-container {
@@ -174,35 +181,60 @@
         </p>
         <div id="back"><a href="{{ route('homepage.login') }}">Cancel</a></div>
     </div>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- jQuery Toast Plugin -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+    </script>
+
+    @if (Session::has('send-success'))
+        <script>
+            Swal.fire({
+                title: "Notification",
+                text: "{{ Session::get('send-success') }}",
+                icon: "success"
+            });
+        </script>
+    @endif
+
+    @if (Session::has('fail'))
+        <script>
+            $.toast({
+                heading: 'Notification',
+                text: "{{ Session::get('fail') }}",
+                showHideTransition: 'slide',
+                position: 'top-center',
+                icon: 'error',
+                hideAfter: 5000
+            })
+        </script>
+    @endif
+
+    @if (Session::has('resend-fail'))
+        <script>
+            Swal.fire({
+                title: "Notification",
+                text: "{{ Session::get('resend-fail') }}",
+                icon: "info"
+            });
+        </script>
+    @endif
+
+    @if (Session::has('token-error'))
+        <script>
+            Swal.fire({
+                title: "Notification",
+                text: "{{ Session::get('token-error') }}",
+                icon: "info"
+            });
+        </script>
+    @endif
 </body>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.js"
-    integrity="sha512-zlWWyZq71UMApAjih4WkaRpikgY9Bz1oXIW5G0fED4vk14JjGlQ1UmkGM392jEULP8jbNMiwLWdM8Z87Hu88Fw=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-@if (Session::has('success'))
-    <script>
-        $.toast({
-            heading: 'Notification',
-            text: "{{ Session::get('success') }}",
-            showHideTransition: 'slide',
-            position: 'top-center',
-            icon: 'success',
-            hideAfter: 5000
-        })
-    </script>
-@endif
-
-@if (Session::has('fail'))
-    <script>
-        $.toast({
-            heading: 'Notification',
-            text: "{{ Session::get('fail') }}",
-            showHideTransition: 'slide',
-            position: 'top-center',
-            icon: 'error',
-            hideAfter: 5000
-        })
-    </script>
-@endif
 
 </html>

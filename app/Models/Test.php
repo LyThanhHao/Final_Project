@@ -13,7 +13,11 @@ class Test extends Model
         'test_name',
         'user_id',
         'course_id',
+        'deadline',
+        'test_time',
     ];
+
+    protected $dates = ['deadline'];
 
     public function user()
     {
@@ -28,5 +32,10 @@ class Test extends Model
     public function questions()
     {
         return $this->hasMany(Question::class);
+    }
+
+    public function testAttempts()
+    {
+        return $this->hasMany(TestAttempt::class);
     }
 }

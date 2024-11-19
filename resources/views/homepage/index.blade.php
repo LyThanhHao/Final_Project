@@ -177,7 +177,7 @@
                             <img class="img-fluid" src="{{ asset('uploads/category_image/' . $category->cat_image) }}" alt="" style="width: 100%; height: 150px;">
                             <a class="cat-overlay text-white text-decoration-none" href="{{ route('category.filter', $category->id) }}">
                                 <h5 class="text-white font-weight-medium text-center">{{ $category->cat_name }}</h5>
-                                <span>{{ $category->courses->count() }} Courses</span>
+                                <span>{{ $category->courses->where('status', 1)->count() }} Courses</span>
                             </a>
                         </div>
                     </div>
