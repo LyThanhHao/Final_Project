@@ -162,7 +162,6 @@
                 </form>
             </div>
         </div>
-        <button id="scrollToTopBtn" class="scroll-to-top" style="display: none;">↑</button>
     </div>
 
     <style>
@@ -201,26 +200,6 @@
         .card-header {
             background: linear-gradient(45deg, #007bff, #6610f2);
             color: white;
-        }
-
-        .scroll-to-top {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 1000;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            font-size: 24px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .scroll-to-top:hover {
-            background-color: #0056b3;
         }
     </style>
 

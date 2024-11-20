@@ -7,6 +7,8 @@ use App\Models\Comment;
 use App\Models\Course;
 use App\Models\Enroll;
 use App\Models\Favorite;
+use App\Models\Test;
+use App\Models\TestAttempt;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -207,8 +209,15 @@ class CourseController extends Controller
     public function view(Request $request, $course_id)
     {
         $user = Auth::user();
-        $course = Course::findOrFail($course_id);
+        $course = Course::with('tests')->findOrFail($course_id);
         $instructor = $course->user;
-        return view('courses.view', compact('course', 'instructor'));
+
+        // Lấy danh sách các bài kiểm tra đã thực hiện
+        $takenTests = Test::whereHas('testAttempts', function ($query) use ($user) {
+            $query->where('user_id', $user->id)
+                  ->where('status', 'Completed');
+        })->where('course_id', $course->id)->get();
+
+        return view('courses.view', compact('course', 'instructor', 'takenTests'));
     }
 }

@@ -21,7 +21,7 @@ class TestController extends Controller
             ->where('test_id', $test->id)
             ->first();
 
-        $takenTests = Test::whereHas('testAttempts', function ($query) {
+        $takenTests = TestAttempt::whereHas('test', function ($query) {
             $query->where('user_id', auth()->id())
                   ->where('status', 'Completed');
         })->get();

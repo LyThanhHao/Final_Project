@@ -38,4 +38,9 @@ class Test extends Model
     {
         return $this->hasMany(TestAttempt::class);
     }
+
+    public function feedbacks()
+    {
+        return $this->hasMany(Feedback::class);
+    }
 }

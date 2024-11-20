@@ -20,8 +20,25 @@
             </div>
             <hr>
             <ul class="list-unstyled">
-                <li>
-                    <a href="#" class="d-block mb-2">Tests Taken</a>
+                <li class="dropdown mb-2">
+                    <button id="dropdown-taken"
+                        class="w-100 text-left d-flex align-items-center dropdown-toggle toggle-arrow no-chevron"
+                        type="button" data-toggle="collapse" data-target="#takenDropdown" aria-expanded="false"
+                        aria-controls="takenDropdown">
+                        Tests Taken<i class="bi bi-chevron-down ml-2"></i>
+                    </button>
+                    <div class="collapse" id="takenDropdown">
+                        <ul class="list-unstyled ml-3">
+                            @foreach ($takenTests as $takenTest)
+                                <li>
+                                    <a class="dropdown-item d-flex align-items-center"
+                                        href="{{ route('test.results', $takenTest->id) }}">
+                                        <i class="bi bi-pencil mr-2"></i>{{ $takenTest->test_name }}
+                                    </a>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
                 </li>
                 <li class="dropdown mb-2">
                     <button class="w-100 text-left d-flex align-items-center dropdown-toggle toggle-arrow no-chevron"
@@ -33,7 +50,7 @@
                         <ul class="list-unstyled ml-3">
                             @foreach ($course->tests as $test)
                                 <li>
-                                    <a class="dropdown-item d-flex align-items-center" href="{{ route('test.view', $test->id,) }}">
+                                    <a class="dropdown-item d-flex align-items-center" href="{{ route('test.view', $test->id) }}">
                                         <i class="bi bi-pencil mr-2"></i>{{ $test->test_name }}
                                     </a>
                                 </li>
@@ -59,7 +76,6 @@
             margin-top: 2rem;
         }
 
-        /* Sidebar (bảng điều khiển bên trái) */
         .sidebar {
             height: fit-content;
             width: 25%;
@@ -70,7 +86,6 @@
             margin-right: 20px;
         }
 
-        /* Các liên kết trong sidebar */
         .sidebar a {
             display: block;
             color: #333;
@@ -87,7 +102,6 @@
             background-color: #dadbdb;
         }
 
-        /* Style cho button giống thẻ a */
         button {
             border: none;
             background: none;
@@ -136,7 +150,6 @@
             background: #007bff;
         }
 
-        /* Hiển thị nội dung PDF */
         .pdf-content {
             width: 75%;
             border: 1px solid #ddd;
@@ -145,7 +158,6 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
-        /* Responsive cho màn hình nhỏ */
         @media (max-width: 768px) {
             .main-content {
                 flex-direction: column;
@@ -162,7 +174,6 @@
     </style>
 
     <script>
-        // Script để thay đổi icon mũi tên khi dropdown mở và đóng
         document.querySelectorAll('.toggle-arrow').forEach(button => {
             button.addEventListener('click', function() {
                 const icon = this.querySelector('i');

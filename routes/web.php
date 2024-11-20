@@ -99,6 +99,12 @@ Route::group(['prefix' => 'teacher', 'middleware' => ['auth', 'teacher']], funct
     Route::put('/tests/{test}', [TeacherController::class, 'update_test'])->name('teacher.tests.update');
     Route::delete('/tests/{test}', [TeacherController::class, 'destroy_test'])->name('teacher.tests.destroy');
     Route::get('/tests/{test}/detail', [TeacherController::class, 'test_detail'])->name('teacher.tests.detail');
+    //test results
+    Route::get('/tests_results', [TeacherController::class, 'test_results'])->name('teacher.tests.results');
+    Route::get('/tests_results/{test}/detail', [TeacherController::class, 'view_test_detail'])->name('teacher.tests.result_detail');
+    Route::post('/feedbacks', [TeacherController::class, 'storeFeedback'])->name('feedbacks.store');
+    Route::put('/feedbacks/{id}', [TeacherController::class, 'updateFeedback'])->name('feedbacks.update');
+    Route::delete('/feedbacks/{id}', [TeacherController::class, 'destroyFeedback'])->name('feedbacks.destroy');
 });
 
 

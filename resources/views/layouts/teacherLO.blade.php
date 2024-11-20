@@ -21,7 +21,10 @@
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
     <script type="text/javascript"></script>
@@ -79,6 +82,26 @@
     .dashboard-item.active .dashboard-link,
     .dashboard-item.active .dashboard-link i {
         color: #fff;
+    }
+
+    .back-to-top {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 1000;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        font-size: 24px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .back-to-top:hover {
+        background-color: #0056b3;
     }
 </style>
 
@@ -298,6 +321,13 @@
                                 Test
                             </a>
                         </li>
+                        <hr>
+                        <li class="dashboard-item {{ request()->is('teacher/tests_results') ? 'active' : '' }}">
+                            <a href="{{ route('teacher.tests.results') }}" class="dashboard-link">
+                                <i class="bi bi-list-check"></i>
+                                Test results
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -389,14 +419,10 @@
     </div>
     <!-- Footer End -->
 
-
     <!-- Back to Top -->
-    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i
-            class="fa fa-angle-double-up"></i></a>
-
+    <button id="scrollToTopBtn" class="back-to-top" style="display: none;">↑</button>
 
     <!-- JavaScript Libraries -->
-    <!-- <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
     </script>
@@ -487,6 +513,25 @@
             var currentFileLink = document.getElementById('current-file');
             currentFileLink.textContent = fileName;
         }
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $(window).scroll(function() {
+                if ($(this).scrollTop() > 100) {
+                    $('.back-to-top').fadeIn();
+                } else {
+                    $('.back-to-top').fadeOut();
+                }
+            });
+
+            $('.back-to-top').click(function() {
+                $('html, body').animate({
+                    scrollTop: 0
+                }, 800);
+                return false;
+            });
+        });
     </script>
 
 </body>

@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
-use App\Models\Course;
-use App\Models\Question;
 use App\Models\Test;
+use App\Models\Course;
+use App\Models\Category;
+use App\Models\Feedback;
+use App\Models\Question;
+use App\Models\TestResult;
+use App\Models\TestAttempt;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -129,7 +132,8 @@ class TeacherController extends Controller
 
     public function tests()
     {
-        $tests = Test::orderBy('id', 'DESC')->get();
+        $teacher = Auth::user();
+        $tests = Test::where('user_id', $teacher->id)->orderBy('id', 'DESC')->get();
         return view('teacher.tests.index', compact('tests'));
     }
 
@@ -257,4 +261,104 @@ class TeacherController extends Controller
         return view('teacher.tests.detail', compact('test', 'questions'));
     }
 
+    public function test_results()
+    {
+        $teacher = Auth::user();
+        $results = TestAttempt::with(['user', 'test.course', 'testResults'])
+            ->whereHas('test', function ($query) use ($teacher) {
+                $query->where('user_id', $teacher->id);
+            })->orderBy('id', 'ASC')->get()
+            ->map(function ($attempt) {
+                $correctAnswers = $attempt->testResults->where('is_correct', 1)->count();
+                $totalQuestions = $attempt->testResults->count();
+                $timeUsedInSeconds = $attempt->updated_at->diffInSeconds($attempt->created_at);
+
+                $minutes = floor($timeUsedInSeconds / 60);
+                $seconds = $timeUsedInSeconds % 60;
+
+                $timeUsed = $minutes > 0
+                    ? "{$minutes} minutes " . ($seconds > 0 ? "{$seconds} seconds" : "")
+                    : "{$seconds} seconds";
+
+                return [
+                    'student_name' => $attempt->user->fullname ?? 'N/A',
+                    'test_name' => $attempt->test->test_name ?? 'N/A',
+                    'course_name' => $attempt->test->course->course_name ?? 'N/A',
+                    'correct_answers' => "$correctAnswers / $totalQuestions",
+                    'time_used' => $timeUsed,
+                    'test_id' => $attempt->test_id,
+                ];
+            });
+
+        return view('teacher.tests.result', compact('results'));
+    }
+
+    public function view_test_detail($id)
+    {
+        $test = Test::with('questions')->findOrFail($id);
+        $attempt = TestAttempt::with('feedbacks.testAttempt.user', 'user', 'testResults')
+            ->where('test_id', $id)
+            ->first();
+
+        $questions = $test->questions->map(function ($question) use ($attempt) {
+            $result = $attempt->testResults->firstWhere('question_id', $question->id);
+            $selectedAnswer = $result->selected_answer ?? null;
+
+            return [
+                'question_text' => $question->question,
+                'selected_answer' => $selectedAnswer,
+                'correct_answer' => $question->answer,
+                'answers' => [
+                    'a' => $question->a,
+                    'b' => $question->b,
+                    'c' => $question->c,
+                    'd' => $question->d,
+                ],
+            ];
+        });
+
+        return view('teacher.tests.result_detail', compact('test', 'questions', 'attempt'));
+    }
+
+    public function storeFeedback(Request $request)
+    {
+        $request->validate([
+            'test_attempt_id' => 'required|exists:test_attempts,id',
+            'content' => 'required|string|max:255',
+        ]);
+ 
+        Feedback::create([
+            'test_attempt_id' => $request->test_attempt_id,
+            'content' => $request->content,
+        ]);
+ 
+        return redirect()->back()->with('success', 'Feedback added successfully!');
+    }
+
+    public function updateFeedback(Request $request, $id)
+    {
+        $request->validate([
+            'content' => 'required|string',
+        ]);
+
+        $feedback = Feedback::find($id);
+        if ($feedback) {
+            $feedback->content = $request->input('content');
+            $feedback->save();
+
+            return redirect()->back()->with('success', 'Feedback updated successfully');
+        }
+
+        return redirect()->back()->with('fail', 'Feedback not found');
+    }
+
+    public function destroyFeedback($id)
+    {
+        $feedback = Feedback::find($id);
+        if ($feedback) {
+            $feedback->delete();
+            return redirect()->back()->with('success', 'Feedback deleted successfully');
+        }
+        return redirect()->back()->with('fail', 'Feedback not found');
+    }
 }

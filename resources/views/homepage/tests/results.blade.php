@@ -81,25 +81,30 @@
                 @foreach ($questions as $index => $question)
                     <div class="question-item">
                         <h4>Question {{ $index + 1 }}: {{ $question['question_text'] }}</h4>
-                        <ul>
+                        <ul style="font-weight: 600">
                             @foreach (['a', 'b', 'c', 'd'] as $option)
                                 @php
+                                    $icon = '';
                                     $textColor = 'black';
                                     $answerText = $question['answers'][$option] ?? '';
                                     if ($option == $question['selected_answer'] && $option == $question['correct_answer']) {
                                         $textColor = 'green';
+                                        $icon = '<i class="bi bi-check-lg" style="color: green;"></i>';
                                     } elseif ($option == $question['selected_answer']) {
                                         $textColor = 'red';
+                                        $icon = '<i class="bi bi-x-lg" style="color: red;"></i>';
                                     } elseif ($option == $question['correct_answer']) {
                                         $textColor = 'green';
                                     }
                                 @endphp
                                 <li style="color: {{ $textColor }};">
-                                    {{ $option }}. {{ $answerText }}
+                                    {{ $option }}. {{ $answerText }} {!! $icon !!}
                                 </li>
                             @endforeach
                         </ul>
-                        <p>Correct answer: <strong>{{ $question['correct_answer'] }}</strong></p>
+                        <b>
+                            <p style="color: #007bff">Correct answer: <strong>{{ $question['correct_answer'] }}</strong></p>
+                        </b>
                     </div>
                     <hr>
                 @endforeach
@@ -237,4 +242,5 @@
             font-size: 1.2rem;
         }
     </style>
+
 @endsection

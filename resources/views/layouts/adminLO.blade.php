@@ -248,6 +248,27 @@
             visibility: visible;
             opacity: 1;
         }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 24px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .back-to-top:hover {
+            background-color: #0056b3;
+        }
+
     </style>
 
 </head>
@@ -419,6 +440,9 @@
             </ul>
         </div>
     </div>
+
+    <!-- Back to Top -->
+    <button id="scrollToTopBtn" class="back-to-top" style="display: none;">↑</button>
 
     <!--   Core JS Files   -->
     <script src="js-dasboard/core/jquery.min.js"></script>
@@ -604,7 +628,7 @@
         }
 
         function confirmDelete(event, button) {
-            event.preventDefault(); // Ngăn hành động submit form mặc định
+            event.preventDefault(); // Ngăn hành đ���ng submit form mặc đ��nh
 
             Swal.fire({
                 title: 'Are you sure?',
@@ -639,6 +663,23 @@
             var currentFileLink = document.getElementById('current-file');
             currentFileLink.textContent = fileName;
         }
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $(window).scroll(function() {
+                if ($(this).scrollTop() > 100) {
+                    $('.back-to-top').fadeIn();
+                } else {
+                    $('.back-to-top').fadeOut();
+                }
+            });
+
+            $('.back-to-top').click(function() {
+                $('html, body').animate({ scrollTop: 0 }, 800);
+                return false;
+            });
+        });
     </script>
 
 </body>

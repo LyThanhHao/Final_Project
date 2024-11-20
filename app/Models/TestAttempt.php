@@ -29,4 +29,8 @@ class TestAttempt extends Model
     {
         return $this->hasMany(TestResult::class);
     }
+    public function feedbacks()
+    {
+        return $this->hasMany(Feedback::class, 'test_attempt_id');
+    }
 }

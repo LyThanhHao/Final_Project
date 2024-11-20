@@ -40,7 +40,7 @@
                     </div>
                     <div class="form-group">
                         <label for="deadline">Deadline</label>
-                        <input type="datetime-local" class="form-control" id="deadline" name="deadline" value="{{ old('deadline') }}">
+                        <input type="datetime-local" class="form-control" id="deadline" name="deadline" value="{{ old('deadline') }}" min="{{ now()->format('Y-m-d\TH:i') }}">
                         @error('deadline')
                             <small class="text-danger">{{ $message }}</small>
                         @enderror
@@ -65,13 +65,13 @@
                     <div id="questions-container">
                         <!-- Questions will be generated here -->
                     </div>
+                    <div class="pagination" id="pagination"></div>
                     <div class="form-group text-center d-flex justify-content-between mt-4">
                         <button type="submit" class="btn btn-submit">Submit</button>
                     </div>
                 </form>
             </div>
         </div>
-        <button id="scrollToTopBtn" class="scroll-to-top" style="display: none;">↑</button>
     </div>
 
     <style>
@@ -131,24 +131,28 @@
             box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
         }
 
-        .scroll-to-top {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 1000;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            font-size: 24px;
-            cursor: pointer;
-            transition: background-color 0.3s;
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
         }
 
-        .scroll-to-top:hover {
-            background-color: #0056b3;
+        .pagination button {
+            margin: 0 5px;
+            padding: 5px 10px;
+            border: none;
+            background-color: #f1f1f1;
+            cursor: pointer;
+        }
+
+        .pagination button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .pagination button:disabled {
+            cursor: not-allowed;
+            opacity: 0.5;
         }
     </style>
 
@@ -156,53 +160,82 @@
         document.getElementById('question_count').addEventListener('change', function() {
             const questionsContainer = document.getElementById('questions-container');
             const questionCount = parseInt(this.value);
-            questionsContainer.innerHTML = ''; // Clear existing questions
+            const questionsPerPage = 5;
+            let currentPage = 1;
 
-            for (let i = 0; i < questionCount; i++) {
-                const newQuestionCard = document.createElement('div');
-                newQuestionCard.classList.add('card', 'mt-4', 'question-card', 'shadow-sm');
-                newQuestionCard.innerHTML = `
-                    <div class="card-header text-center bg-secondary text-white">
-                        <h4 style="color: aliceblue;">Question ${i + 1}</h4>
-                    </div>
-                    <div class="card-body">
-                        <div class="form-group">
-                            <label for="questions[${i}][question]">Question</label>
-                            <textarea type="text" class="form-control" id="questions[${i}][question]" name="questions[${i}][question]" placeholder="Enter question" required></textarea>
+            function renderQuestions() {
+                const start = (currentPage - 1) * questionsPerPage;
+                const end = start + questionsPerPage;
+                questionsContainer.innerHTML = ''; // Clear existing questions
+
+                for (let i = start; i < end && i < questionCount; i++) {
+                    const newQuestionCard = document.createElement('div');
+                    newQuestionCard.classList.add('card', 'mt-4', 'question-card', 'shadow-sm');
+                    newQuestionCard.innerHTML = `
+                        <div class="card-header text-center bg-secondary text-white">
+                            <h4 style="color: aliceblue;">Question ${i + 1}</h4>
                         </div>
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <label for="questions[${i}][a]">A:</label>
-                                <input type="text" class="form-control" id="questions[${i}][a]" name="questions[${i}][a]" required>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="questions[${i}][question]">Question</label>
+                                <textarea type="text" class="form-control" id="questions[${i}][question]" name="questions[${i}][question]" placeholder="Enter question" required></textarea>
                             </div>
-                            <div class="form-group col-md-6">
-                                <label for="questions[${i}][b]">B:</label>
-                                <input type="text" class="form-control" id="questions[${i}][b]" name="questions[${i}][b]" required>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="questions[${i}][a]">A:</label>
+                                    <input type="text" class="form-control" id="questions[${i}][a]" name="questions[${i}][a]" required>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="questions[${i}][b]">B:</label>
+                                    <input type="text" class="form-control" id="questions[${i}][b]" name="questions[${i}][b]" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="questions[${i}][c]">C:</label>
+                                    <input type="text" class="form-control" id="questions[${i}][c]" name="questions[${i}][c]" required>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="questions[${i}][d]">D:</label>
+                                    <input type="text" class="form-control" id="questions[${i}][d]" name="questions[${i}][d]" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="questions[${i}][answer]">Answer</label>
+                                <select class="form-control" id="questions[${i}][answer]" name="questions[${i}][answer]" required>
+                                    <option value="a">A</option>
+                                    <option value="b">B</option>
+                                    <option value="c">C</option>
+                                    <option value="d">D</option>
+                                </select>
                             </div>
                         </div>
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <label for="questions[${i}][c]">C:</label>
-                                <input type="text" class="form-control" id="questions[${i}][c]" name="questions[${i}][c]" required>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="questions[${i}][d]">D:</label>
-                                <input type="text" class="form-control" id="questions[${i}][d]" name="questions[${i}][d]" required>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="questions[${i}][answer]">Answer</label>
-                            <select class="form-control" id="questions[${i}][answer]" name="questions[${i}][answer]" required>
-                                <option value="a">A</option>
-                                <option value="b">B</option>
-                                <option value="c">C</option>
-                                <option value="d">D</option>
-                            </select>
-                        </div>
-                    </div>
-                `;
-                questionsContainer.appendChild(newQuestionCard);
+                    `;
+                    questionsContainer.appendChild(newQuestionCard);
+                }
+
+                renderPagination();
             }
+
+            function renderPagination() {
+                const paginationContainer = document.getElementById('pagination');
+                paginationContainer.innerHTML = '';
+
+                const totalPages = Math.ceil(questionCount / questionsPerPage);
+
+                for (let i = 1; i <= totalPages; i++) {
+                    const pageButton = document.createElement('button');
+                    pageButton.textContent = i;
+                    pageButton.classList.toggle('active', i === currentPage);
+                    pageButton.addEventListener('click', function() {
+                        currentPage = i;
+                        renderQuestions();
+                    });
+                    paginationContainer.appendChild(pageButton);
+                }
+            }
+
+            renderQuestions();
         });
 
         // Trigger change event to generate initial questions
@@ -222,6 +255,14 @@
                 top: 0,
                 behavior: 'smooth'
             });
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const deadlineInput = document.getElementById('deadline');
+            const now = new Date();
+            now.setMinutes(now.getMinutes() - now.getTimezoneOffset()); // Điều chỉnh múi giờ
+            const formattedNow = now.toISOString().slice(0, 16); // Định dạng thành 'YYYY-MM-DDTHH:MM'
+            deadlineInput.setAttribute('min', formattedNow);
         });
     </script>
 @endsection

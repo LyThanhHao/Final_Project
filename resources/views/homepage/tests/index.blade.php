@@ -95,38 +95,28 @@
                 <div>
                     <h5>Receive grades</h5>
                     <p><b style="color: rgb(71, 99, 255)">To Pass </b><span class="text-muted">65% or higher</span></p>
-                    <div class="percentage-box">
-                        <h5>Percentage: <b style="color: white">{{ number_format($percentage, 2) }}%</b></h5>
-                    </div>
+                    @if($attempt && $attempt->status == 'Completed')
+                        <div class="percentage-box">
+                            <h5>Percentage: <b style="color: white">{{ number_format($percentage, 2) }}%</b></h5>
+                        </div>
+                    @endif
                 </div>
                 <hr style="width: 1px; height: 65px; background-color: #e9ecef; border: none; margin-right: 40px;">
                 <div class="score-container">
-                    <div class="score-box">
-                        <h5>Score: <span style="color: white; font-weight: bold">{{ $correctCount }} /
-                                {{ $totalQuestions }}</span></h5>
-                    </div>
-                    <div class="time-box">
-                        <h5>Time used: <br><span style="color: white; font-weight: bold">{{ $duration }}</span></h5>
-                    </div>
+                    @if($attempt && $attempt->status == 'Completed')
+                        <div class="score-box">
+                            <h5>Score: <span style="color: white; font-weight: bold">{{ $correctCount }} /
+                                    {{ $totalQuestions }}</span></h5>
+                        </div>
+                        <div class="time-box">
+                            <h5>Time used: <br><span style="color: white; font-weight: bold">{{ $duration }}</span></h5>
+                        </div>
+                    @else
+                        <b style="color: red">Not Submitted</b>
+                    @endif
                 </div>
             </div>
             <hr>
-            @if($results->isNotEmpty())
-                <div class="results">
-                    @foreach ($results as $result)
-                        <div class="question">
-                            <h5>{{ $result->question->question }}</h5>
-                            <p>Correct Answer: <span style="color: green;">{{ $result->question->answer }}</span></p>
-                            <p>Your Answer: 
-                                <span style="color: {{ $result->is_correct ? 'green' : 'red' }};">
-                                    {{ $result->selected_answer }}
-                                </span>
-                            </p>
-                        </div>
-                        <hr>
-                    @endforeach
-                </div>
-            @endif
         </div>
     </div>
 
@@ -290,7 +280,6 @@
             display: flex;
             flex-direction: column;
             gap: 20px;
-            margin-top: 20px;
         }
 
         .score-box, .percentage-box, .time-box {
