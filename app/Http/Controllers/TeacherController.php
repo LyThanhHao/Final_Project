@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Test;
+use App\Models\User;
 use App\Models\Course;
 use App\Models\Category;
 use App\Models\Feedback;
@@ -10,6 +11,7 @@ use App\Models\Question;
 use App\Models\TestResult;
 use App\Models\TestAttempt;
 use Illuminate\Http\Request;
+use App\Models\StudentDeadline;
 use Illuminate\Support\Facades\Auth;
 
 class TeacherController extends Controller
@@ -148,7 +150,7 @@ class TeacherController extends Controller
         $request->validate([
             'course_id' => 'required',
             'test_name' => 'required',
-            'deadline' => 'required|date',
+            'deadline_after' => 'required|integer|min:1',
             'test_time' => 'required|integer|min:1',
             'questions.*.question' => 'required',
             'questions.*.a' => 'required',
@@ -156,39 +158,39 @@ class TeacherController extends Controller
             'questions.*.c' => 'required',
             'questions.*.d' => 'required',
             'questions.*.answer' => 'required|in:a,b,c,d',
-        ], [
-            'course_id.required' => 'The course is required.',
-            'test_name.required' => 'The test name is required.',
-            'questions.*.question.required' => 'The question is required.',
-            'test_time.required' => 'The test time is required.',
-            'test_time.integer' => 'The test time must be an integer.',
-            'test_time.min' => 'The test time must be at least 1 minute.',
-            'questions.*.a.required' => 'The option A is required.',
-            'questions.*.b.required' => 'The option B is required.',
-            'questions.*.c.required' => 'The option C is required.',
-            'questions.*.d.required' => 'The option D is required.',
-            'questions.*.answer.required' => 'The correct answer is required.',
-            'questions.*.answer.in' => 'The correct answer must be one of the options (A, B, C, or D).',
         ]);
 
         $test = Test::create([
-            'test_name' => $request->test_name,
             'course_id' => $request->course_id,
-            'user_id' => Auth::id(),
-            'deadline' => $request->deadline,
+            'test_name' => $request->test_name,
+            'deadline_after' => $request->deadline_after,
             'test_time' => $request->test_time,
         ]);
 
-        $questions = [];
         foreach ($request->questions as $questionData) {
-            $questionData['test_id'] = $test->id;
-            $questions[] = Question::create($questionData);
+            Question::create(array_merge($questionData, ['test_id' => $test->id]));
         }
 
-        if ($test && $questions) {
-            return redirect()->route('teacher.tests.index')->with('success', 'Test and questions created successfully');
+        $students = User::whereHas('enrolls', function ($query) use ($request) {
+            $query->where('course_id', $request->course_id);
+        })->get();
+
+        foreach ($students as $student) {
+            $enrollDate = $student->enrolls()->where('course_id', $request->course_id)->first()->created_at;
+            $deadline = $enrollDate->copy()->addDays($request->deadline_after);
+
+            if ($deadline->isPast()) {
+                $deadline = $test->created_at->copy()->addDays($request->deadline_after);
+            }
+
+            StudentDeadline::create([
+                'user_id' => $student->id,
+                'test_id' => $test->id,
+                'deadline' => $deadline,
+            ]);
         }
-        return redirect()->back()->with('fail', 'Test and questions creation failed! Something went wrong, please try again!');
+
+        return redirect()->route('teacher.tests.index')->with('success', 'Test created successfully');
     }
 
     public function edit_test(Test $test)
@@ -202,7 +204,7 @@ class TeacherController extends Controller
         $request->validate([
             'course_id' => 'required',
             'test_name' => 'required',
-            'deadline' => 'required|date',
+            'deadline_after' => 'required|integer|min:1',
             'test_time' => 'required|integer|min:1',
             'questions.*.question' => 'required',
             'questions.*.a' => 'required',
@@ -210,41 +212,39 @@ class TeacherController extends Controller
             'questions.*.c' => 'required',
             'questions.*.d' => 'required',
             'questions.*.answer' => 'required|in:a,b,c,d',
-        ], [
-            'course_id.required' => 'The course is required.',
-            'test_name.required' => 'The test name is required.',
-            'questions.*.question.required' => 'The question is required.',
-            'test_time.required' => 'The test time is required.',
-            'test_time.integer' => 'The test time must be an integer.',
-            'test_time.min' => 'The test time must be at least 1 minute.',
-            'questions.*.a.required' => 'The option A is required.',
-            'questions.*.b.required' => 'The option B is required.',
-            'questions.*.c.required' => 'The option C is required.',
-            'questions.*.d.required' => 'The option D is required.',
-            'questions.*.answer.required' => 'The correct answer is required.',
         ]);
 
-        $check_test = $test->update([
+        $test->update([
             'course_id' => $request->course_id,
             'test_name' => $request->test_name,
-            'deadline' => $request->deadline,
+            'deadline_after' => $request->deadline_after,
             'test_time' => $request->test_time,
         ]);
-
-        $check_question = [];
 
         foreach ($request->questions as $questionData) {
             if (isset($questionData['id'])) {
                 $question = Question::find($questionData['id']);
                 if ($question) {
-                    $check_question = $question->update($questionData);
+                    $question->update($questionData);
                 }
             }
         }
-        if ($check_test && $check_question) {
-            return redirect()->route('teacher.tests.index')->with('success', 'Test updated successfully');
+
+        $students = User::whereHas('enrolls', function ($query) use ($request) {
+            $query->where('course_id', $request->course_id);
+        })->get();
+
+        foreach ($students as $student) {
+            $enrollDate = $student->enrolls()->where('course_id', $request->course_id)->first()->created_at;
+            $deadline = $enrollDate->addDays($request->deadline_after);
+
+            StudentDeadline::updateOrCreate(
+                ['user_id' => $student->id, 'test_id' => $test->id],
+                ['deadline' => $deadline]
+            );
         }
-        return redirect()->back()->with('fail', 'Test update failed! Something went wrong, please try again!');
+
+        return redirect()->route('teacher.tests.index')->with('success', 'Test updated successfully');
     }
 
     public function destroy_test(Test $test)
@@ -287,6 +287,7 @@ class TeacherController extends Controller
                     'correct_answers' => "$correctAnswers / $totalQuestions",
                     'time_used' => $timeUsed,
                     'test_id' => $attempt->test_id,
+                    'has_feedback' => $attempt->feedbacks->count() > 0 ? true : false,
                 ];
             });
 

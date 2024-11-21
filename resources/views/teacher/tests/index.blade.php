@@ -11,11 +11,11 @@
                 <table class="table table-bordered table-hover table-striped">
                     <thead>
                         <tr>
-                            <th style="max-width: 25px;">No.</th>
+                            <th style="max-width: 30px;">No.</th>
                             <th>Test Name</th>
                             <th>Course Name</th>
                             <th style="width: 130px;">Questions Count</th>
-                            <th style="width: 130px;">Deadline</th>
+                            <th style="width: 130px;">Deadline After</th>
                             <th style="width: 130px;">Test Time</th>
                             <th style="width: 130px;">Action</th>
                         </tr>
@@ -27,7 +27,7 @@
                                 <td>{{ $test->test_name }}</td>
                                 <td>{{ $test->course->course_name }}</td>
                                 <td style="text-align: center;">{{ $test->questions->count() }}</td>
-                                <td style="text-align: center;">{{ $test->deadline ? \Carbon\Carbon::parse($test->deadline)->format('d/m/Y, H:i') : 'Not set' }}</td>
+                                <td style="text-align: center;">{{ $test->deadline_after }} days</td>
                                 <td style="text-align: center;">{{ $test->test_time }} minutes</td>
                                 <td style="text-align: center; position: relative;">
                                     <button class="btn btn-toggle" onclick="toggleActions(this)"><i class="bi bi-list"></i></button>

@@ -32,8 +32,8 @@
                             @foreach ($takenTests as $takenTest)
                                 <li>
                                     <a class="dropdown-item d-flex align-items-center"
-                                        href="{{ route('test.results', $takenTest->id) }}">
-                                        <i class="bi bi-pencil mr-2"></i>{{ $takenTest->test_name }}
+                                        href="{{ route('test.results', $takenTest->test->id) }}">
+                                        <i class="bi bi-pencil mr-2"></i>{{ $takenTest->test->test_name }}
                                     </a>
                                 </li>
                             @endforeach
@@ -71,14 +71,28 @@
                 @if ($attempt && $attempt->status == 'Completed')
                     <button class="btn-completed" disabled>Completed</button>
                 @else
-                    <a href="{{ route('taking_test', $test->id) }}" id="take-test-btn"
-                        class="btn-start">{{ $attempt ? 'Resume' : 'Take The Test' }}</a>
+                    @php
+                        $isOverdue = $studentDeadline && \Carbon\Carbon::now()->greaterThan($studentDeadline->deadline);
+                    @endphp
+
+                    @if ($isOverdue)
+                        <button class="btn-overdue" disabled>Overdue</button>
+                    @else
+                        <a href="{{ route('taking_test', $test->id) }}" id="take-test-btn"
+                            class="btn-start">{{ $attempt ? 'Resume' : 'Take The Test' }}</a>
+                    @endif
                 @endif
             </div>
             <div class="d-flex justify-content-between align-items-center mt-3">
                 <span style="font-size: 14px; color: #6c757d;">
                     Deadline:
-                    <b>{{ $test->deadline ? \Carbon\Carbon::parse($test->deadline)->format('d/m/Y, H:i') : 'Not set' }}</b>
+                    <b>
+                        @if ($studentDeadline)
+                            {{ \Carbon\Carbon::parse($studentDeadline->deadline)->format('d/m/Y, H:i') }}
+                        @else
+                            Not set
+                        @endif
+                    </b>
                 </span>
                 <div>
                     <span style="font-size: 14px; color: #6c757d;">
@@ -325,6 +339,18 @@
             .test-content {
                 width: 100%;
             }
+        }
+
+        .btn-overdue {
+            background-color: #dc3545; /* Màu đỏ */
+            color: white;
+            border-radius: 5px;
+            padding: 10px 20px;
+            border: 1px solid #dc3545;
+            width: max-content;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+            font-weight: bold;
+            cursor: not-allowed;
         }
     </style>
 

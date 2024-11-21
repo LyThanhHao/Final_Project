@@ -33,6 +33,8 @@ Route::get('/course/{course}/detail', [CourseController::class, 'course_detail']
 
 Route::group(['middleware' => ['auth']], function () {
     Route::post('/courses/detail/comment', [CommentController::class, 'store'])->name('comments.store');
+    Route::put('/comments/{id}', [CommentController::class, 'update'])->name('comments.update');
+    Route::delete('/comments/{id}', [CommentController::class, 'destroy'])->name('comments.destroy');
     Route::post('/courses/{course}/favorite', [CourseController::class, 'favorite'])->name('courses.favorite');
     Route::delete('/courses/{course}/favorite', [CourseController::class, 'unfavorite'])->name('courses.unfavorite');
     Route::get('/my_favorite_list', [UserController::class, 'favorite_list'])->name('favorite_list');

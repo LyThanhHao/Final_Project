@@ -38,4 +38,26 @@ class CommentController extends Controller
         // Trả về trang hiện tại
         return response()->json(['comment' => $comment->load('user')]);
     }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'content' => 'required|string|max:255',
+        ]);
+
+        $comment = Comment::findOrFail($id);
+        $comment->update([
+            'content' => $request->input('content'),
+        ]);
+
+        return redirect()->back()->with('success', 'Comment updated successfully.');
+    }
+
+    public function destroy($id)
+    {
+        $comment = Comment::findOrFail($id);
+        $comment->delete();
+
+        return redirect()->back()->with('success', 'Comment deleted successfully.');
+    }
 }

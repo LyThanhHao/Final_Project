@@ -10,6 +10,7 @@ use App\Models\Favorite;
 use App\Models\Test;
 use App\Models\TestAttempt;
 use App\Models\User;
+use App\Models\StudentDeadline;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -186,6 +187,24 @@ class CourseController extends Controller
                 'user_id' => $user->id,
                 'course_id' => $course->id,
             ]);
+
+            // Tạo student_deadlines cho mỗi bài test trong khóa học
+            $tests = $course->tests;
+            foreach ($tests as $test) {
+                $enrollDate = now();
+                $calculatedDeadline = $enrollDate->copy()->addDays($test->deadline_after);
+
+                // Nếu deadline tính toán là quá khứ, sử dụng ngày tạo test + deadline_after
+                if ($calculatedDeadline->isPast()) {
+                    $calculatedDeadline = $test->created_at->copy()->addDays($test->deadline_after);
+                }
+
+                StudentDeadline::create([
+                    'user_id' => $user->id,
+                    'test_id' => $test->id,
+                    'deadline' => $calculatedDeadline,
+                ]);
+            }
         }
 
         return response()->json(['success' => true]);

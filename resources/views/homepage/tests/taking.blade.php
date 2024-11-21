@@ -14,7 +14,7 @@
         @csrf
         @foreach ($test->questions as $index => $question)
             <div class="question mb-4">
-                <h4>{{ $index + 1 }}. {{ $question->question_text }}</h4>
+                <h4>{{ $index + 1 }}. {{ $question->question }}</h4>
                 @foreach (['a', 'b', 'c', 'd'] as $option)
                     <div class="option">
                         <input type="radio" id="question_{{ $question->id }}_{{ $option }}"
@@ -85,6 +85,8 @@
     }
 </style>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Thiết lập thời gian
@@ -121,8 +123,23 @@
 
         // Xóa dữ liệu thời gian khi người dùng submit bài thi bằng tay
         const testForm = document.getElementById('test-form');
-        testForm.addEventListener('submit', function() {
-            localStorage.removeItem('test_end_time_{{ $test->id }}');
+        testForm.addEventListener('submit', function(event) {
+            event.preventDefault(); // Ngăn chặn hành động submit mặc định
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "Do you want to submit your test?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, submit it!',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    testForm.submit(); // Thực hiện submit nếu người dùng xác nhận
+                }
+            });
         });
     });
 </script>

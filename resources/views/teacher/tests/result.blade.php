@@ -15,7 +15,8 @@
                             <th>Test Name</th>
                             <th>Course Name</th>
                             <th style="width: 100px;">Correct Answers</th>
-                            <th>Time Used</th>
+                            <th style="width: 90px;">Time Used</th>
+                            <th style="width: 80px;">Feedback</th>
                             <th style="width: 120px;">Action</th>
                         </tr>
                     </thead>
@@ -28,7 +29,14 @@
                                 <td>{{ $result['course_name'] }}</td>
                                 <td style="text-align: center;">{{ $result['correct_answers'] }}</td>
                                 <td style="text-align: center;">{{ $result['time_used'] }}</td>
-                                <td style="text-align: center; position: relative;">
+                                <td style="text-align: center; font-size: 20px;">
+                                    @if ($result['has_feedback'])
+                                    <i class="bi bi-check-circle-fill" style="color: green;"></i>
+                                    @else
+                                    <i class="bi bi-x-circle-fill" style="color: red;"></i>
+                                    @endif
+                                </td>
+                                <td>
                                     <a href="{{ route('teacher.tests.result_detail', $result['test_id']) }}" class="btn btn-detail">View</a>
                                 </td>
                             </tr>
@@ -43,6 +51,7 @@
         td {
             font-size: 13px;
             transition: background-color 0.3s;
+            align-content: center;
         }
 
         td:hover {
@@ -55,31 +64,21 @@
             align-content: center;
         }
 
-        .btn-feedback {
-            background-color: steelblue;
-            color: white;
-            margin-bottom: 10px;
-            width: 100%;
-            padding: 5px;
-            transition: background-color 0.3s, transform 0.3s;
-            font-size: 13px;
-        }
-
         .btn-detail {
-            background-color: green;
+            background-color: #007bff;
             color: white;
-            margin-bottom: 10px;
             width: 100%;
             padding: 5px;
             transition: background-color 0.3s, transform 0.3s;
             font-size: 13px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
-        .btn-detail:hover, .btn-feedback:hover {
+        .btn-detail:hover {
             border: 1px solid black;
             background-color: white;
             color: black;
-            transform: scale(1.05);
+            transition: 0.3s;
         }
 
         .btn-toggle {

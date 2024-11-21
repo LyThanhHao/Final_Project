@@ -42,11 +42,9 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="deadline">Deadline</label>
-                        <input type="datetime-local" class="form-control" id="deadline" name="deadline" 
-                               value="{{ old('deadline', optional($test->deadline)->format('Y-m-d\TH:i')) }}"
-                               min="{{ now()->format('Y-m-d\TH:i') }}">
-                        @error('deadline')
+                        <label for="deadline_after">Deadline after (days)</label>
+                        <input type="number" class="form-control" id="deadline_after" name="deadline_after" min="1" value="{{ old('deadline_after', $test->deadline_after) }}" required>
+                        @error('deadline_after')
                             <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>

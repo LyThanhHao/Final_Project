@@ -13,11 +13,9 @@ class Test extends Model
         'test_name',
         'user_id',
         'course_id',
-        'deadline',
+        'deadline_after',
         'test_time',
     ];
-
-    protected $dates = ['deadline'];
 
     public function user()
     {

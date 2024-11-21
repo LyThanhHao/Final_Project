@@ -6,6 +6,7 @@ use App\Models\Course;
 use App\Models\Test;
 use App\Models\TestAttempt;
 use App\Models\TestResult;
+use App\Models\StudentDeadline;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -21,10 +22,10 @@ class TestController extends Controller
             ->where('test_id', $test->id)
             ->first();
 
-        $takenTests = TestAttempt::whereHas('test', function ($query) {
-            $query->where('user_id', auth()->id())
-                  ->where('status', 'Completed');
-        })->get();
+        $takenTests = TestAttempt::where('user_id', auth()->id())
+            ->where('status', 'Completed')
+            ->with('test')
+            ->get();
 
         $correctCount = 0;
         $totalQuestions = $test->questions->count();
@@ -37,13 +38,22 @@ class TestController extends Controller
                 ->where('is_correct', true)
                 ->count();
 
-            $duration = $attempt->updated_at->diffForHumans($attempt->created_at);
+            $startTime = $attempt->created_at;
+            $endTime = $attempt->updated_at;
+            $minutes = $endTime->diffInMinutes($startTime);
+            $seconds = $endTime->diffInSeconds($startTime) % 60;
+            $duration = sprintf('%02d:%02d', $minutes, $seconds);
+
             $percentage = ($correctCount / $totalQuestions) * 100;
 
             $results = TestResult::where('test_attempt_id', $attempt->id)->get();
         }
 
-        return view('homepage.tests.index', compact('instructor', 'course', 'test', 'attempt', 'correctCount', 'totalQuestions', 'duration', 'percentage', 'results', 'takenTests'));
+        $studentDeadline = StudentDeadline::where('user_id', auth()->id())
+            ->where('test_id', $test->id)
+            ->first();
+
+        return view('homepage.tests.index', compact('instructor', 'course', 'test', 'attempt', 'correctCount', 'totalQuestions', 'duration', 'percentage', 'results', 'takenTests', 'studentDeadline'));
     }
 
     public function takingTest(Test $test)
@@ -53,8 +63,10 @@ class TestController extends Controller
             ['status' => 'Taking', 'created_at' => now(), 'updated_at' => now()]
         );
 
+        $questions = $test->questions; // Lấy danh sách câu hỏi
+
         // Hiển thị thông báo xác nhận hoặc chuyển ngay đến trang làm bài
-        return view('homepage.tests.taking', compact('test', 'attempt'));
+        return view('homepage.tests.taking', compact('test', 'attempt', 'questions'));
     }
 
 
@@ -89,7 +101,11 @@ class TestController extends Controller
             'completed_at' => now(),
         ]);
 
-        $duration = $attempt->updated_at->diffForHumans($attempt->created_at);
+        $startTime = $attempt->created_at;
+        $endTime = $attempt->updated_at;
+        $minutes = $endTime->diffInMinutes($startTime);
+        $seconds = $endTime->diffInSeconds($startTime) % 60;
+        $duration = sprintf('%02d:%02d', $minutes, $seconds);
         $percentage = ($correctCount / $totalQuestions) * 100;
 
         return redirect()->route('test.view', $test->id)->with([
@@ -116,7 +132,11 @@ class TestController extends Controller
         $correctCount = $results->where('is_correct', true)->count();
         $totalQuestions = $test->questions->count();
         $percentage = ($totalQuestions > 0) ? ($correctCount / $totalQuestions) * 100 : 0;
-        $duration = $attempt ? $attempt->updated_at->diffForHumans($attempt->created_at) : 'N/A';
+        $startTime = $attempt->created_at;
+        $endTime = $attempt->updated_at;
+        $minutes = $endTime->diffInMinutes($startTime);
+        $seconds = $endTime->diffInSeconds($startTime) % 60;
+        $duration = sprintf('%02d:%02d', $minutes, $seconds);
     
         $questions = $test->questions->map(function ($question) use ($results) {
             $result = $results->firstWhere('question_id', $question->id);

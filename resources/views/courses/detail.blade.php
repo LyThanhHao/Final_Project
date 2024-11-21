@@ -293,7 +293,6 @@
             .comment-box .user-info {
                 display: flex;
                 align-items: center;
-                margin-bottom: 10px;
             }
 
             .comment-box .user-info img {
@@ -474,6 +473,99 @@
                 transform: translate(2px, 2px);
                 box-shadow: 0 0 0 rgba(0, 0, 0, 0.2);
             }
+
+            .comment-box {
+                padding: 10px;
+                border-radius: 5px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                background-color: #f9f9f9;
+                margin-bottom: 15px;
+            }
+
+            .comment-content {
+                font-size: 0.9em;
+            }
+
+            .btn-options {
+                background-color: transparent;
+                border: none;
+                font-size: 16px;
+                cursor: pointer;
+            }
+            .options-menu {
+                display: none;
+                position: absolute;
+                background: white;
+                border: 1px solid #ccc;
+                z-index: 1;
+                left: 90%;
+                top: 75%;
+            }
+            .options-menu button {
+                background: none;
+                border: 1px solid #ccc;
+                color: black;
+                cursor: pointer;
+                width: max-content;
+                text-align: left;
+            }
+            .options-menu:hover {
+                color: white;
+            }
+            .options-menu #btn-update-comment {
+                color: blue;
+                cursor: pointer;
+                padding: 5px;
+                width: 100%;
+                text-align: left;
+                font-weight: bold;
+            }
+            .options-menu #btn-delete-comment {
+                color: red;
+                cursor: pointer;
+                padding: 5px;
+                width: 100%;
+                text-align: left;
+                font-weight: bold;
+            }
+            .options-menu #btn-update-comment:hover, #btn-delete-comment:hover {
+                background-color: #515151;
+                color: white;
+            }
+
+            .edit-form {
+                display: none;
+                margin-top: 10px;
+            }
+
+            .edit-comment-input {
+                width: 100%;
+                padding: 5px;
+            }
+
+            .button-group {
+                display: flex;
+                justify-content: flex-end;
+                margin-top: 10px;
+            }
+
+            .btn-cancel, .btn-save-comment {
+                background-color: #007bff;
+                color: white;
+                border: none;
+                padding: 5px 10px;
+                border-radius: 5px;
+                cursor: pointer;
+                margin-right: 5px;
+            }
+
+            .btn-cancel {
+                background-color: #dc3545;
+            }
+
+            .btn-cancel:hover, .btn-save-comment:hover {
+                opacity: 0.8;
+            }
         </style>
         <div class="container py-5">
             <div class="row">
@@ -582,17 +674,40 @@
                             {{-- <hr style="width: 75%; display: flex; align-items: center;"> --}}
                             <div id="comments-list" class="mt-4">
                                 @foreach ($course->comments as $comment)
-                                    <div class="comment-box px-3">
-                                        <div class="user-info d-flex align-items-center mb-2">
-                                            <img src="{{ asset('uploads/avatar/' . ($comment->user->avatar ?? 'avatar_default.jpg')) }}"
-                                                alt="{{ $comment->user->fullname }}" class="rounded-circle" width="30"
-                                                height="30">
-                                            <div>
-                                                <div class="user-name">{{ $comment->user->fullname }}</div>
-                                                <div class="comment-content" style="font-size: 0.9em;">
-                                                    {{ $comment->content }}</div>
+                                    <div class="comment-box px-3" data-comment-id="{{ $comment->id }}">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="user-info d-flex align-items-center">
+                                                <img src="{{ asset('uploads/avatar/' . ($comment->user->avatar ?? 'avatar_default.jpg')) }}" alt="{{ $comment->user->fullname }}" class="rounded-circle" width="30" height="30">
+                                                <div>
+                                                    <div class="user-name">{{ $comment->user->fullname }}</div>
+                                                    <div class="comment-content" style="font-size: 0.9em;">{{ $comment->content }}</div>
+                                                </div>
+                                            </div>
+                                            <div class="options">
+                                                <button class="btn-options" onclick="toggleOptions(this)">...</button>
+                                                <div class="options-menu" style="display: none;">
+                                                    <button id="btn-update-comment" onclick="updateComment({{ $comment->id }})"><i style="color: blue; margin: 0 5px; font-weight: bold;" class="bi bi-pen"></i>Update</button>
+                                                    <form method="POST" action="{{ route('comments.destroy', $comment->id) }}" style="display: inline;">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" id="btn-delete-comment" onclick="confirmDelete(event, this)"><i style="color: red; margin: 0 5px;" class="bi bi-trash"></i>Delete</button>
+                                                    </form>
+                                                </div>
                                             </div>
                                         </div>
+                                        <form method="POST" action="{{ route('comments.update', $comment->id) }}" style="display: none; width: 100%;" class="edit-form">
+                                            @csrf
+                                            @method('PUT')
+                                            <div class="group flex-grow-1 mr-2">
+                                                <input type="text" name="content" class="input edit-comment-input" value="{{ $comment->content }}">
+                                                <span class="highlight"></span>
+                                                <span class="bar"></span>
+                                            </div>
+                                            <div class="button-group">
+                                                <button type="button" class="btn-cancel" onclick="cancelEdit(this)">Cancel</button>
+                                                <button type="submit" class="btn-save-comment">Save</button>
+                                            </div>
+                                        </form>
                                         <hr>
                                     </div>
                                 @endforeach
@@ -824,6 +939,50 @@
                             }
                         }
                     });
+                });
+            });
+
+            function toggleOptions(button) {
+                const menu = button.nextElementSibling;
+                menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+            }
+
+            function updateComment(commentId) {
+                const commentBox = document.querySelector(`.comment-box[data-comment-id='${commentId}']`);
+                const commentContent = commentBox.querySelector('.comment-content');
+                const editForm = commentBox.querySelector('.edit-form');
+                const btnOptions = commentBox.querySelector('.btn-options');
+                const optionsMenu = commentBox.querySelector('.options-menu');
+                const editInput = editForm.querySelector('.edit-comment-input');
+
+                // Ẩn nội dung hiện tại và hiển thị form để chỉnh sửa
+                commentContent.style.display = 'none';
+                editForm.style.display = 'block';
+                btnOptions.style.display = 'none'; // Ẩn dấu ba chấm
+                optionsMenu.style.display = 'none'; // Ẩn menu tùy chọn
+
+                // Focus vào input
+                editInput.focus();
+                editInput.setSelectionRange(editInput.value.length, editInput.value.length);
+            }
+
+            function cancelEdit(button) {
+                const commentBox = button.closest('.comment-box');
+                const commentContent = commentBox.querySelector('.comment-content');
+                const editForm = commentBox.querySelector('.edit-form');
+                const btnOptions = commentBox.querySelector('.btn-options');
+
+                commentContent.style.display = 'block';
+                editForm.style.display = 'none';
+                btnOptions.style.display = 'inline-block'; // Hiển thị lại dấu ba chấm
+            }
+
+            document.addEventListener('click', function(event) {
+                const optionsMenus = document.querySelectorAll('.options-menu');
+                optionsMenus.forEach(menu => {
+                    if (!menu.contains(event.target) && !menu.previousElementSibling.contains(event.target)) {
+                        menu.style.display = 'none';
+                    }
                 });
             });
         </script>
