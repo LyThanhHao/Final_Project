@@ -431,6 +431,33 @@
         }
 
         renderQuestions();
+
+        // Cuộn đến feedback mới
+        @if(session('new_feedback_id'))
+            const newFeedbackId = {{ session('new_feedback_id') }};
+            const newFeedbackElement = document.querySelector(`.feedback-box[data-feedback-id='${newFeedbackId}']`);
+            if (newFeedbackElement) {
+                newFeedbackElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        @endif
+
+        // Cuộn đến feedback đã cập nhật
+        @if(session('updated_feedback_id'))
+            const updatedFeedbackId = {{ session('updated_feedback_id') }};
+            const updatedFeedbackElement = document.querySelector(`.feedback-box[data-feedback-id='${updatedFeedbackId}']`);
+            if (updatedFeedbackElement) {
+                updatedFeedbackElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        @endif
+
+        // Cuộn đến vị trí của feedback đã xóa
+        @if(session('deleted_feedback_id'))
+            const deletedFeedbackId = {{ session('deleted_feedback_id') }};
+            const deletedFeedbackElement = document.querySelector(`.feedback-box[data-feedback-id='${deletedFeedbackId}']`);
+            if (deletedFeedbackElement) {
+                deletedFeedbackElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        @endif
     });
 
     function toggleOptions(button) {

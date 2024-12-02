@@ -1,10 +1,34 @@
 @startuml
 
-left to right direction
+top to bottom direction
+
+' Các lớp
+class StudentDeadline {
+  -id: int
+  -user_id: int
+  -test_id: int
+  -deadline: datetime
+  -created_at: timestamp
+  -updated_at: timestamp
+  -- 
+  +user(): belongsTo
+  +test(): belongsTo
+}
+
+class UserResetToken {
+  -email: string
+  -token: string
+  -created_at: timestamp
+  -updated_at: timestamp
+  -- 
+  +user(): belongsTo
+}
 
 class Category {
   -id: int
-  -name: string
+  -cat_name: string
+  -status: string
+  -cat_image: string
   -created_at: timestamp
   -updated_at: timestamp
   -- 
@@ -13,32 +37,22 @@ class Category {
 
 class Course {
   -id: int
-  -title: string
-  -description: string
+  -course_name: string
   -category_id: int
+  -user_id: int
+  -image: string
+  -file: string
+  -description: string
+  -status: string
   -created_at: timestamp
   -updated_at: timestamp
   -- 
+  +user(): belongsTo
   +category(): belongsTo
-  +users(): belongsTo
   +comments(): hasMany
   +favorites(): belongsToMany
-  +questions(): hasMany
-}
-
-class User {
-  -id: int
-  -name: string
-  -email: string
-  -email_verified_at: timestamp
-  -password: string
-  -created_at: timestamp
-  -updated_at: timestamp
-  --
-  +courses(): hasMany
-  +comments(): hasMany
-  +favorites(): hasOne
-  +questions(): hasMany
+  +enrolls(): hasMany
+  +tests(): hasMany
 }
 
 class Comment {
@@ -48,7 +62,7 @@ class Comment {
   -content: string
   -created_at: timestamp
   -updated_at: timestamp
-  --
+  -- 
   +user(): belongsTo
   +course(): belongsTo
 }
@@ -59,36 +73,132 @@ class Favorite {
   -course_id: int
   -created_at: timestamp
   -updated_at: timestamp
-  --
+  -- 
   +user(): belongsTo
-  +course(): hasMany
+  +course(): belongsTo
+}
+
+class Enroll {
+  -id: int
+  -user_id: int
+  -course_id: int
+  -created_at: timestamp
+  -updated_at: timestamp
+  -- 
+  +course(): belongsTo
+  +user(): belongsTo
+}
+
+class Test {
+  -id: int
+  -test_name: string
+  -user_id: int
+  -course_id: int
+  -deadline_after: datetime
+  -test_time: int
+  -created_at: timestamp
+  -updated_at: timestamp
+  -- 
+  +user(): belongsTo
+  +course(): belongsTo
+  +questions(): hasMany
+  +testAttempts(): hasMany
+  +feedbacks(): hasOne
+}
+
+class Feedback {
+  -id: int
+  -test_attempt_id: int
+  -content: string
+  -created_at: timestamp
+  -updated_at: timestamp
+  -- 
+  +testAttempt(): belongsTo
 }
 
 class Question {
-    -id: bigint
-    -question_content: text
-    -a: string
-    -b: string
-    -c: string
-    -d: string
-    -answer: string
-    -user_id: int
-    -course_id: int
-    -created_at: datetime
-    -updated_at: datetime
-    --
-    +user(): belongsTo
-    +course(): belongsTo
+  -id: int
+  -question: string
+  -a: string
+  -b: string
+  -c: string
+  -d: string
+  -answer: string
+  -test_id: int
+  -created_at: timestamp
+  -updated_at: timestamp
+  -- 
+  +test(): belongsTo
+  +testResults(): hasMany
 }
 
-Category "1" --> "*" Course 
+class TestAttempt {
+  -id: int
+  -user_id: int
+  -test_id: int
+  -status: string
+  -created_at: timestamp
+  -updated_at: timestamp
+  -- 
+  +test(): belongsTo
+  +user(): belongsTo
+  +testResults(): hasMany
+  +feedbacks(): hasOne
+}
+
+class User {
+  -id: int
+  -fullname: string
+  -email: string
+  -password: string
+  -role: string
+  -address: string
+  -avatar: string
+  -phoneNumber: string
+  -email_verified_at: timestamp
+  -created_at: timestamp
+  -updated_at: timestamp
+  -- 
+  +courses(): hasMany
+  +comments(): hasMany
+  +favorites(): belongsToMany
+  +enrolls(): hasMany
+  +testAttempts(): hasMany
+  +studentDeadlines(): hasMany
+}
+
+class TestResult {
+  -id: int
+  -test_attempt_id: int
+  -question_id: int
+  -selected_answer: string
+  -is_correct: boolean
+  -created_at: timestamp
+  -updated_at: timestamp
+  -- 
+  +testAttempt(): belongsTo
+  +question(): belongsTo
+}
+
+' Mối quan hệ giữa các lớp
+Category "1" --> "*" Course
 User "1" --> "*" Course
-Course "1" --> "*" Favorite : "belongsToMany"
-Favorite "1" --> "*" Course
-Course "1" --> "*" Question
 User "1" --> "*" Comment
+User "1" --> "*" TestAttempt
+User "1" --> "*" Enroll
+User "1" --> "*" StudentDeadline
 Course "1" --> "*" Comment
-User "1" --> "1" Favorite
-User "1" --> "*" Question
+Course "1" --> "*" Test
+Course "1" --> "*" Enroll
+Favorite "*" --> "*" Course
+User "1" --> "*" Favorite
+Test "1" --> "*" TestAttempt
+Test "1" --> "*" Question
+Test "1" --> "1" Feedback
+TestAttempt "1" --> "*" TestResult
+TestAttempt "1" --> "1" Feedback
+Question "1" --> "*" TestResult
+UserResetToken "1" --> "1" User
+Test "1" --> "1" StudentDeadline
 
 @enduml

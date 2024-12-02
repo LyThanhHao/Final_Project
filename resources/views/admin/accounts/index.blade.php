@@ -10,7 +10,7 @@
           <h3 class="card-title font-weight-bold text-center">Table of User accounts</h3>
         </div>
         <div class="card-body">
-          <a href="{{ route('admin.accounts.create') }}" class="btn-add">Create New User</a>
+          <a href="{{ route('admin.accounts.create') }}" class="btn-add">Create New User Account</a>
           <div>
             <table class="table" id="">
               <thead class="text-primary">

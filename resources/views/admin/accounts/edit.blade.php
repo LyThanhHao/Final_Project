@@ -7,7 +7,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title font-weight-bold text-center">Edit Account</h3>
+                        <h3 class="card-title font-weight-bold text-center">Edit User Account</h3>
                     </div>
                     <div class="card-body">
                         <form method="POST" action="{{ route('admin.accounts.update', ['user' => $user->id]) }}">

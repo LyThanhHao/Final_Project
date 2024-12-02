@@ -24,15 +24,15 @@
                         class="w-100 text-left d-flex align-items-center dropdown-toggle toggle-arrow no-chevron"
                         type="button" data-toggle="collapse" data-target="#takenDropdown" aria-expanded="false"
                         aria-controls="takenDropdown">
-                        Tests Taken<i class="bi bi-chevron-down ml-2"></i>
+                        Tests Completed<i class="bi bi-chevron-down ml-2"></i>
                     </button>
                     <div class="collapse" id="takenDropdown">
                         <ul class="list-unstyled ml-3">
-                            @foreach ($takenTests as $takenTest)
+                            @foreach ($testsCompleted as $data)
                                 <li>
                                     <a class="dropdown-item d-flex align-items-center"
-                                        href="{{ route('test.results', $takenTest->id) }}">
-                                        <i class="bi bi-pencil mr-2"></i>{{ $takenTest->test_name }}
+                                        href="{{ route('test.results', $data->id) }}">
+                                        <i class="bi bi-pencil mr-2"></i>{{ $data->test_name }}
                                     </a>
                                 </li>
                             @endforeach
@@ -87,7 +87,10 @@
                                     $icon = '';
                                     $textColor = 'black';
                                     $answerText = $question['answers'][$option] ?? '';
-                                    if ($option == $question['selected_answer'] && $option == $question['correct_answer']) {
+                                    if (($question['selected_answer'] == "Not Answered")) {
+                                        $textColor = 'black';
+                                        $icon = '';
+                                    } else if ($option == $question['selected_answer'] && $option == $question['correct_answer']) {
                                         $textColor = 'green';
                                         $icon = '<i class="bi bi-check-lg" style="color: green;"></i>';
                                     } elseif ($option == $question['selected_answer']) {
@@ -104,6 +107,9 @@
                         </ul>
                         <b>
                             <p style="color: #007bff">Correct answer: <strong>{{ $question['correct_answer'] }}</strong></p>
+                            @if ($question['selected_answer'] == "Not Answered")
+                                <p style="color: red">You did not select an answer.</p>
+                            @endif
                         </b>
                     </div>
                     <hr>

@@ -57,4 +57,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(Enroll::class);
     }
+
+    public function testAttempts()
+    {
+        return $this->hasMany(TestAttempt::class);
+    }
+
+    public function studentDeadlines()
+    {
+        return $this->hasMany(StudentDeadline::class);
+    }
 }

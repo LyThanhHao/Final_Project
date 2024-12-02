@@ -1,48 +1,41 @@
 @startuml
-|Admin|
+|User|
 start
-:Check Admin Rights;
-if (Has Rights?) then (Yes)
-    :Display Account Management Menu;
-    |System|
-    while (Choose Option?)
-        :Option: Add New Account;
-        :Enter Account Information;
-        :Validate Information;
-        if (Information Valid?) then (Yes)
-            :Add Account to Database;
-            :Display Success Message;
-        else (No)
-            :Display Error and Request Re-entry;
-        endif
-    endwhile
-    |Admin|
-else (No)
-    stop
-endif
-:Return to Account Management Menu;
-:Select Account to Edit;
+:View "Test" page;
+:Start Test by clicking the "Start" button;
+:Read Instructions;
+:Start answering questions;
+:Select answer for each question;
+:Submit test form when ready;
+
 |System|
-:Display Current Account Information;
-:Enter New Information;
-:Validate New Information;
-if (Information Valid?) then (Yes)
-    :Update Account in Database;
-    :Display Success Message;
-else (No)
-    :Display Error and Request Re-entry;
+:Create Test Attempt record;
+:Display test questions;
+:Show remaining time (start timer);
+
+if (Timer expired?) then (yes)
+  :Auto-submit test;
+  :Update test attempt status to "Completed";
+else (no)
+  :Continue answering questions;
 endif
-|Admin|
-:Select Account to Delete;
-|System|
-:Display Delete Confirmation;
-:Enter Confirmation;
-if (Confirm Deletion?) then (Yes)
-    :Delete Account from Database;
-    :Display Success Message;
-else (No)
-    :Return to Account Management Menu;
+
+:Save answers in localStorage;
+:Track time spent;
+:Display remaining time (countdown timer);
+
+if (Form is submitted manually) then (yes)
+  :Confirm submission via popup;
+  :If confirmed, submit form;
+  :Save results to TestResult table;
+  :Update TestAttempt status to "Completed";
+  :Store total correct answers and percentage;
+else (no)
+  :Wait for manual submission;
 endif
-|Admin|
+
+:Redirect to results page;
+:Display score, correct answers, total questions, duration;
+
 stop
 @enduml

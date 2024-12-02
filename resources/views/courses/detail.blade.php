@@ -492,15 +492,15 @@
                 font-size: 16px;
                 cursor: pointer;
             }
+
             .options-menu {
+                width: max-content;
                 display: none;
-                position: absolute;
                 background: white;
                 border: 1px solid #ccc;
                 z-index: 1;
-                left: 90%;
-                top: 75%;
             }
+
             .options-menu button {
                 background: none;
                 border: 1px solid #ccc;
@@ -509,26 +509,31 @@
                 width: max-content;
                 text-align: left;
             }
+
             .options-menu:hover {
                 color: white;
             }
+
             .options-menu #btn-update-comment {
                 color: blue;
                 cursor: pointer;
                 padding: 5px;
-                width: 100%;
+                width: -webkit-fill-available;
                 text-align: left;
                 font-weight: bold;
             }
+
             .options-menu #btn-delete-comment {
                 color: red;
                 cursor: pointer;
                 padding: 5px;
-                width: 100%;
+                width: -webkit-fill-available;
                 text-align: left;
                 font-weight: bold;
             }
-            .options-menu #btn-update-comment:hover, #btn-delete-comment:hover {
+
+            .options-menu #btn-update-comment:hover,
+            #btn-delete-comment:hover {
                 background-color: #515151;
                 color: white;
             }
@@ -549,7 +554,8 @@
                 margin-top: 10px;
             }
 
-            .btn-cancel, .btn-save-comment {
+            .btn-cancel,
+            .btn-save-comment {
                 background-color: #007bff;
                 color: white;
                 border: none;
@@ -563,7 +569,8 @@
                 background-color: #dc3545;
             }
 
-            .btn-cancel:hover, .btn-save-comment:hover {
+            .btn-cancel:hover,
+            .btn-save-comment:hover {
                 opacity: 0.8;
             }
         </style>
@@ -639,7 +646,7 @@
                                         alt="{{ $course->user->fullname }}">
                                 </div>
                                 <p class="name-client">{{ $course->user->fullname }}
-                                    <span style="font-style: italic; margin-bottom: 15px;">Instructor</span>
+                                    <span style="font-style: italic; margin-bottom: 15px;">Teacher</span>
                                     <span style="color: greenyellow">{{ $courseCount }} Courses</span>
                                 </p>
                                 <hr style="display: block; width: 100%; height: 2px; margin: 20px 0; background: #7cdacc;">
@@ -657,10 +664,10 @@
                                 <form id="comment-form" method="POST" action="{{ route('comments.store') }}">
                                     @csrf
                                     <div class="d-flex justify-content-between align-items-center">
-                                        <img src="{{ asset('uploads/avatar/avatar_default.jpg') }}" alt=""
+                                        <img src="{{ asset('uploads/avatar/' . ($user->avatar ?? 'avatar_default.jpg')) }}" alt="{{ $user->fullname }}"
                                             class="rounded-circle" width="30" height="30">
                                         <div class="group flex-grow-1 mr-2">
-                                            <input type="hidden" name="course_id" value="{{ $course->id }}">
+                                            <input type="hidden" name="course_id" value="{{ $course->id }}" required>
                                             <input required type="text" name="content" class="input" id="content">
                                             <span class="highlight"></span>
                                             <span class="bar"></span>
@@ -677,34 +684,50 @@
                                     <div class="comment-box px-3" data-comment-id="{{ $comment->id }}">
                                         <div class="d-flex justify-content-between align-items-center">
                                             <div class="user-info d-flex align-items-center">
-                                                <img src="{{ asset('uploads/avatar/' . ($comment->user->avatar ?? 'avatar_default.jpg')) }}" alt="{{ $comment->user->fullname }}" class="rounded-circle" width="30" height="30">
+                                                <img src="{{ asset('uploads/avatar/' . ($comment->user->avatar ?? 'avatar_default.jpg')) }}"
+                                                    alt="{{ $comment->user->fullname }}" class="rounded-circle"
+                                                    width="30" height="30">
                                                 <div>
                                                     <div class="user-name">{{ $comment->user->fullname }}</div>
-                                                    <div class="comment-content" style="font-size: 0.9em;">{{ $comment->content }}</div>
+                                                    <div class="comment-content" style="font-size: 0.9em;">
+                                                        {{ $comment->content }}</div>
                                                 </div>
                                             </div>
-                                            <div class="options">
+                                            <div class="options" style="position: relative;">
                                                 <button class="btn-options" onclick="toggleOptions(this)">...</button>
                                                 <div class="options-menu" style="display: none;">
-                                                    <button id="btn-update-comment" onclick="updateComment({{ $comment->id }})"><i style="color: blue; margin: 0 5px; font-weight: bold;" class="bi bi-pen"></i>Update</button>
-                                                    <form method="POST" action="{{ route('comments.destroy', $comment->id) }}" style="display: inline;">
+                                                    <button id="btn-update-comment"
+                                                        onclick="updateComment({{ $comment->id }})"><i
+                                                            style="color: blue; margin: 0 5px; font-weight: bold;"
+                                                            class="bi bi-pen"></i>Update</button>
+                                                            <br>
+                                                    <form method="POST"
+                                                        action="{{ route('comments.destroy', $comment->id) }}"
+                                                        style="display: inline;">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit" id="btn-delete-comment" onclick="confirmDelete(event, this)"><i style="color: red; margin: 0 5px;" class="bi bi-trash"></i>Delete</button>
+                                                        <button type="submit" id="btn-delete-comment"
+                                                            onclick="confirmDelete(event, this)">
+                                                            <i style="color: red; margin: 0 5px;"
+                                                                class="bi bi-trash"></i>Delete
+                                                        </button>
                                                     </form>
                                                 </div>
                                             </div>
                                         </div>
-                                        <form method="POST" action="{{ route('comments.update', $comment->id) }}" style="display: none; width: 100%;" class="edit-form">
+                                        <form method="POST" action="{{ route('comments.update', $comment->id) }}"
+                                            style="display: none; width: 100%;" class="edit-form">
                                             @csrf
                                             @method('PUT')
                                             <div class="group flex-grow-1 mr-2">
-                                                <input type="text" name="content" class="input edit-comment-input" value="{{ $comment->content }}">
+                                                <input type="text" name="content" class="input edit-comment-input"
+                                                    value="{{ $comment->content }}">
                                                 <span class="highlight"></span>
                                                 <span class="bar"></span>
                                             </div>
                                             <div class="button-group">
-                                                <button type="button" class="btn-cancel" onclick="cancelEdit(this)">Cancel</button>
+                                                <button type="button" class="btn-cancel"
+                                                    onclick="cancelEdit(this)">Cancel</button>
                                                 <button type="submit" class="btn-save-comment">Save</button>
                                             </div>
                                         </form>
@@ -795,156 +818,49 @@
             </div>
         </div>
 
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script>
-            $(document).ready(function() {
-                $('#comment-form').on('submit', function(e) {
-                    e.preventDefault();
-
-                    $.ajax({
-                        url: "{{ route('comments.store') }}",
-                        method: 'POST',
-                        data: $(this).serialize(),
-                        success: function(response) {
-                            // Thêm bình luận mới vào danh sách bình luận
-                            $('#comments-list').append(`
-                                <div class="comment-box px-3">
-                                    <div class="user-info d-flex align-items-center mb-2">
-                                        <img src="{{ asset('uploads/avatar/') }}/${response.comment.user.avatar ?? 'avatar_default.jpg'}" alt="${response.comment.user.fullname}" class="rounded-circle" width="30" height="30">
-                                        <div>
-                                            <div class="user-name">${response.comment.user.fullname}</div>
-                                            <div class="comment-content" style="font-size: 0.9em;">${response.comment.content}</div>
-                                        </div>
-                                    </div>
-                                    <hr>
-                                </div>
-                            `);
-                            // Xóa nội dung trong textarea
-                            $('#content').val('');
-                        },
-                        error: function(jqXHR, textStatus, errorThrown) {
-                            if (jqXHR.status === 401) {
-                                // Nếu chưa đăng nhập, chuyển hướng đến trang login bằng tên route
-                                window.location.href = '{{ route('homepage.login') }}';
-                            } else {
-                                console.log('Something went wrong!', jqXHR.responseText);
-                            }
-                        }
-                    });
-                });
-
-                $('#save-course').on('click', function() {
-                    var course = $(this).data('course-id');
-                    var isSaved = $(this).find('.bi').hasClass(
-                        'bi-bookmark-fill');
-                    if (isSaved) {
-                        $.ajax({
-                            url: `/courses/${course}/favorite`,
-                            method: 'DELETE',
-                            data: {
-                                _token: '{{ csrf_token() }}'
-                            },
-                            success: function(response) {
-                                $.toast({
-                                    heading: 'Notification',
-                                    text: 'Course removed from favorites',
-                                    showHideTransition: 'slide',
-                                    position: 'top-center',
-                                    icon: 'success',
-                                    hideAfter: 5000
-                                });
-                                $('#save-course').html(`
-                        <div class="sign">
-                            <i class="bi bi-bookmark"></i>
-                        </div>
-                        <div class="text" title="Course has been saved to your favorite list">Save</div>
-                    `);
-                            },
-                            error: function(jqXHR, textStatus, errorThrown) {
-                                if (jqXHR.status === 401) {
-                                    window.location.href = '{{ route('homepage.login') }}';
-                                } else {
-                                    console.log('Something went wrong!', jqXHR.responseText);
-                                }
-                            }
-                        });
-                    } else {
-                        $.ajax({
-                            url: `/courses/${course}/favorite`,
-                            method: 'POST',
-                            data: {
-                                _token: '{{ csrf_token() }}'
-                            },
-                            success: function(response) {
-                                $.toast({
-                                    heading: 'Notification',
-                                    text: 'Course added to favorites',
-                                    showHideTransition: 'slide',
-                                    position: 'top-center',
-                                    icon: 'success',
-                                    hideAfter: 5000
-                                });
-                                $('#save-course').html(`
-                        <div class="sign">
-                            <i class="bi bi-bookmark-fill"></i>
-                        </div>
-                        <div class="text" title="Save this course to your favorite list">Saved</div>
-                    `);
-                            },
-                            error: function(jqXHR, textStatus, errorThrown) {
-                                if (jqXHR.status === 401) {
-                                    window.location.href = '{{ route('homepage.login') }}';
-                                } else {
-                                    console.log('Something went wrong!', jqXHR.responseText);
-                                }
-                            }
-                        });
+            document.addEventListener('DOMContentLoaded', function() {
+                // Cuộn đến bình luận mới
+                @if(session('new_comment_id'))
+                    const newCommentId = {{ session('new_comment_id') }};
+                    const newCommentElement = document.querySelector(`.comment-box[data-comment-id='${newCommentId}']`);
+                    if (newCommentElement) {
+                        newCommentElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
                     }
-                });
-                $('form[action="{{ route('courses.enroll', $course->id) }}"]').on('submit', function(e) {
-                    e.preventDefault();
-                    var form = $(this);
+                @endif
 
-                    $.ajax({
-                        url: form.attr('action'),
-                        method: 'POST',
-                        data: form.serialize(),
-                        success: function(response) {
-                            Swal.fire({
-                                title: "Good job!",
-                                text: "You clicked the button!",
-                                icon: "success",
-                                showCancelButton: true,
-                                confirmButtonText: 'Start Learning'
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    window.location.href =
-                                        "{{ route('courses.view', $course->id) }}";
-                                }
-                            });
-                            form.replaceWith(
-                                `<div><a href="{{ route('courses.view', $course->id) }}" class="btn view-btn mr-4 px-4">Go To Course</a></div>`
-                                );
-                        },
-                        error: function(jqXHR, textStatus, errorThrown) {
-                            if (jqXHR.status === 401) {
-                                // Chuyển hướng người dùng đến trang đăng nhập nếu chưa đăng nhập
-                                window.location.href = '{{ route('homepage.login') }}';
-                            } else {
-                                Swal.fire({
-                                    title: "Error!",
-                                    text: "There was an issue enrolling in the course.",
-                                    icon: "error"
-                                });
-                            }
-                        }
-                    });
-                });
+                // Cuộn đến bình luận đã cập nhật
+                @if(session('updated_comment_id'))
+                    const updatedCommentId = {{ session('updated_comment_id') }};
+                    const updatedCommentElement = document.querySelector(`.comment-box[data-comment-id='${updatedCommentId}']`);
+                    if (updatedCommentElement) {
+                        updatedCommentElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                @endif
+
+                // Cuộn đến vị trí của bình luận đã xóa
+                @if(session('deleted_comment_id'))
+                    const deletedCommentId = {{ session('deleted_comment_id') }};
+                    const deletedCommentElement = document.querySelector(`.comment-box[data-comment-id='${deletedCommentId}']`);
+                    if (deletedCommentElement) {
+                        deletedCommentElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                @endif
             });
 
             function toggleOptions(button) {
                 const menu = button.nextElementSibling;
-                menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+                const isVisible = menu.style.display === 'block';
+
+                // Ẩn tất cả các menu khác
+                document.querySelectorAll('.options-menu').forEach(m => m.style.display = 'none');
+
+                if (!isVisible) {
+                    // Hiển thị menu tại vị trí của nút ba chấm
+                    const rect = button.getBoundingClientRect();
+                    menu.style.display = 'block';
+                    menu.style.position = 'absolute';
+                }
             }
 
             function updateComment(commentId) {
@@ -985,5 +901,24 @@
                     }
                 });
             });
+
+            function confirmDelete(event, button) {
+                event.preventDefault();
+                const form = button.closest('form');
+
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "You won't be able to revert this!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes, delete it!"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            }
         </script>
     @endsection

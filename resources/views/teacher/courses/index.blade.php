@@ -16,7 +16,7 @@
                             <th style="width: 130px;">Description</th>
                             <th>File</th>
                             <th style="width: 120px;">Category</th>
-                            <th>Paticipants</th>
+                            <th>Participants</th>
                             <th>Status</th>
                             <th>Actions</th>
                         </tr>
@@ -37,17 +37,23 @@
                                 </td>
                                 <td style="">{{ $course->category->cat_name }}</td>
                                 <td style="text-align: center;">{{ $course->enrolls_count }}</td>
-                                <td style="color: {{ $course->status == 0 ? 'gray !important' : 'green !important' }}; font-weight: bold;">
+                                <td
+                                    style="color: {{ $course->status == 0 ? 'gray !important' : 'green !important' }}; font-weight: bold;">
                                     {{ $course->status == 0 ? 'Hidden' : 'Publish' }}</td>
                                 <td style="text-align: center; position: relative;">
-                                    <button class="btn btn-toggle" onclick="toggleActions(this)"><i class="bi bi-list"></i></button>
-                                    <div class="action-buttons" style="display: none; position: absolute; top: 50%; left: 50%; border: 1px solid #ccc; transform: translateX(-50%); z-index: 1; padding: 5px; width: max-content; background-color: lightgray;">
+                                    <button class="btn btn-toggle" onclick="toggleActions(this)"><i
+                                            class="bi bi-list"></i></button>
+                                    <div class="action-buttons"
+                                        style="display: none; position: absolute; top: 50%; left: 50%; border: 1px solid #ccc; transform: translateX(-50%); z-index: 1; padding: 5px; width: max-content; background-color: lightgray;">
                                         <a href="{{ route('courses.detail', $course->id) }}" class="btn btn-view">View</a>
-                                        <a href="{{ route('teacher.courses.edit', $course->id) }}" class="btn btn-edit"><i class="bi bi-pencil-square"></i></a>
-                                        <form action="{{ route('teacher.courses.destroy', $course->id) }}" method="POST" style="display:inline-block; width: 100%;">
+                                        <a href="{{ route('teacher.courses.edit', $course->id) }}" class="btn btn-edit"><i
+                                                class="bi bi-pencil-square"></i></a>
+                                        <form action="{{ route('teacher.courses.destroy', $course->id) }}" method="POST"
+                                            style="display:inline-block; width: 100%;">
                                             @csrf
                                             @method('DELETE')
-                                            <button class="btn btn-delete" type="submit" onclick="confirmDelete(event)"><i class="bi bi-trash"></i></button>
+                                            <button class="btn btn-delete" type="submit" onclick="confirmDelete(event, this)"><i
+                                                    class="bi bi-trash"></i></button>
                                         </form>
                                     </div>
                                 </td>
@@ -181,4 +187,25 @@
             padding: 5px;
         }
     </style>
+
+    <script>
+        function confirmDelete(event, button) {
+            event.preventDefault(); // Ngăn hành động submit form mặc định
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Gọi hàm submit của form chứa nút "delete"
+                    button.closest('form').submit();
+                }
+            });
+        }
+    </script>
 @endsection

@@ -13,7 +13,7 @@ class CommentController extends Controller
     {
         // Kiểm tra xem người dùng đã đăng nhập chưa
         if (!Auth::check()) {
-            return response()->json(['error' => 'Unauthorized'], 401); // Trả về mã 401 Unauthorized
+            return redirect()->route('homepage.login')->with('error', 'Unauthorized');
         }
         
         // Validate dữ liệu đầu vào
@@ -35,8 +35,10 @@ class CommentController extends Controller
             'content' => $request->input('content'),
         ]);
 
-        // Trả về trang hiện tại
-        return response()->json(['comment' => $comment->load('user')]);
+        // Chuyển hướng về trang chi tiết khóa học với thông báo thành công
+        return redirect()->route('courses.detail', $request->course_id)
+                         ->with('success', 'Comment added successfully.')
+                         ->with('new_comment_id', $comment->id);
     }
 
     public function update(Request $request, $id)
@@ -50,7 +52,7 @@ class CommentController extends Controller
             'content' => $request->input('content'),
         ]);
 
-        return redirect()->back()->with('success', 'Comment updated successfully.');
+        return redirect()->back()->with('success', 'Comment updated successfully.')->with('updated_comment_id', $comment->id);
     }
 
     public function destroy($id)
@@ -58,6 +60,6 @@ class CommentController extends Controller
         $comment = Comment::findOrFail($id);
         $comment->delete();
 
-        return redirect()->back()->with('success', 'Comment deleted successfully.');
+        return redirect()->back()->with('success', 'Comment deleted successfully.')->with('deleted_comment_id', $id);
     }
 }

@@ -6,7 +6,7 @@
             <div class="text-center mb-5">
                 <h1 class="text-center">Your favorite list</h1>
             </div>
-            @if ($courses->isEmpty())
+            @if (!$courses)
                 <div class="mx-auto">
                     <hr class="mb-5" style="width: 400px;">
                     <p style="text-align: center; font-size: 20px; font-weight: bold; color: red;">Nothing in your favorite list!</p>

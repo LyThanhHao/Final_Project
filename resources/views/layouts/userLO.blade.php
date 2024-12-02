@@ -105,8 +105,7 @@
                                         <div class="submenu-item">
                                             <a href="{{ route('teacher') }}" class="submenu-link font-weight-bold"
                                                 id="role">
-                                                <i class="bi bi-book"></i>
-                                                Manage courses
+                                                Teacher Dashboard
                                             </a>
                                         </div>
                                     @endif
@@ -224,7 +223,7 @@
                                 </li>
                             @elseif (Auth::check() && Auth::user()->role == 'Teacher')
                                 <li class="nav-item">
-                                    <a href="{{ route('teacher') }}" class="nav-link">Manage courses</a>
+                                    <a href="{{ route('teacher') }}" class="nav-link">Teacher Dashboard</a>
                                 </li>
                             @endif
                             <li class="nav-item d-lg-none">
@@ -253,7 +252,7 @@
                                                             <div class="submenu-item">
                                                                 <a href="{{ route('teacher') }}"
                                                                     class="submenu-link font-weight-bold"
-                                                                    id="role">Manage courses</a>
+                                                                    id="role">Teacher Dashboard</a>
                                                             </div>
                                                         @endif
                                                         <div class="submenu-item">

@@ -22,7 +22,7 @@ class TestController extends Controller
             ->where('test_id', $test->id)
             ->first();
 
-        $takenTests = TestAttempt::where('user_id', auth()->id())
+        $testsCompleted = TestAttempt::where('user_id', auth()->id())
             ->where('status', 'Completed')
             ->with('test')
             ->get();
@@ -53,7 +53,7 @@ class TestController extends Controller
             ->where('test_id', $test->id)
             ->first();
 
-        return view('homepage.tests.index', compact('instructor', 'course', 'test', 'attempt', 'correctCount', 'totalQuestions', 'duration', 'percentage', 'results', 'takenTests', 'studentDeadline'));
+        return view('homepage.tests.index', compact('instructor', 'course', 'test', 'attempt', 'correctCount', 'totalQuestions', 'duration', 'percentage', 'results', 'testsCompleted', 'studentDeadline'));
     }
 
     public function takingTest(Test $test)
@@ -159,11 +159,11 @@ class TestController extends Controller
             ];
         });
     
-        $takenTests = Test::whereHas('testAttempts', function ($query) {
+        $testsCompleted = Test::whereHas('testAttempts', function ($query) {
             $query->where('user_id', auth()->id())
                   ->where('status', 'Completed');
         })->get();
     
-        return view('homepage.tests.results', compact('instructor', 'course', 'test', 'questions', 'correctCount', 'totalQuestions', 'percentage', 'duration', 'takenTests'));
+        return view('homepage.tests.results', compact('instructor', 'course', 'test', 'questions', 'correctCount', 'totalQuestions', 'percentage', 'duration', 'testsCompleted'));
     }
 }

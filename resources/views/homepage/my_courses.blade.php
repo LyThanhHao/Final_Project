@@ -26,7 +26,8 @@
                                     <span class="card-text" style="font-size: 14px; color: #6c757d;">Updated on:
                                         {{ $course->updated_at->format('d/m/Y') }}</span>
                                     <br>
-                                    <strong>Test completed: </strong><span>0/5</span>
+                                    <strong>Test completed: </strong>
+                                    <span>{{ $course->tests->sum('test_attempts_count') }}/{{ $course->tests->count() }}</span>
                                 </div>
                             </div>
                         </div>

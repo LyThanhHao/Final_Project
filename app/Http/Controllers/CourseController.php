@@ -88,7 +88,7 @@ class CourseController extends Controller
         $relatedCourses = Course::where('category_id', $course->category_id)->where('id', '!=', $course->id)->limit(3)->get();
         $comments = $course->comments()->with('user')->get();
 
-        return view('courses.detail', compact('courseCount', 'relatedCourses', 'course', 'comments', 'favorite', 'enrolled', 'enrollCount'));
+        return view('courses.detail', compact('courseCount', 'relatedCourses', 'course', 'comments', 'favorite', 'enrolled', 'enrollCount', 'user'));
     }
 
     public function edit(Course $course)
@@ -207,7 +207,7 @@ class CourseController extends Controller
             }
         }
 
-        return response()->json(['success' => true]);
+        return redirect()->back()->with('success', 'You have successfully enrolled in the course');
     }
 
     public function unenroll($course_id)
@@ -232,11 +232,11 @@ class CourseController extends Controller
         $instructor = $course->user;
 
         // Lấy danh sách các bài kiểm tra đã thực hiện
-        $takenTests = Test::whereHas('testAttempts', function ($query) use ($user) {
+        $testsCompleted = Test::whereHas('testAttempts', function ($query) use ($user) {
             $query->where('user_id', $user->id)
                   ->where('status', 'Completed');
         })->where('course_id', $course->id)->get();
 
-        return view('courses.view', compact('course', 'instructor', 'takenTests'));
+        return view('courses.view', compact('course', 'instructor', 'testsCompleted'));
     }
 }

@@ -22,16 +22,6 @@ class HomeController extends Controller
             ->sortByDesc(function ($category) {
                 return $category->courses->count();
             });
-        // $courses = Course::orderBy('id', 'DESC')
-        //     ->where('status', 1)
-        //     ->whereHas('category', function ($query) {
-        //         $query->where('status', 1);
-        //     })
-        //     ->whereHas('user', function ($query) {
-        //         $query->where('role', 'Teacher');
-        //     })
-        //     ->limit(4)
-        //     ->get();
         $courses = Course::orderBy('id', 'DESC')
             ->where('status', 1)
             ->whereHas('category', function ($query) {
@@ -164,7 +154,12 @@ class HomeController extends Controller
         $user = Auth::user();
         $courses = Course::whereHas('enrolls', function ($query) use ($user) {
             $query->where('user_id', $user->id);
-        })->get();
+        })->with(['tests' => function ($query) use ($user) {
+            $query->withCount(['testAttempts' => function ($query) use ($user) {
+                $query->where('user_id', $user->id)->where('status', 'Completed');
+            }]);
+        }])->get();
+
         return view('homepage.my_courses', compact('courses'));
     }
 }

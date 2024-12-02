@@ -25,15 +25,15 @@
                         class="w-100 text-left d-flex align-items-center dropdown-toggle toggle-arrow no-chevron"
                         type="button" data-toggle="collapse" data-target="#takenDropdown" aria-expanded="false"
                         aria-controls="takenDropdown">
-                        Tests Taken<i class="bi bi-chevron-down ml-2"></i>
+                        Tests Completed<i class="bi bi-chevron-down ml-2"></i>
                     </button>
                     <div class="collapse" id="takenDropdown">
                         <ul class="list-unstyled ml-3">
-                            @foreach ($takenTests as $takenTest)
+                            @foreach ($testsCompleted as $data)
                                 <li>
                                     <a class="dropdown-item d-flex align-items-center"
-                                        href="{{ route('test.results', $takenTest->test->id) }}">
-                                        <i class="bi bi-pencil mr-2"></i>{{ $takenTest->test->test_name }}
+                                        href="{{ route('test.results', $data->test->id) }}">
+                                        <i class="bi bi-pencil mr-2"></i>{{ $data->test->test_name }}
                                     </a>
                                 </li>
                             @endforeach
@@ -100,7 +100,7 @@
                     </span>
                     <br>
                     <span style="font-size: 14px; color: #6c757d;">
-                        Test Time: <b>{{ $test->test_time }} minutes</b>
+                        Duration: <b>{{ $test->test_time }} minutes</b>
                     </span>
                 </div>
             </div>

@@ -205,7 +205,7 @@
                                     src="{{ asset('uploads/course_image/' . $course->image) }}"
                                     alt="{{ $course->course_name }}">
                                 @if (!Auth::check() || (Auth::check() && Auth::user()->role != 'Teacher'))
-                                    @if ($favorites && $favorites->contains('coursze_id', $course->id))
+                                    @if ($favorites && $favorites->contains('course_id', $course->id))
                                         <div class="bookmark-icon position-absolute">
                                             <i class="bi bi-bookmark-dash-fill" data-course-id="{{ $course->id }}"
                                                 title="Remove from favorite list"></i>

@@ -32,7 +32,6 @@
                                 <td style="text-align: center; position: relative;">
                                     <button class="btn btn-toggle" onclick="toggleActions(this)"><i class="bi bi-list"></i></button>
                                     <div class="action-buttons" style="display: none; position: absolute; top: 75%; left: 50%; transform: translateX(-50%); width: 75%; z-index: 1; background: white; border: 1px solid #ccc; border-radius: 5px; padding: 5px;">
-                                        <a href="{{ route('teacher.tests.detail', $test->id) }}" class="btn btn-detail">View detail</a>
                                         <a href="{{ route('teacher.tests.edit', $test->id) }}" class="btn btn-edit"><i class="bi bi-pencil-square"></i></a>
                                         <form action="{{ route('teacher.tests.destroy', $test->id) }}" method="POST" style="display:inline-block; width: 100%;" class="delete-form">
                                             @csrf

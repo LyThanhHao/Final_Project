@@ -163,6 +163,7 @@ class TeacherController extends Controller
         $test = Test::create([
             'course_id' => $request->course_id,
             'test_name' => $request->test_name,
+            'user_id' => Auth::user()->id,
             'deadline_after' => $request->deadline_after,
             'test_time' => $request->test_time,
         ]);
@@ -327,13 +328,13 @@ class TeacherController extends Controller
             'test_attempt_id' => 'required|exists:test_attempts,id',
             'content' => 'required|string|max:255',
         ]);
- 
-        Feedback::create([
+
+        $feedback = Feedback::create([
             'test_attempt_id' => $request->test_attempt_id,
             'content' => $request->content,
         ]);
- 
-        return redirect()->back()->with('success', 'Feedback added successfully!');
+
+        return redirect()->back()->with('success', 'Feedback added successfully!')->with('new_feedback_id', $feedback->id);
     }
 
     public function updateFeedback(Request $request, $id)
@@ -347,7 +348,7 @@ class TeacherController extends Controller
             $feedback->content = $request->input('content');
             $feedback->save();
 
-            return redirect()->back()->with('success', 'Feedback updated successfully');
+            return redirect()->back()->with('success', 'Feedback updated successfully')->with('updated_feedback_id', $feedback->id);
         }
 
         return redirect()->back()->with('fail', 'Feedback not found');
@@ -358,7 +359,7 @@ class TeacherController extends Controller
         $feedback = Feedback::find($id);
         if ($feedback) {
             $feedback->delete();
-            return redirect()->back()->with('success', 'Feedback deleted successfully');
+            return redirect()->back()->with('success', 'Feedback deleted successfully')->with('deleted_feedback_id', $id);
         }
         return redirect()->back()->with('fail', 'Feedback not found');
     }

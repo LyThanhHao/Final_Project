@@ -49,7 +49,7 @@
                         @enderror
                     </div>
                     <div class="form-group">
-                        <label for="test_time">Test Time (minutes)</label>
+                        <label for="test_time">Duration (minutes)</label>
                         <select class="form-control" id="test_time" name="test_time" required>
                             <option value="10" {{ old('test_time', $test->test_time) == 10 ? 'selected' : '' }}>10 minutes</option>
                             <option value="20" {{ old('test_time', $test->test_time) == 20 ? 'selected' : '' }}>20 minutes</option>

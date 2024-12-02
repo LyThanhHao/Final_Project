@@ -1,14 +1,14 @@
 <?php
 
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\CommentController;
-use App\Http\Controllers\CourseController;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\UserController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\CourseController;
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\TeacherController;
+use App\Http\Controllers\CategoryController;
 
 //home routes
 Route::get('/', [HomeController::class, 'index'])->name('homepage');
@@ -29,7 +29,6 @@ Route::get('/logout', [HomeController::class, 'logout'])->name('homepage.logout'
 
 //courses routes
 Route::get('/course/{course}/detail', [CourseController::class, 'course_detail'])->name('courses.detail');
-
 
 Route::group(['middleware' => ['auth']], function () {
     Route::post('/courses/detail/comment', [CommentController::class, 'store'])->name('comments.store');
@@ -100,7 +99,6 @@ Route::group(['prefix' => 'teacher', 'middleware' => ['auth', 'teacher']], funct
     Route::get('/tests/{test}/edit', [TeacherController::class, 'edit_test'])->name('teacher.tests.edit');
     Route::put('/tests/{test}', [TeacherController::class, 'update_test'])->name('teacher.tests.update');
     Route::delete('/tests/{test}', [TeacherController::class, 'destroy_test'])->name('teacher.tests.destroy');
-    Route::get('/tests/{test}/detail', [TeacherController::class, 'test_detail'])->name('teacher.tests.detail');
     //test results
     Route::get('/tests_results', [TeacherController::class, 'test_results'])->name('teacher.tests.results');
     Route::get('/tests_results/{test}/detail', [TeacherController::class, 'view_test_detail'])->name('teacher.tests.result_detail');
