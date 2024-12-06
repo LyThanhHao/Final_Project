@@ -50,6 +50,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/tests/{test}/taking', [TestController::class, 'takingTest'])->name('taking_test');
     Route::post('/tests/{test}/submit', [TestController::class, 'submitTest'])->name('submit_test');
     Route::get('/tests/{test}/results', [TestController::class, 'showResults'])->name('test.results');
+    Route::get('/teacher/{teacher_name}', [HomeController::class, 'teacher_profile'])->name('teacher_profile');
 });
 
 //categories routes

@@ -85,7 +85,13 @@ class CourseController extends Controller
         $instructor = $course->user;
         $enrollCount = $course->enrolls()->count();
         $courseCount = $instructor->courses()->count();
-        $relatedCourses = Course::where('category_id', $course->category_id)->where('id', '!=', $course->id)->limit(3)->get();
+        $relatedCourses = Course::where('category_id', $course->category_id)
+            ->where('id', '!=', $course->id)
+            ->with(['favorites' => function($query) use ($user) {
+                $query->where('user_id', $user ? $user->id : 0);
+            }])
+            ->limit(3)
+            ->get();
         $comments = $course->comments()->with('user')->get();
 
         return view('courses.detail', compact('courseCount', 'relatedCourses', 'course', 'comments', 'favorite', 'enrolled', 'enrollCount', 'user'));

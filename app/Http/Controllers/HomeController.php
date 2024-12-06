@@ -162,4 +162,12 @@ class HomeController extends Controller
 
         return view('homepage.my_courses', compact('courses'));
     }
+
+    public function teacher_profile($teacher_name)
+    {
+        $teacher = User::where('fullname', $teacher_name)->first();
+        $courses = Course::where('user_id', $teacher->id)->where('status', 1)->get();
+        $favorites = Favorite::where('user_id', $teacher->id)->get();
+        return view('homepage.teacher_profile', compact('teacher', 'courses', 'favorites'));
+    }
 }

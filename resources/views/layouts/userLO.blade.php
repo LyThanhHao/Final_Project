@@ -332,8 +332,8 @@
         style="border-color: rgba(256, 256, 256, .1) !important;">
         <div class="row">
             <div class="col-lg-6 text-center text-md-left mb-3 mb-md-0">
-                <p class="m-0 text-white">&copy; <a href="#">Domain Name</a>. All Rights Reserved. Designed by
-                    <a href="https://htmlcodex.com">HTML Codex</a>
+                <p class="m-0 text-white">&copy; <a href="#">E-Courses</a>. All Rights Reserved. Designed by
+                    <a href="https://www.facebook.com/l.hazo3/">Ly Thanh Hao</a>
                 </p>
             </div>
             <div class="col-lg-6 text-center text-md-right">

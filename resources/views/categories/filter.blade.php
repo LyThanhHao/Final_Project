@@ -10,16 +10,14 @@
             @if ($courses->isEmpty())
                 <div class="mx-auto">
                     <hr class="mb-5" style="width: 400px;">
-                    <p style="text-align: center; font-size: 20px; font-weight: bold; color: red;">No courses found in this
-                        category!</p>
+                    <p style="text-align: center; font-size: 20px; font-weight: bold; color: red;">No courses found in this category!</p>
                 </div>
             @else
                 <div class="row">
                     @foreach ($courses as $course)
                         @if ($course->status && $course->category->status)
                             <div id="course" class="col-lg-3 col-md-6 mb-4">
-                                <div class="card h-100 position-relative"
-                                    style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); transition: transform 0.3s, box-shadow 0.3s;">
+                                <div class="card h-100 position-relative" style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); transition: transform 0.3s, box-shadow 0.3s;">
                                     <img style="height: 45%;" class="img-fluid card-img-top"
                                         src="{{ asset('uploads/course_image/' . $course->image) }}"
                                         alt="{{ $course->course_name }}">
@@ -39,8 +37,8 @@
                                     <div class="card-body">
                                         <div class="d-flex align-items-center">
                                             <img src="{{ asset('uploads/avatar/' . ($course->user->avatar ?? 'avatar_default.jpg')) }}"
-                                                alt="" style="border-radius: 10px; width: 25px; height: 25px; margin-right: 6px;">
-                                            <span style="font-size: 14px;" class="text-info">{{ $course->user->fullname }}</span>
+                                                alt="" style="border-radius: 50%; width: 30px; height: 30px; margin-right: 6px;">
+                                            <a href="{{ route('teacher_profile', $course->user->fullname) }}" class="teacher_profile"><span style="font-size: 14px;" class="text-info">{{ $course->user->fullname }}</span></a>
                                         </div>
                                         <p class="card-title text-truncate"
                                             style="max-width: 100%; font-weight: bold; color:#5e5e5e; margin: 10px 0; text-align: center"
@@ -92,8 +90,7 @@
                         @else
                             <div class="mx-auto">
                                 <hr class="mb-5" style="width: 400px;">
-                                <p style="text-align: center; font-size: 20px; font-weight: bold; color: red;">No courses
-                                    found in this category!</p>
+                                <p style="text-align: center; font-size: 20px; font-weight: bold; color: red;">No courses found in this category!</p>
                             </div>
                         @endif
                     @endforeach
@@ -187,6 +184,12 @@
             transform: scale(1.2);
             color: #ffffff;
             text-shadow: 0 0 5px #ffffff, 0 0 10px #008cff, 0 0 20px #008cff;
+        }
+
+        .teacher_profile:hover {
+            text-decoration: underline;
+            transition: 0.5s;
+            text-decoration-color: #17a2b8;
         }
     </style>
 

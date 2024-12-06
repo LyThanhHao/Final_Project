@@ -87,6 +87,11 @@
             color: #ffffff;
             text-shadow: 0 0 5px #ffffff, 0 0 10px #008cff, 0 0 20px #008cff;
         }
+
+        .teacher_profile:hover {
+            text-decoration: underline;
+            text-decoration-color: #17a2b8;
+        }
     </style>
     <!-- Carousel Start -->
     <div class="container-fluid p-0 pb-5 mb-5">
@@ -220,8 +225,8 @@
                                 <div class="card-body">
                                     <div class="d-flex align-items-center">
                                         <img src="{{ asset('uploads/avatar/' . ($course->user->avatar ?? 'avatar_default.jpg')) }}"
-                                            alt="" style="border-radius: 10px; width: 25px; height: 25px; margin-right: 6px;">
-                                        <span style="font-size: 14px;" class="text-info">{{ $course->user->fullname }}</span>
+                                            alt="" style="border-radius: 50%; width: 30px; height: 30px; margin-right: 6px;">
+                                        <a href="{{ route('teacher_profile', $course->user->fullname) }}" class="teacher_profile"><span style="font-size: 14px;" class="text-info">{{ $course->user->fullname }}</span></a>
                                     </div>
                                     <p class="card-title text-truncate"
                                         style="max-width: 100%; font-weight: bold; color:#5e5e5e; margin: 10px 0; text-align: center"
@@ -276,64 +281,6 @@
         </div>
     </div>
     <!-- New Courses End -->
-
-    <!-- Registration Start -->
-    <div class="container-fluid bg-registration py-4" style="margin: 90px 0;">
-        <div class="container py-4">
-            <div class="row align-items-center">
-                <div class="col-lg-7 mb-5 mb-lg-0">
-                    <div class="mb-4">
-                        <h5 class="text-primary text-uppercase mb-3" style="letter-spacing: 5px;">Need Any Courses</h5>
-                        <h1 class="text-white">30% Off For New Students</h1>
-                    </div>
-                    <p class="text-white">Invidunt lorem justo sanctus clita. Erat lorem labore ea, justo dolor lorem ipsum
-                        ut sed eos,
-                        ipsum et dolor kasd sit ea justo. Erat justo sed sed diam. Ea et erat ut sed diam sea ipsum est
-                        dolor</p>
-                    <ul class="list-inline text-white m-0">
-                        <li class="py-2"><i class="fa fa-check text-primary mr-3"></i>Labore eos amet dolor amet diam
-                        </li>
-                        <li class="py-2"><i class="fa fa-check text-primary mr-3"></i>Etsea et sit dolor amet ipsum</li>
-                        <li class="py-2"><i class="fa fa-check text-primary mr-3"></i>Diam dolor diam elitripsum vero.
-                        </li>
-                    </ul>
-                </div>
-                <div class="col-lg-5">
-                    <div class="card border-0">
-                        <div class="card-header bg-light text-center p-4">
-                            <h1 class="m-0">Sign Up Now</h1>
-                        </div>
-                        <div class="card-body rounded-bottom bg-primary p-5">
-                            <form>
-                                <div class="form-group">
-                                    <input type="text" class="form-control border-0 p-4" placeholder="Your name"
-                                        required="required" />
-                                </div>
-                                <div class="form-group">
-                                    <input type="email" class="form-control border-0 p-4" placeholder="Your email"
-                                        required="required" />
-                                </div>
-                                <div class="form-group">
-                                    <select class="custom-select border-0 px-4" style="height: 47px;">
-                                        <option selected>Select a course</option>
-                                        <option value="1">Course 1</option>
-                                        <option value="2">Course 1</option>
-                                        <option value="3">Course 1</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <button class="btn btn-dark btn-block border-0 py-3" type="submit">Sign Up
-                                        Now</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Registration End -->
-
 
     <!-- Team Start -->
     <div class="container-fluid py-4">

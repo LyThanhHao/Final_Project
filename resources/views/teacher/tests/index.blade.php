@@ -11,7 +11,7 @@
                 <table class="table table-bordered table-hover table-striped">
                     <thead>
                         <tr>
-                            <th style="max-width: 30px;">No.</th>
+                            <th style="max-width: 35px;">No.</th>
                             <th>Test Name</th>
                             <th>Course Name</th>
                             <th style="width: 130px;">Questions Count</th>

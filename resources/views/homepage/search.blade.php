@@ -20,7 +20,7 @@
                                 src="{{ asset('uploads/course_image/' . $course->image) }}"
                                 alt="{{ $course->course_name }}">
                             @if (!Auth::check() || (Auth::check() && Auth::user()->role != 'Teacher'))
-                                @if ($favorites && $favorites->contains('course_id', $course->id))
+                                @if (!$favorites)
                                     <div class="bookmark-icon position-absolute">
                                         <i class="bi bi-bookmark-dash-fill" data-course-id="{{ $course->id }}"
                                             title="Remove from favorite list"></i>
@@ -35,8 +35,8 @@
                             <div class="card-body">
                                 <div class="d-flex align-items-center">
                                     <img src="{{ asset('uploads/avatar/' . ($course->user->avatar ?? 'avatar_default.jpg')) }}"
-                                        alt="" style="border-radius: 10px; width: 25px; height: 25px; margin-right: 6px;">
-                                    <span style="font-size: 14px;" class="text-info">{{ $course->user->fullname }}</span>
+                                        alt="" style="border-radius: 50%; width: 30px; height: 30px; margin-right: 6px;">
+                                    <a href="{{ route('teacher_profile', $course->user->fullname) }}" class="teacher_profile"><span style="font-size: 14px;" class="text-info">{{ $course->user->fullname }}</span></a>
                                 </div>
                                 <p class="card-title text-truncate"
                                     style="max-width: 100%; font-weight: bold; color:#5e5e5e; margin: 10px 0; text-align: center"
@@ -171,6 +171,12 @@
             transform: scale(1.2);
             color: #ffffff;
             text-shadow: 0 0 5px #ffffff, 0 0 10px #008cff, 0 0 20px #008cff;
+        }
+
+        .teacher_profile:hover {
+            text-decoration: underline;
+            transition: 0.5s;
+            text-decoration-color: #17a2b8;
         }
     </style>
 
