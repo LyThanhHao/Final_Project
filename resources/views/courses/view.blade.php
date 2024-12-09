@@ -6,7 +6,7 @@
         <div class="sidebar">
             <!-- Hiển thị ảnh và tên của khóa học -->
             <div class="course-header mb-4 text-center">
-                <img src="{{ asset('uploads/avatar/' . $instructor->avatar) }}" alt="{{ $instructor->fullname }}"
+                <img src="{{ asset('uploads/avatar/' . ($instructor->avatar ?? 'avatar_default.jpg')) }}" alt="{{ $instructor->fullname }}"
                     class="img-fluid mb-2" style="max-height: 150px; width: 50px; border-radius: 10px">
                 <div>
                     <span style="font-style: italic">{{ $instructor->fullname }}</span>

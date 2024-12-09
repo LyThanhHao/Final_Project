@@ -197,10 +197,10 @@
                                 <a href="{{ route('homepage') }}" class="nav-link">Home</a>
                             </li>
                             <li class="nav-item">
-                                <a href="about.html" class="nav-link">About</a>
+                                <a href="{{ route('homepage.about_us') }}" class="nav-link">About</a>
                             </li>
                             <li class="nav-item">
-                                <a href="contact.html" class="nav-link">Contact</a>
+                                <a href="{{ route('homepage.contact') }}" class="nav-link">Contact</a>
                             </li>
                             @if (Auth::check() && (Auth::user()->role == 'Student' || Auth::user()->role == 'Admin'))
                                 <li class="nav-item">

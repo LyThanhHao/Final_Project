@@ -672,7 +672,7 @@
                             </p>
                             <hr style="display: block; width: 100%; height: 2px; margin: 20px 0; background: #7cdacc;">
                             <div class="button-message">
-                                <a href="{{ route('teacher_profile', $course->user->fullname) }}"><button
+                                <a href="{{ route('teacher_profile', $course->user->id) }}"><button
                                         href="" class="btn-send">View Profile</button></a>
                             </div>
                         </div>
@@ -687,7 +687,7 @@
                                 @csrf
                                 <div class="d-flex justify-content-between align-items-center">
                                     <img src="{{ asset('uploads/avatar/' . ($user->avatar ?? 'avatar_default.jpg')) }}"
-                                        alt="{{ $user->fullname }}" class="rounded-circle" width="30"
+                                        alt="{{ $user->fullname ?? 'User' }}" class="rounded-circle" width="30"
                                         height="30">
                                     <div class="group flex-grow-1 mr-2">
                                         <input type="hidden" name="course_id" value="{{ $course->id }}" required>
@@ -716,27 +716,24 @@
                                                     {{ $comment->content }}</div>
                                             </div>
                                         </div>
-                                        <div class="options" style="position: relative;">
-                                            <button class="btn-options" onclick="toggleOptions(this)">...</button>
-                                            <div class="options-menu" style="display: none;">
-                                                <button id="btn-update-comment"
-                                                    onclick="updateComment({{ $comment->id }})"><i
-                                                        style="color: blue; margin: 0 5px; font-weight: bold;"
-                                                        class="bi bi-pen"></i>Update</button>
-                                                <br>
-                                                <form method="POST"
-                                                    action="{{ route('comments.destroy', $comment->id) }}"
-                                                    style="display: inline;">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" id="btn-delete-comment"
-                                                        onclick="confirmDelete(event, this)">
-                                                        <i style="color: red; margin: 0 5px;"
-                                                            class="bi bi-trash"></i>Delete
+                                        @if(Auth::check() && Auth::id() == $comment->user_id)
+                                            <div class="options" style="position: relative;">
+                                                <button class="btn-options" onclick="toggleOptions(this)">...</button>
+                                                <div class="options-menu" style="display: none;">
+                                                    <button id="btn-update-comment" onclick="updateComment({{ $comment->id }})">
+                                                        <i style="color: blue; margin: 0 5px; font-weight: bold;" class="bi bi-pen"></i>Update
                                                     </button>
-                                                </form>
+                                                    <br>
+                                                    <form method="POST" action="{{ route('comments.destroy', $comment->id) }}" style="display: inline;">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" id="btn-delete-comment" onclick="confirmDelete(event, this)">
+                                                            <i style="color: red; margin: 0 5px;" class="bi bi-trash"></i>Delete
+                                                        </button>
+                                                    </form>
+                                                </div>
                                             </div>
-                                        </div>
+                                        @endif
                                     </div>
                                     <form method="POST" action="{{ route('comments.update', $comment->id) }}"
                                         style="display: none; width: 100%;" class="edit-form">
@@ -795,7 +792,7 @@
                                                     <img src="{{ asset('uploads/avatar/' . ($relatedCourse->user->avatar ?? 'avatar_default.jpg')) }}"
                                                         alt=""
                                                         style="border-radius: 50%; width: 30px; height: 30px; margin-right: 6px;">
-                                                    <a href="{{ route('teacher_profile', $relatedCourse->user->fullname) }}"
+                                                    <a href="{{ route('teacher_profile', $relatedCourse->user->id) }}"
                                                         class="teacher_profile"><b class="text-info"
                                                             style="font-weight: 400; font-size: 14px;">{{ $relatedCourse->user->fullname }}</b></a>
                                                 </div>
@@ -914,6 +911,10 @@
         }
 
         function updateComment(commentId) {
+            if (!{{ Auth::check() ? 'true' : 'false' }}) {
+                window.location.href = '{{ route('homepage.login') }}';
+                return;
+            }
             const commentBox = document.querySelector(`.comment-box[data-comment-id='${commentId}']`);
             const commentContent = commentBox.querySelector('.comment-content');
             const editForm = commentBox.querySelector('.edit-form');
@@ -953,6 +954,10 @@
         });
 
         function confirmDelete(event, button) {
+            if (!{{ Auth::check() ? 'true' : 'false' }}) {
+                window.location.href = '{{ route('homepage.login') }}';
+                return;
+            }
             event.preventDefault();
             const form = button.closest('form');
 

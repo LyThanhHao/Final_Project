@@ -53,7 +53,27 @@ class TestController extends Controller
             ->where('test_id', $test->id)
             ->first();
 
-        return view('homepage.tests.index', compact('instructor', 'course', 'test', 'attempt', 'correctCount', 'totalQuestions', 'duration', 'percentage', 'results', 'testsCompleted', 'studentDeadline'));
+        // Query for rankings
+        $rankings = TestAttempt::where('test_id', $test->id)
+            ->where('status', 'Completed')
+            ->with('user')
+            ->get()
+            ->map(function ($attempt) {
+                $correctCount = TestResult::where('test_attempt_id', $attempt->id)
+                    ->where('is_correct', true)
+                    ->count();
+                $duration = $attempt->updated_at->diffInSeconds($attempt->created_at);
+                return [
+                    'student_name' => $attempt->user->fullname,
+                    'correct_count' => $correctCount,
+                    'duration' => $duration,
+                ];
+            })
+            ->sortByDesc('correct_count')
+            ->sortBy('duration')
+            ->values();
+
+        return view('homepage.tests.index', compact('instructor', 'course', 'test', 'attempt', 'correctCount', 'totalQuestions', 'duration', 'percentage', 'results', 'testsCompleted', 'studentDeadline', 'rankings'));
     }
 
     public function takingTest(Test $test)

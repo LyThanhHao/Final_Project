@@ -38,7 +38,7 @@
                                         <div class="d-flex align-items-center">
                                             <img src="{{ asset('uploads/avatar/' . ($course->user->avatar ?? 'avatar_default.jpg')) }}"
                                                 alt="" style="border-radius: 50%; width: 30px; height: 30px; margin-right: 6px;">
-                                            <a href="{{ route('teacher_profile', $course->user->fullname) }}" class="teacher_profile"><span style="font-size: 14px;" class="text-info">{{ $course->user->fullname }}</span></a>
+                                            <a href="{{ route('teacher_profile', $course->user->id) }}" class="teacher_profile"><span style="font-size: 14px;" class="text-info">{{ $course->user->fullname }}</span></a>
                                         </div>
                                         <p class="card-title text-truncate"
                                             style="max-width: 100%; font-weight: bold; color:#5e5e5e; margin: 10px 0; text-align: center"

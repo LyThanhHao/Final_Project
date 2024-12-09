@@ -17,6 +17,9 @@ Route::get('/forgot-password', [UserController::class, 'forgot_password'])->name
 Route::post('/forgot-password', [UserController::class, 'check_forgot_password'])->name('check_forgot_password');
 Route::get('/reset-password/{token}', [UserController::class, 'reset_password'])->name('reset_password');
 Route::post('/reset-password/{token}', [UserController::class, 'check_reset_password'])->name('check_reset_password');
+Route::get('/contact', [HomeController::class, 'contact'])->name('homepage.contact');
+Route::get('/about_us', [HomeController::class, 'about_us'])->name('homepage.about_us');
+Route::get('/teacher/{teacher}', [HomeController::class, 'teacher_profile'])->name('teacher_profile');
 
 //account routes
 Route::get('/login', [HomeController::class, 'login'])->name('homepage.login');
@@ -50,7 +53,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/tests/{test}/taking', [TestController::class, 'takingTest'])->name('taking_test');
     Route::post('/tests/{test}/submit', [TestController::class, 'submitTest'])->name('submit_test');
     Route::get('/tests/{test}/results', [TestController::class, 'showResults'])->name('test.results');
-    Route::get('/teacher/{teacher_name}', [HomeController::class, 'teacher_profile'])->name('teacher_profile');
 });
 
 //categories routes

@@ -6,7 +6,7 @@
         <div class="sidebar">
             <!-- Hiển thị ảnh và tên của khóa học -->
             <div class="course-header mb-4 text-center">
-                <img src="{{ asset('uploads/avatar/' . $instructor->avatar) }}" alt="{{ $instructor->fullname }}"
+                <img src="{{ asset('uploads/avatar/' . ($instructor->avatar ?? 'avatar_default.jpg')) }}" alt="{{ $instructor->fullname }}"
                     class="img-fluid mb-2" style="max-height: 150px; width: 50px; border-radius: 10px">
                 <div>
                     <span style="font-style: italic">{{ $instructor->fullname }}</span>
@@ -131,6 +131,29 @@
                 </div>
             </div>
             <hr>
+            <!-- Ranking Table -->
+            <div class="ranking-table mt-4">
+                <h3 class="text-center mb-3">Score Ranking</h3>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">Rank</th>
+                            <th scope="col">Student Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @php
+                            $rank = 1;
+                        @endphp
+                        @foreach ($rankings as $ranking)
+                            <tr>
+                                <td>{{ $rank++ }}</td>
+                                <td>{{ $ranking['student_name'] }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
