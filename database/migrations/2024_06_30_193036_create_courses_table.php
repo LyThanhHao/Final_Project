@@ -16,15 +16,15 @@ class CreateCoursesTable extends Migration
         Schema::create('courses', function (Blueprint $table) {
             $table->increments('id');
             $table->string('course_name', 255);
-            $table->unsignedInteger('category_id');
+            $table->unsignedInteger('category_id')->nullable();
             $table->unsignedInteger('user_id');
             $table->string('image', 255);
             $table->text('description');
             $table->string('file', 500);
             $table->timestamps();
             
-            $table->foreign('category_id')->references('id')->on('categories');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('set null');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
