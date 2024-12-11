@@ -34,5 +34,8 @@ USER www-data
 # Install project dependencies
 RUN composer install --no-interaction
 
+# Run database migrations
+RUN php artisan migrate --force
+
 # Expose port 8000 for the PHP built-in server
 EXPOSE 8000
