@@ -1,23 +1,38 @@
 # Chọn PHP chính thức có Composer
 FROM php:7.4-fpm
 
-# Cài đặt các package cần thiết
+# Set working directory
+WORKDIR /var/www/html
+
+# Install PHP dependencies
 RUN apt-get update && apt-get install -y \
-    git curl zip unzip libpng-dev libonig-dev libxml2-dev libzip-dev nodejs npm
+    libpng-dev \
+    libjpeg-dev \
+    libfreetype6-dev \
+    zip \
+    unzip
 
-# Cài đặt Composer
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg
+RUN docker-php-ext-install gd pdo pdo_mysql
+RUN docker-php-ext-install bcmath
 
-# Sao chép mã nguồn vào thư mục ứng dụng
-COPY . /app
-WORKDIR /app
+# Clear cache
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Cài đặt package từ Composer và NPM
-RUN composer install --no-dev --optimize-autoloader
-RUN npm install --production
+# Install Composer
+COPY --from=composer:2.2 /usr/bin/composer /usr/bin/composer
 
-# Thiết lập quyền cho các thư mục lưu trữ tạm thời
-RUN chmod -R 775 storage bootstrap/cache
+# Copy the Laravel application into the container
+COPY . /var/www/html
+
+# Copy existing application directory permissions
+COPY --chown=www-data:www-data . /var/www/html
+
+# Change current user to www-data
+USER www-data
+
+# Install project dependencies
+RUN composer install --no-interaction
 
 # Expose port 8000 for the PHP built-in server
 EXPOSE 8000
