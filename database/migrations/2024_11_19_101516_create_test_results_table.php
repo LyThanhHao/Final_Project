@@ -15,7 +15,7 @@ class CreateTestResultsTable extends Migration
     {
         Schema::create('test_results', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('question_id');
+            $table->unsignedInteger('question_id');
             $table->unsignedBigInteger('test_attempt_id');
             $table->string('selected_answer')->nullable();
             $table->boolean('is_correct');
