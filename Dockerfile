@@ -19,5 +19,5 @@ RUN npm install --production
 # Thiết lập quyền cho các thư mục lưu trữ tạm thời
 RUN chmod -R 775 storage bootstrap/cache
 
-# Chạy ứng dụng
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
+# Expose port 8000 for the PHP built-in server
+EXPOSE 8000
