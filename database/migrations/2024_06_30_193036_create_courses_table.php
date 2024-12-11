@@ -19,6 +19,7 @@ class CreateCoursesTable extends Migration
             $table->unsignedInteger('category_id');
             $table->unsignedInteger('user_id');
             $table->string('image', 255);
+            $table->text('description');
             $table->string('file', 500);
             $table->timestamps();
             
