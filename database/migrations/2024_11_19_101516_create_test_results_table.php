@@ -17,11 +17,12 @@ class CreateTestResultsTable extends Migration
             $table->id();
             $table->unsignedInteger('question_id');
             $table->unsignedInteger('test_attempt_id');
-            $table->foreign('question_id')->references('id')->on('questions')->onDelete('cascade');
-            $table->foreign('test_attempt_id')->references('id')->on('test_attempts')->onDelete('cascade');
             $table->string('selected_answer')->nullable();
             $table->boolean('is_correct');
             $table->timestamps();
+            
+            $table->foreign('question_id')->references('id')->on('questions')->onDelete('cascade');
+            $table->foreign('test_attempt_id')->references('id')->on('test_attempts')->onDelete('cascade');
         });
     }
 

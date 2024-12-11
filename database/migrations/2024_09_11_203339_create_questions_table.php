@@ -22,6 +22,7 @@ class CreateQuestionsTable extends Migration
             $table->string('answer')->nullable();
             $table->unsignedInteger('test_id'); 
             $table->timestamps();
+            
             $table->foreign('test_id')->references('id')->on('tests')->onDelete('cascade');
         });
     }

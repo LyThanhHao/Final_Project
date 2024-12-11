@@ -19,6 +19,7 @@ class CreateStudentDeadlinesTable extends Migration
             $table->unsignedInteger('test_id');
             $table->timestamp('deadline');
             $table->timestamps();
+            
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('test_id')->references('id')->on('tests')->onDelete('cascade');
         });

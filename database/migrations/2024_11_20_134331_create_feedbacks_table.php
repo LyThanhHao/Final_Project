@@ -18,6 +18,7 @@ class CreateFeedbacksTable extends Migration
             $table->unsignedInteger('test_attempt_id');
             $table->text('content')->nullable();
             $table->timestamps();
+            
             $table->foreign('test_attempt_id')->references('id')->on('test_attempts')->onDelete('cascade');
         });
     }

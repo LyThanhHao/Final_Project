@@ -18,6 +18,7 @@ class CreateFavoritesTable extends Migration
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('course_id');
             $table->timestamps();
+            
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('course_id')->references('id')->on('courses');
         });
