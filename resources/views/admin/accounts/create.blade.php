@@ -33,6 +33,14 @@
                                     <small style="color: red;">{{ $message }}</small>
                                 @enderror
                             </div>
+                            <div class="form-group position-relative">
+                                <label for="password_confirmation">Confirm Password</label>
+                                <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required>
+                                <i id="toggle-password-confirmation" class="bi bi-eye-slash-fill toggle-password-icon"></i>
+                                @error('password_confirmation')
+                                    <small style="color: red;">{{ $message }}</small>
+                                @enderror
+                            </div>
                             <div class="form-group">
                                 <label for="address">Address</label>
                                 <input type="text" class="form-control" id="address" name="address" required>
@@ -64,6 +72,16 @@
             const passwordField = document.getElementById('password');
             const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
             passwordField.setAttribute('type', type);
+            // Toggle the icon
+            this.classList.toggle('bi-eye');
+            this.classList.toggle('bi-eye-slash-fill');
+        });
+
+        // Toggle password confirmation visibility
+        document.getElementById('toggle-password-confirmation').addEventListener('click', function() {
+            const passwordConfirmationField = document.getElementById('password_confirmation');
+            const type = passwordConfirmationField.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordConfirmationField.setAttribute('type', type);
             // Toggle the icon
             this.classList.toggle('bi-eye');
             this.classList.toggle('bi-eye-slash-fill');

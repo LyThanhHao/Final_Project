@@ -26,7 +26,8 @@ class AdminController extends Controller
         $request->validate([
             'fullname' => 'required',
             'email' => 'required|email|unique:users,email',
-            'password' => 'required',
+            'password' => 'required|min:5|regex:/[a-zA-Z]/|regex:/[0-9]/|regex:/[@$!%*?&#]/',
+            'password_confirmation' => 'required|same:password',
             'address' => 'required',
             'phoneNumber' => 'required'
         ], [
@@ -35,13 +36,16 @@ class AdminController extends Controller
             'email.email' => 'The email must be a valid email address.',
             'email.unique' => 'The email has already been taken.',
             'password.required' => 'The password is required.',
+            'password_confirmation.required' => 'The password confirmation is required.',
+            'password_confirmation.same' => 'The password confirmation must be same as password.',
             'address.required' => 'The address is required.',
             'phoneNumber.required' => 'The phone number is required.',
         ]);
 
-        $request['role'] = 'Student';
-        $request['password'] = bcrypt(request('password'));
-        $user = User::create($request->all());
+        $data = $request->only('fullname', 'email', 'password', 'phoneNumber', 'address');
+        $data['role'] = 'Student';
+        $data['password'] = bcrypt($request->password);
+        $user = User::create($data);
 
         if ($user) {
             return redirect()->route('admin.accounts.index')->with('success', 'User created successfully');
@@ -58,14 +62,11 @@ class AdminController extends Controller
     {
         $request->validate([
             'fullname' => 'required',
-            'email' => 'required|email',
             'role' => 'required',
             'address' => 'required',
             'phoneNumber' => 'required'
         ], [
             'fullname.required' => 'The fullname is required.',
-            'email.required' => 'The email is required.',
-            'email.email' => 'The email must be a valid email address.',
             'role.required' => 'The role is required.',
             'address.required' => 'The address is required.',
             'phoneNumber.required' => 'The phone number is required.',

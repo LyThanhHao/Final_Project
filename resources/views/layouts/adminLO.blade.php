@@ -299,12 +299,12 @@
                             <p>Courses</p>
                         </a>
                     </li>
-                    <li>
+                    {{-- <li>
                         <a href="./tables.html">
                             <i class="bi bi-table"></i>
                             <p>View statistics</p>
                         </a>
-                    </li>
+                    </li> --}}
                     <hr style="background: white; width: 90%;">
                     <li>
                         <a href="{{ route('homepage') }}">
