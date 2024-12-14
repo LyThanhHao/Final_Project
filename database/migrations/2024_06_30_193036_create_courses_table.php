@@ -21,6 +21,7 @@ class CreateCoursesTable extends Migration
             $table->string('image', 255);
             $table->text('description');
             $table->string('file', 500);
+            $table->boolean('status')->default(1);
             $table->timestamps();
             
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('set null');

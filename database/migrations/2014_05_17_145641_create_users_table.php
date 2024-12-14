@@ -23,7 +23,6 @@ class CreateUsersTable extends Migration
             $table->string('address', 200);
             $table->string('avatar', 500)->nullable();
             $table->string('phoneNumber', 50);
-            $table->rememberToken();
             $table->timestamps();
         });
     }
