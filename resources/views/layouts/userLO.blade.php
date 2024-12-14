@@ -153,7 +153,7 @@
             </div>
             <div class="col-lg-9">
                 <nav class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-0">
-                    <a href="" class="text-decoration-none d-block d-lg-none">
+                    <a href="{{ route('homepage') }}" class="text-decoration-none d-block d-lg-none">
                         <h1 class="m-0"><span class="text-primary">E</span>COURSES</h1>
                     </a>
                     <button class="navbar-toggler" type="button" data-toggle="collapse"

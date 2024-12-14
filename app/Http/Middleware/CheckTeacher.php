@@ -22,8 +22,9 @@ class CheckTeacher
 
         if ($user && $user->role == "Teacher") {
             return $next($request);
+        }elseif(!$user){
+            return redirect()->view('homepage.login');
         }
-
-        return redirect()->route('homepage');
+        return redirect()->back();
     }
 }

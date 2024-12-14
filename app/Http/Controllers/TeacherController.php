@@ -33,18 +33,19 @@ class TeacherController extends Controller
     {
         $request->validate([
             'course_name' => 'required',
-            'image' => 'required|file|mimes:jpg,jpeg,gif,png,webp,svg,',
+            'image' => 'required|file|mimes:jpg,jpeg,gif,png,webp,svg|max:20480',
             'description' => 'required',
-            'file' => 'required|file|mimes:pdf,',
+            'file' => 'required|file|mimes:pdf|max:20480',
             'category_id' => 'required',
         ], [
             'course_name.required' => 'The course name is required.',
             'image.file' => 'The course image must be a file.',
             'image.mimes' => 'The course image must be a valid image file.',
-            'image.max' => 'The course image must be less than 2MB.',
+            'image.max' => 'The course image must be less than 20MB.',
             'description.required' => 'The course description is required.',
             'file.file' => 'The course file must be a file.',
             'file.mimes' => 'The course file must be a valid file.',
+            'file.max' => 'The course file must be less than 20MB.',
             'category_id.required' => 'The course category is required.',
         ],);
 
@@ -84,19 +85,20 @@ class TeacherController extends Controller
     {
         $request->validate([
             'course_name' => 'required',
-            'image' => 'nullable|file|mimes:jpg,jpeg,gif,png,webp,svg',
+            'image' => 'nullable|file|mimes:jpg,jpeg,gif,png,webp,svg|max:20480',
             'description' => 'required',
-            'file' => 'nullable|file|mimes:pdf',
+            'file' => 'nullable|file|mimes:pdf|max:20480',
             'category_id' => 'required',
             'status' => 'required',
         ], [
             'course_name.required' => 'The course name is required.',
             'image.file' => 'The course image must be a file.',
             'image.mimes' => 'The course image must be a valid image file.',
-            'image.max' => 'The course image must be less than 2MB.',
+            'image.max' => 'The course image must be less than 20MB.',
             'description.required' => 'The course description is required.',
             'file.file' => 'The course file must be a file.',
             'file.mimes' => 'The course file must be a valid file.',
+            'file.max' => 'The course file must be less than 20MB.',
             'category_id.required' => 'The course category is required.',
             'status.required' => 'The course status is required.',
         ]);

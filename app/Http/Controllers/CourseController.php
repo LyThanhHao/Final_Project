@@ -38,8 +38,8 @@ class CourseController extends Controller
             'course_name' => 'required',
             'category_id' => 'required|exists:categories,id',
             'teacher' => 'required|exists:users,id',
-            'image' => 'required|file|mimes:jpg,jpeg,gif,png,webp,svg,',
-            'file' => 'required|file|mimes:pdf,',
+            'image' => 'required|file|mimes:jpg,jpeg,gif,png,webp,svg|max:20480',
+            'file' => 'required|file|mimes:pdf|max:20480',
             'description' => 'required',
         ], [
             'course_name.required' => 'The course name is required.',
@@ -50,6 +50,11 @@ class CourseController extends Controller
             'image.required' => 'The image is required.',
             'image.file' => 'The image must be a file.',
             'image.mimes' => 'The image must be a valid image file.',
+            'image.max' => 'The image must be less than 20MB.',
+            'file.required' => 'The file is required.',
+            'file.file' => 'The file must be a file.',
+            'file.mimes' => 'The file must be a valid file.',
+            'file.max' => 'The file must be less than 20MB.',
         ]);
 
         $data = $request->except(['image', 'file']);
@@ -109,9 +114,9 @@ class CourseController extends Controller
     {
         $request->validate([
             'course_name' => 'required',
-            'image' => 'nullable|file|mimes:jpg,jpeg,gif,png,webp,svg',
+            'image' => 'nullable|file|mimes:jpg,jpeg,gif,png,webp,svg|max:20480',
             'description' => 'required',
-            'file' => 'nullable|file|mimes:pdf',
+            'file' => 'nullable|file|mimes:pdf|max:20480',
             'category_id' => 'required|exists:categories,id',
             'teacher' => 'required|exists:users,id',
             'status' => 'required',
@@ -119,9 +124,11 @@ class CourseController extends Controller
             'course_name.required' => 'The course name is required.',
             'image.file' => 'The image must be a file.',
             'image.mimes' => 'The image must be a valid image file.',
+            'image.max' => 'The image must be less than 20MB.',
             'description.required' => 'The description is required.',
             'file.file' => 'The file must be a file.',
             'file.mimes' => 'The file must be a valid file.',
+            'file.max' => 'The file must be less than 20MB.',
             'category_id.required' => 'The category is required.',
             'category_id.exists' => 'The category must be a valid category.',
         ]);
@@ -230,9 +237,12 @@ class CourseController extends Controller
     }
     
 
-
     public function view(Request $request, $course_id)
     {
+        if (Auth::check() && Auth::user()->role !== 'Student') {
+            return redirect()->back();
+        }
+
         $user = Auth::user();
         $course = Course::with('tests')->findOrFail($course_id);
         $instructor = $course->user;
@@ -246,3 +256,4 @@ class CourseController extends Controller
         return view('courses.view', compact('course', 'instructor', 'testsCompleted'));
     }
 }
+

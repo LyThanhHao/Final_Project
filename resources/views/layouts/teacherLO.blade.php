@@ -275,8 +275,7 @@
                                                         </div>
                                                     @elseif (Auth::user()->role == 'Teacher')
                                                         <div class="submenu-item">
-                                                            <a href="" class="submenu-link font-weight-bold"
-                                                                style="color: black"> Manage courses </a>
+                                                            <a href="" class="submenu-link font-weight-bold" >Teacher Dashboard</a>
                                                         </div>
                                                     @endif
                                                     <div class="submenu-item">

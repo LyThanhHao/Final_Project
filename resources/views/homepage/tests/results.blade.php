@@ -65,18 +65,37 @@
         <!-- Nội dung chính của trang kết quả -->
         <div class="test-content">
             <h1>{{ $test->test_name }}</h1>
-            <div class="d-flex justify-content-between align-items-center mt-3">
-                <div class="percentage-box">
+            <div class="d-flex justify-content-between align-items-center mt-3 flex-wrap">
+                <div class="percentage-box mb-2">
                     <h5>Percentage: <b style="color: white">{{ number_format($percentage, 2) }}%</b></h5>
                 </div>
-                <div class="score-box">
+                <div class="score-box mb-2">
                     <h5>Score: <span style="color: white; font-weight: bold">{{ $correctCount }} / {{ $totalQuestions }}</span></h5>
                 </div>
-                <div class="time-box">
+                <div class="time-box mb-2">
                     <h5>Time used: <br><span style="color: white; font-weight: bold">{{ $duration }}</span></h5>
                 </div>
             </div>
             <hr>
+
+            <!-- Phần hiển thị Feedback -->
+            <div class="feedback-section mt-5">
+                <h3 class="text-center">Feedback from Teacher</h3>
+                @if ($attempt->feedbacks->isEmpty())
+                    <p class="text-center">No feedback available.</p>
+                @else
+                    <div id="feedbacks-list" class="mt-3">
+                        @foreach ($attempt->feedbacks as $feedback)
+                            <div class="feedback-box px-3" data-feedback-id="{{ $feedback->id }}">
+                                <div class="comment-content" style="font-size: 0.9em;">
+                                    {{ $feedback->content }}
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                @endif
+            </div>
+
             <div class="questions-container">
                 @foreach ($questions as $index => $question)
                     <div class="question-item">
@@ -122,19 +141,20 @@
         .main-content {
             display: flex;
             gap: 20px;
-            margin-left: 3rem;
-            margin-right: 2.5rem;
+            margin-left: 1rem;
+            margin-right: 1rem;
             margin-top: 2rem;
+            flex-wrap: wrap;
         }
 
         .sidebar {
             height: fit-content;
-            width: 25%;
+            width: 100%;
             background: #e9e9e9;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            margin-right: 20px;
+            margin-bottom: 20px;
         }
 
         .sidebar a {
@@ -197,7 +217,7 @@
         }
 
         .test-content {
-            width: 75%;
+            width: 100%;
             padding: 20px;
         }
 
@@ -227,7 +247,7 @@
             border-radius: 10px;
             color: white;
             text-align: center;
-            width: fit-content;
+            width: 100%;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
@@ -246,6 +266,51 @@
         .percentage-box h5, .score-box h5, .time-box h5 {
             margin-bottom: 10px;
             font-size: 1.2rem;
+        }
+
+        @media (min-width: 768px) {
+            .main-content {
+                flex-wrap: nowrap;
+                margin-left: 3rem;
+                margin-right: 2.5rem;
+            }
+
+            .sidebar {
+                width: 25%;
+                margin-bottom: 0;
+            }
+
+            .test-content {
+                width: 75%;
+            }
+
+            .percentage-box, .score-box, .time-box {
+                width: fit-content;
+            }
+        }
+
+        .feedback-section {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #f9f9f9;
+        }
+
+        .feedback-box {
+            position: relative;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .comment-content {
+            font-size: 14px;
+            color: #6c757d;
         }
     </style>
 

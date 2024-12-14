@@ -40,6 +40,6 @@ class Course extends Model
 
     public function tests()
     {
-        return $this->hasMany(Test::class);
+        return $this->hasMany(Test::class, 'course_id');
     }
 }

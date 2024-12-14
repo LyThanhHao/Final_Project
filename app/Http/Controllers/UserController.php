@@ -46,11 +46,12 @@ class UserController extends Controller
     public function change_avatar(Request $request){
         $user = User::find(Auth::id());
         $request->validate([
-            'avatar' => 'required|file|mimes:jpg, jpeg, gif, png, webp, svg,'
+            'avatar' => 'required|file|mimes:jpg, jpeg, gif, png, webp, svg|max:20480',
         ], [
             'avatar.required' => 'The avatar is required.',
             'avatar.file' => 'The avatar must be a file.',
             'avatar.mimes' => 'The avatar must be a valid image file.',
+            'avatar.max' => 'The avatar must be less than 20MB.',
         ]);
         
         // Xóa file ảnh cũ

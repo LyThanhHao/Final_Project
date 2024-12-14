@@ -49,11 +49,11 @@
                     </button>
                     <div class="collapse" id="testDropdown">
                         <ul class="list-unstyled ml-3">
-                            @foreach ($course->tests as $test)
+                            @foreach ($course->tests as $courseTest)
                                 <li>
                                     <a class="dropdown-item d-flex align-items-center"
-                                        href="{{ route('test.view', $test->id) }}">
-                                        <i class="bi bi-pencil mr-2"></i>{{ $test->test_name }}
+                                        href="{{ route('test.view', $courseTest->id) }}">
+                                        <i class="bi bi-pencil mr-2"></i>{{ $courseTest->test_name }}
                                     </a>
                                 </li>
                             @endforeach

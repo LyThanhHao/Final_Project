@@ -120,12 +120,10 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Thiết lập thời gian
-            const duration = {{ $test->test_time * 60 }}; // giả sử test_time là phút
+            const duration = {{ $test->test_time * 60 }};
             let endTime = localStorage.getItem('test_end_time_{{ $test->id }}');
 
             if (!endTime || {{ $attempt->status === 'Completed' ? 'true' : 'false' }}) {
-                // Nếu không có thời gian kết thúc hoặc bài thi đã hoàn thành, thiết lập lại thời gian
                 const now = new Date().getTime();
                 endTime = now + duration * 1000;
                 localStorage.setItem('test_end_time_{{ $test->id }}', endTime);
@@ -137,10 +135,8 @@
 
                 if (distance <= 0) {
                     clearInterval(timerInterval);
-                    // Tự động submit bài thi khi hết giờ
-                    document.getElementById('test-form').submit();
-                    // Xóa dữ liệu thời gian trong localStorage
                     localStorage.removeItem('test_end_time_{{ $test->id }}');
+                    document.getElementById('test-form').submit();
                 } else {
                     const minutes = Math.floor(distance / (1000 * 60));
                     const seconds = Math.floor((distance % (1000 * 60)) / 1000);
@@ -152,10 +148,9 @@
             const timerInterval = setInterval(updateTimer, 1000);
             updateTimer();
 
-            // Xóa dữ liệu thời gian khi người dùng submit bài thi bằng tay
             const testForm = document.getElementById('test-form');
             testForm.addEventListener('submit', function(event) {
-                event.preventDefault(); // Ngăn chặn hành động submit mặc định
+                event.preventDefault();
 
                 Swal.fire({
                     title: 'Are you sure?',
@@ -168,19 +163,18 @@
                     cancelButtonText: 'Cancel'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        // Xóa các đáp án đã lưu trong localStorage
                         const radioButtons = document.querySelectorAll('input[type="radio"]');
                         radioButtons.forEach(radio => {
                             const questionId = radio.name.split('[')[1].split(']')[0];
                             localStorage.removeItem('answer_' + questionId);
                         });
 
-                        testForm.submit(); // Thực hiện submit nếu người dùng xác nhận
+                        localStorage.removeItem('test_end_time_{{ $test->id }}');
+                        testForm.submit();
                     }
                 });
             });
 
-            // Lưu lựa chọn vào localStorage khi người dùng chọn đáp án
             const radioButtons = document.querySelectorAll('input[type="radio"]');
             radioButtons.forEach(radio => {
                 radio.addEventListener('change', function() {
@@ -189,7 +183,6 @@
                 });
             });
 
-            // Đánh dấu các đáp án đã chọn khi tải lại trang
             radioButtons.forEach(radio => {
                 const questionId = radio.name.split('[')[1].split(']')[0];
                 const savedAnswer = localStorage.getItem('answer_' + questionId);

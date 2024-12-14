@@ -60,7 +60,7 @@ Route::get('/category/{category}/filter', [CategoryController::class, 'filter'])
 
 
 //admin routes
-Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function () {
+Route::group(['prefix' => 'Admin', 'middleware' => ['auth', 'admin']], function () {
     //accounts
 Route::get('/', [AdminController::class, 'account'])->name('admin');
     Route::get('/accounts', [AdminController::class, 'account'])->name('admin.accounts.index');
@@ -86,7 +86,7 @@ Route::get('/', [AdminController::class, 'account'])->name('admin');
 });
 
 //teacher routes
-Route::group(['prefix' => 'teacher', 'middleware' => ['auth', 'teacher']], function () {
+Route::group(['prefix' => 'Teacher', 'middleware' => ['auth', 'teacher']], function () {
     //courses
     Route::get('/', [TeacherController::class, 'courses'])->name('teacher');
     Route::get('/courses', [TeacherController::class, 'courses'])->name('teacher.courses.index');

@@ -24,6 +24,6 @@ class CheckAdmin
             return $next($request);
         }
 
-        return redirect()->route('homepage');
+        return redirect()->view('homepage.login');
     }
 }

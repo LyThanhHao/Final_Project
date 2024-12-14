@@ -12,9 +12,13 @@ use Illuminate\Support\Facades\Auth;
 
 class TestController extends Controller
 {
-    public function index($id)
+    public function index($test_id)
     {
-        $test = Test::findOrFail($id);
+        if (Auth::check() && Auth::user()->role !== 'Student') {
+            return redirect()->back();
+        }
+
+        $test = Test::with(['course', 'course.tests', 'questions'])->findOrFail($test_id);
         $course = $test->course;
         $instructor = $course->user;
 
@@ -78,6 +82,9 @@ class TestController extends Controller
 
     public function takingTest(Test $test)
     {
+        if (Auth::check() && Auth::user()->role !== 'Student') {
+            return redirect()->back();
+        }
         $attempt = TestAttempt::firstOrCreate(
             ['user_id' => auth()->id(), 'test_id' => $test->id],
             ['status' => 'Taking', 'created_at' => now(), 'updated_at' => now()]
@@ -142,13 +149,13 @@ class TestController extends Controller
         $course = $test->course;
         $instructor = $course->user;
         $user = Auth::user();
-    
+
         $attempt = TestAttempt::where('user_id', $user->id)
             ->where('test_id', $test->id)
             ->first();
-    
+
         $results = TestResult::where('test_attempt_id', $attempt->id)->get();
-    
+
         $correctCount = $results->where('is_correct', true)->count();
         $totalQuestions = $test->questions->count();
         $percentage = ($totalQuestions > 0) ? ($correctCount / $totalQuestions) * 100 : 0;
@@ -157,20 +164,20 @@ class TestController extends Controller
         $minutes = $endTime->diffInMinutes($startTime);
         $seconds = $endTime->diffInSeconds($startTime) % 60;
         $duration = sprintf('%02d:%02d', $minutes, $seconds);
-    
+
         $questions = $test->questions->map(function ($question) use ($results) {
             $result = $results->firstWhere('question_id', $question->id);
             $selectedAnswer = $result->selected_answer ?? null;
             $correctAnswer = $question->answer;
             $questionText = $question->question;
-    
+
             $answers = [
                 'a' => $question->a,
                 'b' => $question->b,
                 'c' => $question->c,
                 'd' => $question->d,
             ];
-    
+
             return [
                 'question_text' => $questionText,
                 'selected_answer' => $selectedAnswer,
@@ -178,12 +185,15 @@ class TestController extends Controller
                 'answers' => $answers,
             ];
         });
-    
+
         $testsCompleted = Test::whereHas('testAttempts', function ($query) {
             $query->where('user_id', auth()->id())
                   ->where('status', 'Completed');
         })->get();
-    
-        return view('homepage.tests.results', compact('instructor', 'course', 'test', 'questions', 'correctCount', 'totalQuestions', 'percentage', 'duration', 'testsCompleted'));
+
+        // Lấy feedback từ giáo viên
+        $feedbacks = $attempt->feedbacks;
+
+        return view('homepage.tests.results', compact('instructor', 'course', 'test', 'questions', 'correctCount', 'totalQuestions', 'percentage', 'duration', 'testsCompleted', 'feedbacks', 'attempt'));
     }
 }

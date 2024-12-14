@@ -41,7 +41,6 @@
                         </button>
                         <ul class="dropdown-menu">
                             <li>
-                                
                                 <form id="unenroll-form-{{ $course->id }}" action="{{ route('courses.unenroll', $course->id) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
@@ -58,7 +57,7 @@
     <style>
         .btn-view-course {
             --button_radius: 0.75em;
-            --button_color: #0cf259;
+            --button_color: #0c64f2;
             --button_outline_color: #000000;
             font-size: 17px;
             font-weight: bold;
