@@ -31,48 +31,38 @@ class TeacherController extends Controller
 
     public function store_course(Request $request)
     {
-        $request->validate([
-            'course_name' => 'required',
-            'image' => 'required|file|mimes:jpg,jpeg,gif,png,webp,svg|max:20480',
-            'description' => 'required',
-            'file' => 'required|file|mimes:pdf|max:20480',
-            'category_id' => 'required',
-        ], [
-            'course_name.required' => 'The course name is required.',
-            'image.file' => 'The course image must be a file.',
-            'image.mimes' => 'The course image must be a valid image file.',
-            'image.max' => 'The course image must be less than 20MB.',
-            'description.required' => 'The course description is required.',
-            'file.file' => 'The course file must be a file.',
-            'file.mimes' => 'The course file must be a valid file.',
-            'file.max' => 'The course file must be less than 20MB.',
-            'category_id.required' => 'The course category is required.',
-        ],);
-
-        $data = $request->except(['image', 'file']);
-
-        $user = Auth::user();
-
-        if ($request->has('image')) {
-            $img_name = $request->image->hashName();
-            $request->image->move(public_path('uploads/course_image'), $img_name);
-            $data['image'] = $img_name;
-        }
-
-        if ($request->has('file')) {
-            $file_name = $request->file->hashName();
-            $request->file->move(public_path('uploads/course_file'), $file_name);
-            $data['file'] = $file_name;
-        }
-
-        $data['user_id'] = $user->id;
-
-        $check = Course::create($data);
-
-        if ($check) {
+        try {
+            $request->validate([
+                'course_name' => 'required',
+                'image' => 'required|file|mimes:jpg,jpeg,gif,png,webp,svg|max:20480',
+                'description' => 'required',
+                'file' => 'required|file|mimes:pdf|max:20480',
+                'category_id' => 'required',
+            ]);
+    
+            $data = $request->except(['image', 'file']);
+            $user = Auth::user();
+    
+            if ($request->has('image')) {
+                $img_name = $request->image->hashName();
+                $request->image->move(public_path('uploads/course_image'), $img_name);
+                $data['image'] = $img_name;
+            }
+    
+            if ($request->has('file')) {
+                $file_name = $request->file->hashName();
+                $request->file->move(public_path('uploads/course_file'), $file_name);
+                $data['file'] = $file_name;
+            }
+    
+            $data['user_id'] = $user->id;
+    
+            Course::create($data);
+    
             return redirect()->route('teacher.courses.index')->with('success', 'Course created successfully');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('fail', 'Course creation failed: ' . $e->getMessage());
         }
-        return redirect()->back()->with('fail', 'Course creation failed');
     }
 
     public function edit_course(Course $course)
@@ -83,47 +73,39 @@ class TeacherController extends Controller
 
     public function update_course(Request $request, Course $course)
     {
-        $request->validate([
-            'course_name' => 'required',
-            'image' => 'nullable|file|mimes:jpg,jpeg,gif,png,webp,svg|max:20480',
-            'description' => 'required',
-            'file' => 'nullable|file|mimes:pdf|max:20480',
-            'category_id' => 'required',
-            'status' => 'required',
-        ], [
-            'course_name.required' => 'The course name is required.',
-            'image.file' => 'The course image must be a file.',
-            'image.mimes' => 'The course image must be a valid image file.',
-            'image.max' => 'The course image must be less than 20MB.',
-            'description.required' => 'The course description is required.',
-            'file.file' => 'The course file must be a file.',
-            'file.mimes' => 'The course file must be a valid file.',
-            'file.max' => 'The course file must be less than 20MB.',
-            'category_id.required' => 'The course category is required.',
-            'status.required' => 'The course status is required.',
-        ]);
-
-        $user = Auth::user();
-        $data = $request->except(['image', 'file']);
-
-        if ($request->hasFile('image')) {
-            $img_name = $request->image->hashName();
-            $request->image->move(public_path('uploads/course_image'), $img_name);
-            $data['image'] = $img_name;
-        }
-
-        if ($request->hasFile('file')) {
-            $file_name = $request->file->hashName();
-            $request->file->move(public_path('uploads/course_file'), $file_name);
-            $data['file'] = $file_name;
-        }
-
-        $data['user_id'] = $user->id;
-
-        if ($course->update($data)) {
+        try {
+            $request->validate([
+                'course_name' => 'required',
+                'image' => 'nullable|file|mimes:jpg,jpeg,gif,png,webp,svg|max:20480',
+                'description' => 'required',
+                'file' => 'nullable|file|mimes:pdf|max:20480',
+                'category_id' => 'required',
+                'status' => 'required',
+            ]);
+    
+            $data = $request->except(['image', 'file']);
+            $user = Auth::user();
+    
+            if ($request->hasFile('image')) {
+                $img_name = $request->image->hashName();
+                $request->image->move(public_path('uploads/course_image'), $img_name);
+                $data['image'] = $img_name;
+            }
+    
+            if ($request->hasFile('file')) {
+                $file_name = $request->file->hashName();
+                $request->file->move(public_path('uploads/course_file'), $file_name);
+                $data['file'] = $file_name;
+            }
+    
+            $data['user_id'] = $user->id;
+    
+            $course->update($data);
+    
             return redirect()->route('teacher.courses.index')->with('success', 'Your course updated successfully');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('fail', 'Course update failed: ' . $e->getMessage());
         }
-        return redirect()->back()->with('fail', 'Your course update failed! Something went wrong, please try again!');
     }
 
     public function destroy_course(Course $course)
