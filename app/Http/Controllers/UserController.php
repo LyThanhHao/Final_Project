@@ -43,53 +43,35 @@ class UserController extends Controller
         return redirect()->back()->with('fail', 'Something went wrong, please check the information again!');
     }
 
-    public function change_avatar(Request $request)
-    {
-        try {
-            $user = User::find(Auth::id());
-    
-            // Validate file input
-            $request->validate([
-                'avatar' => 'required|file|mimes:jpg,jpeg,gif,png,webp,svg|max:20480',
-            ], [
-                'avatar.required' => 'The avatar is required.',
-                'avatar.file' => 'The avatar must be a file.',
-                'avatar.mimes' => 'The avatar must be a valid image file (jpg, jpeg, gif, png, webp, svg).',
-                'avatar.max' => 'The avatar must be less than 20MB.',
-            ]);
-    
-            // Xóa file ảnh cũ
-            if ($user->avatar) {
-                $oldAvatarPath = public_path('uploads/avatar/' . $user->avatar);
-                if (file_exists($oldAvatarPath)) {
-                    unlink($oldAvatarPath);
-                }
+    public function change_avatar(Request $request){
+        $user = User::find(Auth::id());
+        $request->validate([
+            'avatar' => 'required|file|mimes:jpg,jpeg,gif,png,webp,svg|max:20480',
+        ], [
+            'avatar.required' => 'The avatar is required.',
+            'avatar.file' => 'The avatar must be a file.',
+            'avatar.mimes' => 'The avatar must be a valid image file.',
+            'avatar.max' => 'The avatar must be less than 20MB.',
+        ]);
+        
+        // Xóa file ảnh cũ
+        if ($user->avatar) {
+            $oldAvatarPath = public_path('uploads/avatar/' . $user->avatar);
+            if (file_exists($oldAvatarPath)) {
+                unlink($oldAvatarPath); 
             }
-    
-            // Upload file ảnh mới
-            $data = [];
-            if ($request->has('avatar')) {
-                $img_name = $request->avatar->hashName();
-                $request->avatar->move(public_path('uploads/avatar'), $img_name);
-                $data['avatar'] = $img_name;
-            }
-    
-            // Cập nhật thông tin người dùng
-            if ($user->update($data)) {
-                return redirect()->back()->with('success', 'Avatar updated successfully!');
-            }
-    
-            // Trường hợp update thất bại
-            return redirect()->back()->with('fail', 'Failed to update avatar. Please try again.');
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            // Xử lý lỗi validation
-            return redirect()->back()
-                ->withErrors($e->errors())
-                ->withInput();
-        } catch (\Exception $e) {
-            // Bắt tất cả các lỗi khác
-            return redirect()->back()->with('fail', 'Something went wrong. Please try again later.');
         }
+        
+        if($request->has('avatar')){
+            $img_name = $request->avatar->hashName();
+            $request->avatar->move(public_path('uploads/avatar'), $img_name);
+            $data['avatar'] = $img_name;
+        }
+
+        if($user->update($data)){   
+            return redirect()->back()->with('success', 'Avatar updated successfully!');
+        }
+        return redirect()->back()->with('fail', 'Something went wrong, please check the information again!');
     }
 
     public function check_password(Request $request){

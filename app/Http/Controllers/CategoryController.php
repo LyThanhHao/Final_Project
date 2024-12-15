@@ -23,27 +23,32 @@ class CategoryController extends Controller
 
     public function store(Request $request)
     {
-        try {
-            $request->validate([
-                'cat_name' => 'required',
-                'cat_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:20480',
-            ]);
-    
-            $data = $request->only('cat_name');
-    
-            if ($request->hasFile('cat_image')) {
-                $img_name = $request->cat_image->hashName();
-                $request->cat_image->move(public_path('uploads/category_image'), $img_name);
-                $data['cat_image'] = $img_name;
-            }
-    
-            Category::create($data);
-            return redirect()->route('admin.categories.index')->with('success', 'Category created successfully');
-        } catch (\Exception $e) {
-            return redirect()->back()->with('fail', 'Error: ' . $e->getMessage());
+        $request->validate([
+            'cat_name' => 'required',
+            'cat_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:20480',
+        ],[
+            'cat_name.required' => 'The category name is required.',
+            'cat_image.required' => 'The category image is required.',
+            'cat_image.image' => 'The category image must be an image.',
+            'cat_image.mimes' => 'The category image must be a valid image file.',
+            'cat_image.max' => 'The category image must be less than 20MB.',
+        ]);
+
+        $data = $request->only('cat_name');
+
+        if ($request->hasFile('cat_image')) {
+            $img_name = $request->cat_image->hashName();
+            $request->cat_image->move(public_path('uploads/category_image'), $img_name);
+            $data['cat_image'] = $img_name;
         }
+
+        $check = Category::create($data);
+        
+        if ($check) {
+            return redirect()->route('admin.categories.index')->with('success', 'Category created successfully');
+        }
+        return redirect()->back()->with('fail', 'Category creation failed! Something went wrong, please try again!');
     }
-    
 
     public function filter(Category $category)
     {
@@ -60,28 +65,34 @@ class CategoryController extends Controller
 
     public function update(Request $request, Category $category)
     {
-        try {
-            $request->validate([
-                'cat_name' => 'required',
-                'status' => 'required',
-                'cat_image' => 'nullable|file|mimes:jpg,jpeg,gif,png,webp,svg|max:20480',
-            ]);
-    
-            $data = $request->only('cat_name', 'status');
-    
-            if ($request->hasFile('cat_image')) {
-                $img_name = $request->cat_image->hashName();
-                $request->cat_image->move(public_path('uploads/category_image'), $img_name);
-                $data['cat_image'] = $img_name;
-            }
-    
-            $category->update($data);
-            return redirect()->route('admin.categories.index')->with('success', 'Category updated successfully');
-        } catch (\Exception $e) {
-            return redirect()->back()->with('fail', 'Error: ' . $e->getMessage());
+        $request->validate([
+            'cat_name' => 'required',
+            'status' => 'required',
+            'cat_image' => 'nullable|file|mimes:jpg,jpeg,gif,png,webp,svg|max:20480',
+        ],[
+            'cat_name.required' => 'The category name is required.',
+            'status.required' => 'The status is required.',
+            'cat_image.file' => 'The category image must be a file.',
+            'cat_image.mimes' => 'The category image must be a valid image file.',
+            'cat_image.max' => 'The category image must be less than 20MB.',
+        ]);
+
+        $data = $request->only('cat_name', 'status');
+
+        if ($request->hasFile('cat_image')) {
+            $img_name = $request->cat_image->hashName();
+            $request->cat_image->move(public_path('uploads/category_image'), $img_name);
+            $data['cat_image'] = $img_name;
         }
+
+        $check = $category->update($data);
+
+        if ($check) {
+            return redirect()->route('admin.categories.index')->with('success', 'Category updated successfully');
+        }
+        return redirect()->back()->with('fail', 'Category update failed! Something went wrong, please try again!');
     }
-    
+
     public function destroy(Category $category)
     {
         if ($category->delete()) {
