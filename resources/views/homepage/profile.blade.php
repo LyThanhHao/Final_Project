@@ -207,6 +207,11 @@
                                             <small class="text-danger">{{ $message }}</small>
                                         </div>
                                     @enderror
+                                    @error('fail')
+                                        <div class="mt-2">
+                                            <small class="text-danger">{{ $message }}</small>
+                                        </div>
+                                    @enderror
                                 </div>
                                 <button class="btn-update" type="submit">Upload new image</button>
                             </form>

@@ -42,7 +42,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/my_favorite_list', [UserController::class, 'favorite_list'])->name('favorite_list');
     Route::get('/profile', [UserController::class, 'profile'])->name('profile');
     Route::put('/profile', [UserController::class, 'check_profile'])->name('check_change_profile');
-    Route::post('/profile/avatar', [UserController::class, 'change_avatar'])->name('change_avatar');
+    Route::post('/profile/avatar', [UserController::class, 'change_avatar'])->name('change_avatar')->middleware('handleLargeFile');
     Route::post('/profile/password', [UserController::class, 'check_password'])->name('check_change_password');
     Route::post('/course/enroll/{course_id}', [CourseController::class, 'enroll'])->name('courses.enroll');
     Route::delete('/my_courses/{course}/unenroll', [CourseController::class, 'unenroll'])->name('courses.unenroll');   
