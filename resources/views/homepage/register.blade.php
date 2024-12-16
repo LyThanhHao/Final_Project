@@ -87,8 +87,7 @@
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" name="termsCheckbox" id="termsCheckbox" required>
                     <label class="form-check-label" for="termsCheckbox">
-                        I accept the <a href="#">Terms and Conditions</a> and <a href="">Privacy
-                            Policy</a>.
+                        I accept the <a href="#" id="terms-link">Terms and Conditions</a> and <a href="#" id="privacy-link">Privacy Policy</a>.
                     </label>
                     @error('termsCheckbox')
                         <small style="color: red;">{{ $message }}</small>
@@ -154,6 +153,77 @@
             }
         });
     </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.getElementById('terms-link').addEventListener('click', function(event) {
+            event.preventDefault();
+            Swal.fire({
+                title: '<div class="popup-title">Terms and Conditions</div>',
+                html: `
+                    <div class="content">
+                        <h3>1. Acceptance of Terms</h3>
+                        <p>By registering and using the ECOURSES platform, you agree to comply with these Terms and Conditions. If you do not accept any part of these terms, please refrain from using the platform.</p>
+                        <h3>2. Account Registration</h3>
+                        <p>Users must provide accurate and current personal information during the registration process. You are responsible for safeguarding your account credentials and activities on your account.</p>
+                        <h3>3. Content Usage</h3>
+                        <p>The courses, materials, and tests provided on the platform are for educational purposes only. Users are not allowed to copy, distribute, or resell any content without explicit permission from the platform or content providers.</p>
+                        <h3>4. User Conduct</h3>
+                        <p>You agree not to engage in any of the following: Uploading harmful, illegal, or inappropriate content. Attempting to disrupt the platform’s services or compromise its security.</p>
+                        <h3>5. Modifications and Termination</h3>
+                        <p>We reserve the right to update these terms, modify or terminate the platform services at any time, with or without notice.</p>
+                    </div>
+                `,
+                icon: 'info',
+                confirmButtonText: 'Close',
+                customClass: {
+                    popup: 'swal-scrollable'
+                }
+            });
+        });
+
+        document.getElementById('privacy-link').addEventListener('click', function(event) {
+            event.preventDefault();
+            Swal.fire({
+                title: '<div class="popup-title">Privacy Policy</div>',
+                html: `
+                    <div class="content">
+                        <h3>1. Data Collection</h3>
+                        <p>We collect personal data such as name, email, and account information to provide you with the best educational experience.</p>
+                        <h3>2. Use of Personal Data</h3>
+                        <p>Your information is used for: Providing access to courses, tests, and user dashboards. Communicating updates, notifications, or support responses.</p>
+                        <h3>3. Data Sharing</h3>
+                        <p>We do not sell or share your data with third-party services, except when required by law or for the improvement of the platform’s functionality (e.g., hosting providers).</p>
+                        <h3>4. Data Security</h3>
+                        <p>We take the security of your personal data seriously. All information is stored securely and protected against unauthorized access.</p>
+                        <h3>5. User Rights</h3>
+                        <p>You have the right to access, update, or request the deletion of your personal information by contacting our support team.</p>
+                    </div>
+                `,
+                icon: 'info',
+                confirmButtonText: 'Close',
+                customClass: {
+                    popup: 'swal-scrollable'
+                }
+            });
+        });
+    </script>
+
+    <style>
+        .swal-scrollable {
+            max-width: 90vw;
+            max-height: 95vh;
+            overflow-y: auto;
+        }
+        .content {
+            text-align: left;
+        }
+        .content h3, .popup-title {
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
 
 </body>
 
