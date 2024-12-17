@@ -20,7 +20,7 @@
                             <div class="form-group mb-0">
                                 <label name="cat_image" for="image" style="margin-bottom: 0">Course Image</label>
                                 <br>
-                                <img name="cat_image" id="current-image" src="{{ old('cat_image', asset('uploads/category_images/' . $category->cat_image)) }}"
+                                <img name="cat_image" id="current-image" src="{{ old('cat_image', asset('uploads/category_image/' . $category->cat_image)) }}"
                                     alt="" style="border-radius: 5px; width: 70px; height: 70px; margin-top: 5px;">
                                 <br>
                                 @error('cat_image')

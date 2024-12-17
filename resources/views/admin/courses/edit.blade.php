@@ -57,19 +57,6 @@
               @enderror
             </div>
             <div class="form-group">
-              <label for="teacher">Teacher</label>
-              <select name="teacher" id="teacher" class="form-control">
-                @foreach($teachers as $teacher)
-                    @if($teacher->role == 'Teacher')
-                        <option style="color: black" value="{{ $teacher->id }}" {{ $course->user_id == $teacher->id ? 'selected' : '' }}>{{ $teacher->fullname }}</option>
-                    @endif
-                @endforeach
-              </select>
-              @error('teacher')
-                <small class="text-danger">{{ $message }}</small>
-              @enderror
-            </div>
-            <div class="form-group">
               <label for="status">Status</label>
               <select name="status" id="status" class="form-control">
                 <option style="color: black;" value="0" {{ $course->status == '0' ? 'selected' : '' }}>Hidden</option>

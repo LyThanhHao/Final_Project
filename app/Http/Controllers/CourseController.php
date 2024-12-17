@@ -118,7 +118,6 @@ class CourseController extends Controller
             'description' => 'required',
             'file' => 'nullable|file|mimes:pdf|max:20480',
             'category_id' => 'required|exists:categories,id',
-            'teacher' => 'required|exists:users,id',
             'status' => 'required',
         ], [
             'course_name.required' => 'The course name is required.',
@@ -146,8 +145,6 @@ class CourseController extends Controller
             $request->file->move(public_path('uploads/course_file'), $file_name);
             $data['file'] = $file_name;
         }
-
-        $data['user_id'] = $request->input('teacher');
 
         if ($course->update($data)) {
             return redirect()->route('admin.courses.index')->with('success', 'Course updated successfully');
