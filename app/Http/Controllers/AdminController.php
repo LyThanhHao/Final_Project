@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\VerifyAccount;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class AdminController extends Controller
 {
@@ -48,6 +50,7 @@ class AdminController extends Controller
         $user = User::create($data);
 
         if ($user) {
+            Mail::to($user->email)->send(new VerifyAccount($user));
             return redirect()->route('admin.accounts.index')->with('success', 'User created successfully');
         }
         return redirect()->back()->with('fail', 'User creation failed! Something went wrong, please try again!');
